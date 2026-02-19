@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "531801841122",
+    "project_id": "up-todo-9c616",
+    "storage_bucket": "up-todo-9c616.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531801841122:android:c9da096abd5dd90510edbb",
+        "android_client_info": {
+          "package_name": "com.example.up_todo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVUEIy_y4sTxVwmPjLAx9E2MHgoWRN8Nk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
