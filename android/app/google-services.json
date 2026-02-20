@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:531801841122:android:c9da096abd5dd90510edbb",
+        "mobilesdk_app_id": "1:531801841122:android:951cc8a2138d145f10edbb",
         "android_client_info": {
-          "package_name": "com.example.up_todo"
+          "package_name": "com.mansursarkhanov.uptodo"
         }
       },
       "oauth_client": [],

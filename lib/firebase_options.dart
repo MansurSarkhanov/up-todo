@@ -48,17 +48,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyBpsge-o2kNlvqrEZQG-Xi_qs8DSLCehFs',
-    appId: '1:531801841122:web:45536ad451b7d2a110edbb',
+    appId: '1:531801841122:web:f3bd537560e6e6c310edbb',
     messagingSenderId: '531801841122',
     projectId: 'up-todo-9c616',
     authDomain: 'up-todo-9c616.firebaseapp.com',
     storageBucket: 'up-todo-9c616.firebasestorage.app',
-    measurementId: 'G-EEXF3Q2808',
+    measurementId: 'G-SWR95RM1KE',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDVUEIy_y4sTxVwmPjLAx9E2MHgoWRN8Nk',
-    appId: '1:531801841122:android:c9da096abd5dd90510edbb',
+    appId: '1:531801841122:android:951cc8a2138d145f10edbb',
     messagingSenderId: '531801841122',
     projectId: 'up-todo-9c616',
     storageBucket: 'up-todo-9c616.firebasestorage.app',
@@ -66,10 +66,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAGA0pJYTFZY97Rqcl6zjynmSStZ91A8wA',
-    appId: '1:531801841122:ios:d4762d924c43867010edbb',
+    appId: '1:531801841122:ios:331dc08c3275f3b210edbb',
     messagingSenderId: '531801841122',
     projectId: 'up-todo-9c616',
     storageBucket: 'up-todo-9c616.firebasestorage.app',
-    iosBundleId: 'com.example.upTodo',
+    iosBundleId: 'com.mansursarkhanov.uptodo',
   );
 }
