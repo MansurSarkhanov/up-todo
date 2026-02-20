@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:up_todo/core/constants/icons.dart';
 import 'package:up_todo/core/utils/extensions/context_extension.dart';
+import 'package:up_todo/features/auth/presentation/bloc/auth_event.dart';
 import 'package:up_todo/shared/components/custom_appbar.dart';
 import 'package:up_todo/shared/components/custom_button.dart';
 
+import '../../../../core/routes/routes.dart';
 import '../../../../shared/components/custom_textfield.dart';
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_state.dart';
 import '../widgets/sosial_button.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -36,11 +42,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 16.verticalSpace,
                 Text("Register", style: context.typography.h1Bold),
                 24.verticalSpace,
-                Text("Username", style: context.typography.body2Regular),
+                Text("Email", style: context.typography.body2Regular),
                 8.verticalSpace,
                 CustomTextfield(
                   controller: _emailController,
-                  hintText: "Enter your Username",
+                  hintText: "Enter your email",
                 ),
                 24.verticalSpace,
                 Text("Password", style: context.typography.body2Regular),
@@ -62,7 +68,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   hintText: "••••••••••••",
                 ),
                 40.verticalSpace,
-                CustomButton(text: "Register", onTap: () {}),
+                BlocConsumer<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    if (state.status == AuthStatus.authenticated) {
+                      context.replace(Routes.main);
+                    } else if (state.status == AuthStatus.failure) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            state.errorMessage ?? 'Register failed',
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    return CustomButton(
+                      isLoading: state.status == AuthStatus.loading,
+                      text: "Register",
+                      onTap: () {
+                        context.read<AuthBloc>().add(
+                          AuthRegisterRequested(
+                            confirmPassword: _confirmPasswordController.text,
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
                 24.verticalSpace,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

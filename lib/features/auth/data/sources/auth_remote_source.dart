@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:up_todo/core/models/api_result.dart';
+import 'package:up_todo/core/services/firestore_service.dart';
 
 import '../../../../core/log/app_logger.dart';
 import '../../../../core/models/error_model.dart';
@@ -19,8 +21,12 @@ abstract class IAuthRemoteDataSource {
 
 class AuthRemoteDataSource implements IAuthRemoteDataSource {
   final FirebaseAuthService firebaseAuth;
+  final FirestoreService firestoreService;
 
-  AuthRemoteDataSource({required this.firebaseAuth});
+  AuthRemoteDataSource({
+    required this.firebaseAuth,
+    required this.firestoreService,
+  });
 
   @override
   Future<ApiResult<UserModel>> register({
@@ -28,14 +34,29 @@ class AuthRemoteDataSource implements IAuthRemoteDataSource {
     required String password,
   }) async {
     try {
-      final userCredential = await firebaseAuth.register(
+      AppLogger.i(
+        'Attempt register with email: $email and password: $password',
+      );
+      final credential = await firebaseAuth.register(
         email: email,
         password: password,
       );
-      return ApiResult.success(
-        data: UserModel.fromFirebaseUser(userCredential.user!),
+      final user = credential.user;
+      if (user != null) {
+        await firestoreService.createUser(
+          uid: user.uid,
+          email: user.email ?? '',
+          username: user.displayName,
+        );
+      }
+      AppLogger.i('Register success: user = $user');
+      return ApiResult.success(data: UserModel.fromFirebaseUser(user!));
+    } on FirebaseAuthException catch (e) {
+      return ApiResult.failure(
+        error: ApiErrorResponse(message: e.message ?? 'Authentication error'),
       );
     } catch (e) {
+      AppLogger.e(e.toString());
       return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
     }
   }
@@ -55,8 +76,12 @@ class AuthRemoteDataSource implements IAuthRemoteDataSource {
       return ApiResult.success(
         data: UserModel.fromFirebaseUser(userCredential.user!),
       );
-    } catch (e, s) {
-      AppLogger.e('Login failed', e, DateTime.now(), s);
+    } on FirebaseAuthException catch (e) {
+      return ApiResult.failure(
+        error: ApiErrorResponse(message: e.message ?? 'Authentication error'),
+      );
+    } catch (e) {
+      AppLogger.e(e.toString());
       return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
     }
   }

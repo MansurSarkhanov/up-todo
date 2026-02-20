@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthEvent extends Equatable {
   const AuthEvent();
@@ -22,17 +23,22 @@ class AuthLoginRequested extends AuthEvent {
 class AuthRegisterRequested extends AuthEvent {
   final String email;
   final String password;
+  final String confirmPassword;
 
-  const AuthRegisterRequested({required this.email, required this.password});
+  const AuthRegisterRequested({
+    required this.email,
+    required this.password,
+    required this.confirmPassword,
+  });
 
   @override
-  List<Object?> get props => [email, password];
+  List<Object?> get props => [email, password, confirmPassword];
 }
 
 class AuthLogoutRequested extends AuthEvent {}
 
 class AuthUserChanged extends AuthEvent {
-  final dynamic user;
+  final User? user;
 
   const AuthUserChanged(this.user);
 

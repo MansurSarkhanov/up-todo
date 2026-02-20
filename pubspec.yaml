@@ -14,7 +14,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   firebase_core: ^4.4.0
   firebase_auth: ^6.1.4
-  get_it: ^9.2.0
+  get_it: ^9.2.1
   go_router: ^17.1.0
   flutter_bloc: ^9.1.1
   cupertino_native_better: ^1.3.4

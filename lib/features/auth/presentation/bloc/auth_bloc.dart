@@ -7,12 +7,14 @@ import 'package:up_todo/features/auth/domain/usecases/register_usecase.dart';
 import '../../../../core/services/firebase_auth_service.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/usecases/login_usecase.dart';
+import '../../domain/usecases/logout_usecase.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginUseCase loginUseCase;
   final RegisterUsecase registerUseCase;
+  final LogoutUseCase logoutUseCase;
 
   final FirebaseAuthService firebaseAuth;
 
@@ -22,15 +24,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.loginUseCase,
     required this.registerUseCase,
     required this.firebaseAuth,
+    required this.logoutUseCase,
   }) : super(const AuthState()) {
     on<AuthCheckRequested>(_onAuthCheckRequested);
     on<AuthLoginRequested>(_onLoginRequested);
     on<AuthRegisterRequested>(_onRegisterRequested);
-    // on<AuthLogoutRequested>(_onLogoutRequested);
-    // on<AuthUserChanged>(_onUserChanged);
+    on<AuthLogoutRequested>(_onLogoutRequested);
+    on<AuthUserChanged>(_onUserChanged);
 
     _userSubscription = firebaseAuth.authStateChanges.listen((user) {
-      add(AuthCheckRequested());
+      add(AuthUserChanged(user));
     });
   }
 
@@ -82,6 +85,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await registerUseCase(
       email: event.email,
       password: event.password,
+      confirmPassword: event.confirmPassword,
     );
     result.fold(
       (user) =>
@@ -95,26 +99,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  // Future<void> _onLogoutRequested(
-  //   AuthLogoutRequested event,
-  //   Emitter<AuthState> emit,
-  // ) async {
-  //   await logoutUseCase();
-  //   emit(state.copyWith(status: AuthStatus.unauthenticated));
-  // }
+  Future<void> _onLogoutRequested(
+    AuthLogoutRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    await logoutUseCase();
+    emit(state.copyWith(status: AuthStatus.unauthenticated));
+  }
 
-  // void _onUserChanged(AuthUserChanged event, Emitter<AuthState> emit) {
-  //   if (event.user != null) {
-  //     emit(
-  //       state.copyWith(
-  //         status: AuthStatus.authenticated,
-  //         user: UserEntity(uid: event.user.uid, email: event.user.email ?? ''),
-  //       ),
-  //     );
-  //   } else {
-  //     emit(state.copyWith(status: AuthStatus.unauthenticated));
-  //   }
-  // }
+  void _onUserChanged(AuthUserChanged event, Emitter<AuthState> emit) {
+    if (event.user != null) {
+      emit(
+        state.copyWith(
+          status: AuthStatus.authenticated,
+          user: UserEntity(
+            uid: event.user!.uid,
+            email: event.user!.email ?? '',
+          ),
+        ),
+      );
+    } else {
+      emit(state.copyWith(status: AuthStatus.unauthenticated));
+    }
+  }
 
   @override
   Future<void> close() {

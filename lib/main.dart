@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/routes/app_router.dart';
 import 'core/theme/theme_scope.dart';
 import 'core/theme/theme_scope_widget.dart';
+import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'firebase_options.dart';
 import 'injection.dart';
 
@@ -26,12 +28,15 @@ class MyApp extends StatelessWidget {
     ];
     return PopScope(
       canPop: false,
-      child: MaterialApp.router(
-        theme: ThemeData(extensions: extensions),
-        themeMode: ThemeMode.system,
-        debugShowCheckedModeBanner: false,
-        title: 'Up Todo',
-        routerConfig: appRouter,
+      child: MultiBlocProvider(
+        providers: [BlocProvider(create: (_) => getIt<AuthBloc>())],
+        child: MaterialApp.router(
+          theme: ThemeData(extensions: extensions),
+          themeMode: ThemeMode.system,
+          debugShowCheckedModeBanner: false,
+          title: 'Up Todo',
+          routerConfig: appRouter,
+        ),
       ),
     );
   }

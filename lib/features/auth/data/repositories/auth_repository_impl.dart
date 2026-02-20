@@ -13,7 +13,11 @@ class AuthRepositoryImpl implements IAuthRepository {
   Future<Either<UserEntity, String>> register({
     required String email,
     required String password,
+    required String confirmPassword,
   }) async {
+    if (password != confirmPassword) {
+      return Right("Passwords do not match");
+    }
     final response = await remoteDataSource.register(
       email: email,
       password: password,

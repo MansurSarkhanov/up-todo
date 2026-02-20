@@ -11,7 +11,12 @@ class RegisterUsecase {
   Future<Either<UserEntity, String>> call({
     required String email,
     required String password,
+    required String confirmPassword,
   }) {
-    return repository.register(email: email, password: password);
+    return repository.register(
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword,
+    );
   }
 }

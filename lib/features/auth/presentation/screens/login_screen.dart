@@ -48,11 +48,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 16.verticalSpace,
                 Text("Login", style: context.typography.h1Bold),
                 24.verticalSpace,
-                Text("Username", style: context.typography.body2Regular),
+                Text("Email", style: context.typography.body2Regular),
                 8.verticalSpace,
                 CustomTextfield(
                   controller: _emailController,
-                  hintText: "Enter your Username",
+                  hintText: "Enter your email",
                 ),
                 24.verticalSpace,
                 Text("Password", style: context.typography.body2Regular),
@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 BlocConsumer<AuthBloc, AuthState>(
                   listener: (context, state) {
                     if (state.status == AuthStatus.authenticated) {
-                      context.pushReplacement(Routes.home);
+                      context.replace(Routes.main);
                     } else if (state.status == AuthStatus.failure) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
