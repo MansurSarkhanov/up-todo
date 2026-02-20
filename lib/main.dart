@@ -5,10 +5,12 @@ import 'core/routes/app_router.dart';
 import 'core/theme/theme_scope.dart';
 import 'core/theme/theme_scope_widget.dart';
 import 'firebase_options.dart';
+import 'injection.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await init();
   runApp(ThemeScopeWidget(child: const MyApp()));
 }
 

@@ -4,7 +4,7 @@ interface class AppColors extends ThemeExtension<AppColors> {
   AppColors({
     required this.primary,
     required this.primary50,
-    required this.primaryLight,
+    required this.textPrimary,
     required this.neutralTitle,
     required this.neutralSecondaryText,
     required this.neutralPrimaryText,
@@ -25,12 +25,15 @@ interface class AppColors extends ThemeExtension<AppColors> {
     required this.errorLight,
     required this.successNormal,
     required this.neutralTableHeader,
+    required this.strokeColor,
+    required this.hintTextColor,
   });
 
   //primary colors
   final Color primary;
   final Color primary50;
-  final Color primaryLight;
+  final Color textPrimary;
+  final Color strokeColor;
 
   final Color neutralTitle;
   final Color neutralSecondaryText;
@@ -50,6 +53,7 @@ interface class AppColors extends ThemeExtension<AppColors> {
 
   final Color backgroundColor;
   final Color textFieldBackColor;
+  final Color hintTextColor;
   final Color transparentColor;
   final Color whiteColor;
   final Color blackColor;
@@ -61,7 +65,9 @@ interface class AppColors extends ThemeExtension<AppColors> {
   ThemeExtension<AppColors> copyWith({
     Color? primary,
     Color? primary50,
-    Color? primaryLight,
+    Color? textPrimary,
+    Color? strokeColor,
+    Color? hintTextColor,
     Color? neutralTitle,
     Color? neutralSecondaryText,
     Color? neutralDisable,
@@ -96,7 +102,9 @@ interface class AppColors extends ThemeExtension<AppColors> {
       textFieldBackColor: textFieldBackColor ?? this.textFieldBackColor,
       primary: primary ?? this.primary,
       primary50: primary50 ?? this.primary50,
-      primaryLight: primaryLight ?? this.primaryLight,
+      textPrimary: textPrimary ?? this.textPrimary,
+      strokeColor: strokeColor ?? this.strokeColor,
+      hintTextColor: hintTextColor ?? this.hintTextColor,
       neutralTitle: neutralTitle ?? this.neutralTitle,
       neutralSecondaryText: neutralSecondaryText ?? this.neutralSecondaryText,
       neutralPrimaryText: neutralPrimaryText ?? this.neutralPrimaryText,
@@ -130,10 +138,12 @@ interface class AppColors extends ThemeExtension<AppColors> {
         other.textFieldBackColor,
         t,
       )!,
+      hintTextColor: Color.lerp(hintTextColor, other.hintTextColor, t)!,
+      strokeColor: Color.lerp(strokeColor, other.strokeColor, t)!,
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t)!,
       primary: Color.lerp(primary, other.primary, t)!,
       primary50: Color.lerp(primary50, other.primary50, t)!,
-      primaryLight: Color.lerp(primaryLight, other.primaryLight, t)!,
+      textPrimary: Color.lerp(textPrimary, other.textPrimary, t)!,
       neutralTitle: Color.lerp(neutralTitle, other.neutralTitle, t)!,
       neutralSecondaryText: Color.lerp(
         neutralSecondaryText,
@@ -179,10 +189,12 @@ interface class AppColors extends ThemeExtension<AppColors> {
 @protected
 class AppLightColors extends AppColors {
   AppLightColors({
-    super.textFieldBackColor = const Color(0xFF121212),
+    super.textFieldBackColor = const Color(0xFF1D1D1D),
+    super.hintTextColor = const Color(0xFF535353),
     super.primary = const Color(0xFF8875FF),
     super.primary50 = const Color(0xFF8875FF),
-    super.primaryLight = const Color(0xFFEFF4FE),
+    super.textPrimary = const Color(0xDEFFFFFF),
+    super.strokeColor = const Color(0xFF979797),
     super.neutralTitle = const Color(0xFFFFFFFF),
     super.neutralSecondaryText = const Color(0xFF8C8C8C),
     super.neutralPrimaryText = const Color(0xFF595959),

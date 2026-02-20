@@ -51,7 +51,7 @@ class CustomButton extends StatelessWidget {
           padding: WidgetStateProperty.all(padding),
           shadowColor: WidgetStatePropertyAll(Colors.transparent),
           maximumSize: WidgetStatePropertyAll(
-            Size(width ?? MediaQuery.sizeOf(context).width, height ?? 52.h),
+            Size(width ?? MediaQuery.sizeOf(context).width, height ?? 48.h),
           ),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
@@ -59,7 +59,7 @@ class CustomButton extends StatelessWidget {
                 color: borderColor ?? Colors.transparent,
                 width: borderWidth ?? 1,
               ),
-              borderRadius: BorderRadius.circular(borderRadius ?? 8.r),
+              borderRadius: BorderRadius.circular(borderRadius ?? 4.r),
             ),
           ),
           backgroundColor: WidgetStateProperty.resolveWith((state) {
@@ -92,7 +92,8 @@ class CustomButton extends StatelessWidget {
                       text.toString(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: fontSize ?? 16.sp,
+                        fontFamily: 'Lato',
+                        fontSize: fontSize ?? 14.sp,
                         color: isActive ?? true
                             ? (textColor ?? Colors.white)
                             : Colors.white,

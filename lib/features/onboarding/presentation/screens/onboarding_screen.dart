@@ -1,4 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:up_todo/core/utils/extensions/context_extension.dart';
+import 'package:up_todo/shared/components/custom_appbar.dart';
+import 'package:up_todo/shared/components/custom_button.dart';
+
+import '../../bloc/onboarding_bloc.dart';
+import '../../bloc/onboarding_event.dart';
+import '../../bloc/onboarding_state.dart';
+import '../widgets/onboard_content.dart';
+
+part '../widgets/navigation_buttons.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -8,7 +19,6 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  int currentIndex = 0;
   late PageController _controller;
 
   @override
@@ -26,184 +36,66 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Resimdeki gibi siyah arka plan
+      appBar: CustomAppBar(toolbarHeight: 0),
+      backgroundColor: context.colors.backgroundColor,
       body: SafeArea(
-        child: Column(
-          children: [
-            // Üst Kısım: SKIP Butonu
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Align(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Column(
+            children: [
+              Align(
                 alignment: Alignment.centerLeft,
                 child: TextButton(
-                  onPressed: () {
-                    _controller.jumpToPage(contents.length - 1);
-                  },
+                  onPressed: () => _controller.jumpToPage(
+                    OnboardingModel.contents.length - 1,
+                  ),
                   child: Text(
                     "SKIP",
-                    style: TextStyle(color: Colors.white.withOpacity(0.5)),
+                    style: context.typography.body2Regular.copyWith(
+                      color: Colors.white.withValues(alpha: 0.5),
+                    ),
                   ),
                 ),
               ),
-            ),
-
-            // Orta Kısım: PageView (Resim ve Metinler)
-            Expanded(
-              child: PageView.builder(
-                controller: _controller,
-                itemCount: contents.length,
-                onPageChanged: (int index) {
-                  setState(() {
-                    currentIndex = index;
-                  });
-                },
-                itemBuilder: (_, i) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+              Expanded(
+                child: BlocBuilder<OnboardingBloc, OnboardingState>(
+                  builder: (context, state) {
+                    final currentIndex = state.currentIndex;
+                    return Column(
                       children: [
-                        Image.asset(contents[i].image, height: 300),
-                        SizedBox(height: 40),
-                        // İndikatörler (Çizgiler)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(
-                            contents.length,
-                            (index) => buildDot(index, context),
+                        Expanded(
+                          child: PageView.builder(
+                            controller: _controller,
+                            itemCount: OnboardingModel.contents.length,
+                            onPageChanged: (index) {
+                              context.read<OnboardingBloc>().add(
+                                PageChanged(index),
+                              );
+                            },
+                            itemBuilder: (_, i) {
+                              final content = OnboardingModel.contents[i];
+                              return OnboardContent(
+                                currentIndex: currentIndex,
+                                description: content.description,
+                                image: content.image,
+                                title: content.title,
+                              );
+                            },
                           ),
                         ),
-                        SizedBox(height: 50),
-                        Text(
-                          contents[i].title,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          contents[i].description,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white.withOpacity(0.7),
-                          ),
+                        _NavigationButtons(
+                          currentIndex: currentIndex,
+                          controller: _controller,
                         ),
                       ],
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-
-            // Alt Kısım: BACK ve NEXT/GET STARTED Butonları
-            Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: currentIndex == 0
-                        ? null
-                        : () {
-                            _controller.previousPage(
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.ease,
-                            );
-                          },
-                    child: Text(
-                      "BACK",
-                      style: TextStyle(
-                        color: currentIndex == 0
-                            ? Colors.transparent
-                            : Colors.white.withOpacity(0.5),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (currentIndex == contents.length - 1) {
-                        // Son sayfada yapılacak işlem
-                      }
-                      _controller.nextPage(
-                        duration: Duration(milliseconds: 300),
-                        curve: Curves.ease,
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF8875FF), // Mor renk
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 30,
-                        vertical: 15,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                    child: Text(
-                      currentIndex == contents.length - 1
-                          ? "GET STARTED"
-                          : "NEXT",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
-
-  // İndikatör Çizgisi Oluşturucu
-  Container buildDot(int index, BuildContext context) {
-    return Container(
-      height: 4,
-      width: 25,
-      margin: EdgeInsets.only(right: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(2),
-        color: currentIndex == index
-            ? Colors.white
-            : Colors.white.withOpacity(0.3),
-      ),
-    );
-  }
 }
-
-class OnboardingModel {
-  final String image;
-  final String title;
-  final String description;
-
-  OnboardingModel({
-    required this.image,
-    required this.title,
-    required this.description,
-  });
-}
-
-List<OnboardingModel> contents = [
-  OnboardingModel(
-    image: 'assets/images/board1.png',
-    title: 'Manage your tasks',
-    description:
-        'You can easily manage all of your daily tasks in DoMe for free',
-  ),
-  OnboardingModel(
-    image: 'assets/images/board2.png',
-    title: 'Create daily routine',
-    description:
-        'In Uptodo you can create your personalized routine to stay productive',
-  ),
-  OnboardingModel(
-    image: 'assets/images/board3.png',
-    title: 'Organize your tasks',
-    description:
-        'You can organize your daily tasks by adding your tasks into separate categories',
-  ),
-];
