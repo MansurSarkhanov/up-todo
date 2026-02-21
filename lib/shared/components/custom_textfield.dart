@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:up_todo/core/utils/extensions/context_extension.dart';
@@ -32,15 +34,15 @@ class _CustomTextfieldState extends State<CustomTextfield> {
         filled: true,
         fillColor: context.colors.textFieldBackColor,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.r),
+          borderRadius: BorderRadius.circular((Platform.isIOS ? 14.r : 4.r)),
           borderSide: BorderSide(color: context.colors.strokeColor, width: 0.8),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.r),
+          borderRadius: BorderRadius.circular((Platform.isIOS ? 14.r : 4.r)),
           borderSide: BorderSide(color: context.colors.strokeColor, width: 0.8),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.r),
+          borderRadius: BorderRadius.circular((Platform.isIOS ? 14.r : 4.r)),
           borderSide: BorderSide(color: context.colors.primary),
         ),
       ),

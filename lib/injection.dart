@@ -13,7 +13,7 @@ import 'features/auth/presentation/bloc/auth_bloc.dart';
 final getIt = GetIt.instance;
 
 Future<void> init() async {
-  getIt.registerLazySingleton(
+  getIt.registerFactory(
     () => AuthBloc(
       logoutUseCase: getIt<LogoutUseCase>(),
       loginUseCase: getIt<LoginUseCase>(),

@@ -15,9 +15,6 @@ class AuthRepositoryImpl implements IAuthRepository {
     required String password,
     required String confirmPassword,
   }) async {
-    if (password != confirmPassword) {
-      return Right("Passwords do not match");
-    }
     final response = await remoteDataSource.register(
       email: email,
       password: password,

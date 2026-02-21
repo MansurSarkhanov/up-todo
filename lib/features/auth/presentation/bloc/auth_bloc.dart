@@ -58,19 +58,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthLoginRequested event,
     Emitter<AuthState> emit,
   ) async {
-    emit(state.copyWith(status: AuthStatus.loading));
+    emit(state.copyWith(status: AuthStatus.loading, source: AuthScreen.login));
 
     final result = await loginUseCase(
       email: event.email,
       password: event.password,
     );
     result.fold(
-      (user) =>
-          emit(state.copyWith(status: AuthStatus.authenticated, user: user)),
+      (user) => emit(
+        state.copyWith(
+          status: AuthStatus.authenticated,
+          user: user,
+          source: AuthScreen.login,
+        ),
+      ),
       (error) => emit(
         state.copyWith(
           status: AuthStatus.failure,
           errorMessage: error.toString(),
+          source: AuthScreen.login,
         ),
       ),
     );
@@ -80,7 +86,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthRegisterRequested event,
     Emitter<AuthState> emit,
   ) async {
-    emit(state.copyWith(status: AuthStatus.loading));
+    emit(
+      state.copyWith(status: AuthStatus.loading, source: AuthScreen.register),
+    );
 
     final result = await registerUseCase(
       email: event.email,
@@ -88,12 +96,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       confirmPassword: event.confirmPassword,
     );
     result.fold(
-      (user) =>
-          emit(state.copyWith(status: AuthStatus.authenticated, user: user)),
+      (user) => emit(
+        state.copyWith(
+          status: AuthStatus.authenticated,
+          user: user,
+          source: AuthScreen.register,
+        ),
+      ),
       (error) => emit(
         state.copyWith(
           status: AuthStatus.failure,
           errorMessage: error.toString(),
+          source: AuthScreen.register,
         ),
       ),
     );

@@ -72,7 +72,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   listener: (context, state) {
                     if (state.status == AuthStatus.authenticated) {
                       context.replace(Routes.main);
-                    } else if (state.status == AuthStatus.failure) {
+                    } else if (state.status == AuthStatus.failure &&
+                        state.source == AuthScreen.register) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(

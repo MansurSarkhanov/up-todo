@@ -1,5 +1,6 @@
 import 'package:either_dart/either.dart';
 
+import '../../../../core/utils/regex/email_regex.dart';
 import '../entities/user_entity.dart';
 import '../repositories/auth_repository.dart';
 
@@ -11,7 +12,13 @@ class LoginUseCase {
   Future<Either<UserEntity, String>> call({
     required String email,
     required String password,
-  }) {
+  }) async {
+    if (email.isEmpty || password.isEmpty) {
+      return Right("All fields are required");
+    }
+    if (!EmailRegex.emailRegex.hasMatch(email)) {
+      return Right("Invalid email address");
+    }
     return repository.login(email: email, password: password);
   }
 }

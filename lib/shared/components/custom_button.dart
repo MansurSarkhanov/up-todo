@@ -59,7 +59,9 @@ class CustomButton extends StatelessWidget {
                 color: borderColor ?? Colors.transparent,
                 width: borderWidth ?? 1,
               ),
-              borderRadius: BorderRadius.circular(borderRadius ?? 4.r),
+              borderRadius: BorderRadius.circular(
+                borderRadius ?? (Platform.isIOS ? 16.r : 4.r),
+              ),
             ),
           ),
           backgroundColor: WidgetStateProperty.resolveWith((state) {

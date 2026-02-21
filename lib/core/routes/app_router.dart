@@ -18,7 +18,7 @@ import 'route_notifier.dart';
 final navigatorKey = GlobalKey<NavigatorState>();
 final GoRouter appRouter = GoRouter(
   navigatorKey: navigatorKey,
-  initialLocation: Routes.login,
+  initialLocation: Routes.splash,
   refreshListenable: RouteNotifier(getIt<AuthBloc>().stream),
   redirect: (context, state) {
     final authState = context.read<AuthBloc>().state;

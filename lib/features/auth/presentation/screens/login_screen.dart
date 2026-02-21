@@ -67,7 +67,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   listener: (context, state) {
                     if (state.status == AuthStatus.authenticated) {
                       context.replace(Routes.main);
-                    } else if (state.status == AuthStatus.failure) {
+                    } else if (state.status == AuthStatus.failure &&
+                        state.source == AuthScreen.login) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(state.errorMessage ?? 'Login failed'),

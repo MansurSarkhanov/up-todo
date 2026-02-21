@@ -35,7 +35,10 @@ class _NavigationButtons extends StatelessWidget {
           flex: 1,
           child: CustomButton(
             onTap: () {
-              if (currentIndex == OnboardingModel.contents.length - 1) {}
+              if (currentIndex == OnboardingModel.contents.length - 1) {
+                context.push(Routes.login);
+                return;
+              }
               _controller.nextPage(
                 duration: Duration(milliseconds: 300),
                 curve: Curves.ease,
