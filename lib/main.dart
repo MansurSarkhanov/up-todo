@@ -6,6 +6,7 @@ import 'core/routes/app_router.dart';
 import 'core/theme/theme_scope.dart';
 import 'core/theme/theme_scope_widget.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/main/presentation/bloc/main_bloc.dart';
 import 'firebase_options.dart';
 import 'injection.dart';
 
@@ -29,7 +30,10 @@ class MyApp extends StatelessWidget {
     return PopScope(
       canPop: false,
       child: MultiBlocProvider(
-        providers: [BlocProvider(create: (_) => getIt<AuthBloc>())],
+        providers: [
+          BlocProvider(create: (_) => getIt<AuthBloc>()),
+          BlocProvider(create: (_) => getIt<MainBloc>()),
+        ],
         child: MaterialApp.router(
           theme: ThemeData(extensions: extensions),
           themeMode: ThemeMode.system,

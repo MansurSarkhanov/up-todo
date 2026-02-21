@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:up_todo/core/services/firebase_auth_service.dart';
 import 'package:up_todo/features/auth/domain/repositories/auth_repository.dart';
+import 'package:up_todo/features/main/presentation/bloc/main_bloc.dart';
 
 import 'core/services/firestore_service.dart';
 import 'features/auth/data/repositories/auth_repository_impl.dart';
@@ -21,7 +22,7 @@ Future<void> init() async {
       firebaseAuth: getIt<FirebaseAuthService>(),
     ),
   );
-
+  getIt.registerFactory(() => MainBloc());
   getIt.registerLazySingleton(() => LoginUseCase(getIt<IAuthRepository>()));
   getIt.registerLazySingleton(() => RegisterUsecase(getIt<IAuthRepository>()));
   getIt.registerLazySingleton(() => LogoutUseCase(getIt<IAuthRepository>()));
