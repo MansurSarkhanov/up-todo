@@ -10,6 +10,7 @@ import 'package:up_todo/features/onboarding/presentation/screens/splash_screen.d
 
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_state.dart';
+import '../../features/main/presentation/screens/setting_screen.dart';
 import '../../features/onboarding/bloc/onboarding_bloc.dart';
 import '../../features/onboarding/presentation/widgets/onboard_content.dart';
 import '../../injection.dart';
@@ -53,5 +54,9 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => RegisterScreen(),
     ),
     GoRoute(path: Routes.main, builder: (context, state) => MainScreen()),
+    GoRoute(
+      path: Routes.setting,
+      builder: (context, state) => const SettingScreen(),
+    ),
   ],
 );

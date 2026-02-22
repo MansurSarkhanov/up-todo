@@ -10,10 +10,17 @@ class CustomTextfield extends StatefulWidget {
     this.obscureText,
     this.hintText,
     required this.controller,
+    this.fillColor,
+    this.hintTextColor,
+    this.textInputAction,
   });
   final bool? obscureText;
   final String? hintText;
+  final Color? hintTextColor;
+
   final TextEditingController controller;
+  final Color? fillColor;
+  final TextInputAction? textInputAction;
 
   @override
   State<CustomTextfield> createState() => _CustomTextfieldState();
@@ -23,26 +30,27 @@ class _CustomTextfieldState extends State<CustomTextfield> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textInputAction: widget.textInputAction ?? TextInputAction.done,
       controller: widget.controller,
       obscureText: widget.obscureText ?? false,
       style: context.typography.body2Regular,
       decoration: InputDecoration(
         hintText: widget.hintText,
         hintStyle: context.typography.body2Regular.copyWith(
-          color: context.colors.hintTextColor,
+          color: widget.hintTextColor ?? context.colors.hintTextColor,
         ),
         filled: true,
-        fillColor: context.colors.textFieldBackColor,
+        fillColor: widget.fillColor ?? context.colors.textFieldBackColor,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular((Platform.isIOS ? 14.r : 4.r)),
+          borderRadius: BorderRadius.circular((Platform.isIOS ? 12.r : 4.r)),
           borderSide: BorderSide(color: context.colors.strokeColor, width: 0.8),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular((Platform.isIOS ? 14.r : 4.r)),
+          borderRadius: BorderRadius.circular((Platform.isIOS ? 12.r : 4.r)),
           borderSide: BorderSide(color: context.colors.strokeColor, width: 0.8),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular((Platform.isIOS ? 14.r : 4.r)),
+          borderRadius: BorderRadius.circular((Platform.isIOS ? 12.r : 4.r)),
           borderSide: BorderSide(color: context.colors.primary),
         ),
       ),

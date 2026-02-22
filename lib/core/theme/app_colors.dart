@@ -27,6 +27,7 @@ interface class AppColors extends ThemeExtension<AppColors> {
     required this.neutralTableHeader,
     required this.strokeColor,
     required this.hintTextColor,
+    required this.secondary,
   });
 
   //primary colors
@@ -34,7 +35,7 @@ interface class AppColors extends ThemeExtension<AppColors> {
   final Color primary50;
   final Color textPrimary;
   final Color strokeColor;
-
+  final Color secondary;
   final Color neutralTitle;
   final Color neutralSecondaryText;
   final Color neutralPrimaryText;
@@ -65,6 +66,7 @@ interface class AppColors extends ThemeExtension<AppColors> {
   ThemeExtension<AppColors> copyWith({
     Color? primary,
     Color? primary50,
+    Color? secondary,
     Color? textPrimary,
     Color? strokeColor,
     Color? hintTextColor,
@@ -102,6 +104,7 @@ interface class AppColors extends ThemeExtension<AppColors> {
       textFieldBackColor: textFieldBackColor ?? this.textFieldBackColor,
       primary: primary ?? this.primary,
       primary50: primary50 ?? this.primary50,
+      secondary: secondary ?? this.secondary,
       textPrimary: textPrimary ?? this.textPrimary,
       strokeColor: strokeColor ?? this.strokeColor,
       hintTextColor: hintTextColor ?? this.hintTextColor,
@@ -143,6 +146,7 @@ interface class AppColors extends ThemeExtension<AppColors> {
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t)!,
       primary: Color.lerp(primary, other.primary, t)!,
       primary50: Color.lerp(primary50, other.primary50, t)!,
+      secondary: Color.lerp(secondary, other.secondary, t)!,
       textPrimary: Color.lerp(textPrimary, other.textPrimary, t)!,
       neutralTitle: Color.lerp(neutralTitle, other.neutralTitle, t)!,
       neutralSecondaryText: Color.lerp(
@@ -193,6 +197,7 @@ class AppLightColors extends AppColors {
     super.hintTextColor = const Color(0xFF535353),
     super.primary = const Color(0xFF8875FF),
     super.primary50 = const Color(0xFF8875FF),
+    super.secondary = const Color(0xFF363636),
     super.textPrimary = const Color(0xDEFFFFFF),
     super.strokeColor = const Color(0xFF979797),
     super.neutralTitle = const Color(0xFFFFFFFF),

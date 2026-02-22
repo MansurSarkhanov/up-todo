@@ -60,7 +60,7 @@ class CustomButton extends StatelessWidget {
                 width: borderWidth ?? 1,
               ),
               borderRadius: BorderRadius.circular(
-                borderRadius ?? (Platform.isIOS ? 16.r : 4.r),
+                borderRadius ?? (Platform.isIOS ? 12.r : 4.r),
               ),
             ),
           ),
@@ -93,8 +93,7 @@ class CustomButton extends StatelessWidget {
                     child: Text(
                       text.toString(),
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'Lato',
+                      style: context.typography.body2Regular.copyWith(
                         fontSize: fontSize ?? 14.sp,
                         color: isActive ?? true
                             ? (textColor ?? Colors.white)

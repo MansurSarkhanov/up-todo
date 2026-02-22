@@ -1,26 +1,30 @@
 import 'package:cupertino_native_better/cupertino_native_better.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:up_todo/core/helpers/app_helper.dart';
 import 'package:up_todo/core/utils/extensions/context_extension.dart';
-import 'package:up_todo/shared/components/custom_appbar.dart';
+import 'package:up_todo/features/main/presentation/views/focus_view.dart';
+import 'package:up_todo/features/main/presentation/views/profile_view.dart';
 
 import '../bloc/main_bloc.dart';
+import '../views/calendar_view.dart';
+import '../views/home_view.dart';
+import '../widgets/add_new_task_sheet.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
   List<Widget> get pages => [
-    Container(color: Colors.red),
-    Container(color: Colors.green),
-    Container(color: Colors.blue),
-    Container(color: Colors.yellow),
-    Container(color: Colors.orange),
+    HomeView(),
+    CalendarView(),
+    SizedBox.shrink(),
+    FocusView(),
+    ProfileView(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(context),
       backgroundColor: context.colors.backgroundColor,
       bottomNavigationBar: _bottomBar(context),
       body: _body(context),
@@ -52,19 +56,19 @@ class MainScreen extends StatelessWidget {
             ),
           ],
           currentIndex: state,
-          onTap: context.read<MainBloc>().changePage,
+          onTap: (index) {
+            if (index == 2) {
+              AppHelper.showBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                child: AddNewTaskSheet(),
+              );
+            } else {
+              context.read<MainBloc>().changePage(index);
+            }
+          },
         );
       },
-    );
-  }
-
-  CustomAppBar _appBar(BuildContext context) {
-    return CustomAppBar(
-      leading: CNButton.icon(
-        icon: CNSymbol('pencil.line', size: 16),
-        onPressed: () => {},
-      ),
-      title: Text('Index', style: context.typography.h5Medium),
     );
   }
 }

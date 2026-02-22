@@ -198,7 +198,7 @@ class ThemeScopeWidgetState extends State<ThemeScopeWidget> {
         fontFamily: appFont,
         fontSize: Dimensions.headline5,
         fontWeight: FontWeight.w700,
-        color: appColors.black87Color,
+        color: appColors.textPrimary,
       ),
       h6Bold: TextStyle(
         fontFamily: appFont,
