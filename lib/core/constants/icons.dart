@@ -15,4 +15,14 @@ final class AppIconPath {
   static const String tag = "$basePath/tag.svg";
   static const String flag = "$basePath/flag.svg";
   static const String send = "$basePath/send.svg";
+  static const String bread = "$basePath/bread.svg";
+  static const String briefcase = "$basePath/briefcase.svg";
+  static const String design = "$basePath/design.svg";
+  static const String heartbeat = "$basePath/heartbeat.svg";
+  static const String home = "$basePath/home.svg";
+  static const String megaphone = "$basePath/megaphone.svg";
+  static const String mortarboard = "$basePath/mortarboard.svg";
+  static const String music = "$basePath/music.svg";
+  static const String sport = "$basePath/sport.svg";
+  static const String videoCamera = "$basePath/video-camera.svg";
 }

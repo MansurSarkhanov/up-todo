@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:up_todo/shared/dialogs/category_dialog.dart';
 import 'package:up_todo/shared/dialogs/task_priorty_dialog.dart';
 
 import '../../../../core/constants/icons.dart';
@@ -8,8 +9,17 @@ import '../../../../core/utils/extensions/context_extension.dart';
 import '../../../../shared/components/custom_textfield.dart';
 import '../../../../shared/dialogs/custom_calendart_dialog.dart';
 
-class AddNewTaskSheet extends StatelessWidget {
+class AddNewTaskSheet extends StatefulWidget {
   const AddNewTaskSheet({super.key});
+
+  @override
+  State<AddNewTaskSheet> createState() => _AddNewTaskSheetState();
+}
+
+class _AddNewTaskSheetState extends State<AddNewTaskSheet> {
+  final TextEditingController _titleController = TextEditingController();
+
+  final TextEditingController _descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +37,14 @@ class AddNewTaskSheet extends StatelessWidget {
                 textInputAction: TextInputAction.next,
                 hintTextColor: Color(0xFFAFAFAF),
                 fillColor: Colors.transparent,
-                controller: TextEditingController(),
+                controller: _titleController,
                 hintText: 'Task Title',
               ),
               8.verticalSpace,
               CustomTextfield(
                 hintTextColor: Color(0xFFAFAFAF),
                 fillColor: Colors.transparent,
-                controller: TextEditingController(),
+                controller: _descriptionController,
                 hintText: 'Task Description',
               ),
               16.verticalSpace,
@@ -51,7 +61,12 @@ class AddNewTaskSheet extends StatelessWidget {
                   ),
                   IconButton(
                     icon: SvgPicture.asset(AppIconPath.tag),
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => const CategoryDialog(),
+                      );
+                    },
                   ),
                   IconButton(
                     icon: SvgPicture.asset(AppIconPath.flag),
