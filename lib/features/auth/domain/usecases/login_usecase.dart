@@ -19,6 +19,7 @@ class LoginUseCase {
     if (!EmailRegex.emailRegex.hasMatch(email)) {
       return Right("Invalid email address");
     }
-    return repository.login(email: email, password: password);
+    final result = await repository.login(email: email, password: password);
+    return result;
   }
 }

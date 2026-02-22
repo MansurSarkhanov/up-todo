@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:up_todo/shared/dialogs/category_dialog.dart';
@@ -8,6 +9,9 @@ import '../../../../core/constants/icons.dart';
 import '../../../../core/utils/extensions/context_extension.dart';
 import '../../../../shared/components/custom_textfield.dart';
 import '../../../../shared/dialogs/custom_calendart_dialog.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../tasks/presentation/bloc/task_bloc.dart';
+import '../../../tasks/presentation/bloc/task_event.dart';
 
 class AddNewTaskSheet extends StatefulWidget {
   const AddNewTaskSheet({super.key});
@@ -80,7 +84,18 @@ class _AddNewTaskSheetState extends State<AddNewTaskSheet> {
                   Spacer(),
                   IconButton(
                     icon: SvgPicture.asset(AppIconPath.send),
-                    onPressed: () {},
+                    onPressed: () {
+                      final userId = context.read<AuthBloc>().state.user!.uid;
+                      context.read<TaskBloc>().add(
+                        AddTaskRequested(
+                          title: "Test",
+                          userId: userId,
+                          description: 'Test Description',
+                          dueDate: DateTime.now(),
+                          priority: 1,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

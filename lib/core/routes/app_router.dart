@@ -7,6 +7,7 @@ import 'package:up_todo/features/auth/presentation/screens/register_screen.dart'
 import 'package:up_todo/features/main/presentation/screens/main_screen.dart';
 import 'package:up_todo/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:up_todo/features/onboarding/presentation/screens/splash_screen.dart';
+import 'package:up_todo/features/tasks/presentation/bloc/task_bloc.dart';
 
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_state.dart';
@@ -53,7 +54,13 @@ final GoRouter appRouter = GoRouter(
       path: Routes.register,
       builder: (context, state) => RegisterScreen(),
     ),
-    GoRoute(path: Routes.main, builder: (context, state) => MainScreen()),
+    GoRoute(
+      path: Routes.main,
+      builder: (context, state) => BlocProvider(
+        create: (context) => getIt<TaskBloc>(),
+        child: MainScreen(),
+      ),
+    ),
     GoRoute(
       path: Routes.setting,
       builder: (context, state) => const SettingScreen(),

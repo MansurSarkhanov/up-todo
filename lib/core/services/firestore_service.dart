@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../features/tasks/data/models/task_model.dart';
+
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -21,20 +23,39 @@ class FirestoreService {
     });
   }
 
-  Future<void> addTodo({required String title, required String userId}) async {
-    await _todoRef.add({
+  Future<DocumentReference> addTodo({
+    required String title,
+    required String userId,
+    String? description,
+    required DateTime dueDate,
+    required int priority,
+  }) async {
+    final result = await _todoRef.add({
       'title': title,
+      'description': description,
       'userId': userId,
       'isCompleted': false,
-      'createdAt': FieldValue.serverTimestamp(),
+      'createdAt': DateTime.now(),
+      'dueDate': dueDate,
+      'priority': priority,
     });
+    return result;
   }
 
-  Stream<QuerySnapshot> getTodos(String userId) {
+  Stream<List<Task>> getTasksStream(String userId) {
     return _todoRef
         .where('userId', isEqualTo: userId)
-        .orderBy('createdAt', descending: true)
-        .snapshots();
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) {
+                final data = doc.data();
+                if (data == null) return null;
+                return Task.fromJson(data as Map<String, dynamic>, doc.id);
+              })
+              .whereType<Task>()
+              .toList(),
+        );
   }
 
   Future<void> updateTodo({

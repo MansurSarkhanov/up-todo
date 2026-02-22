@@ -6,6 +6,7 @@ import 'package:up_todo/core/utils/extensions/context_extension.dart';
 import 'package:up_todo/features/main/presentation/views/focus_view.dart';
 import 'package:up_todo/features/main/presentation/views/profile_view.dart';
 
+import '../../../tasks/presentation/bloc/task_bloc.dart';
 import '../bloc/main_bloc.dart';
 import '../views/calendar_view.dart';
 import '../views/home_view.dart';
@@ -61,7 +62,10 @@ class MainScreen extends StatelessWidget {
               AppHelper.showBottomSheet(
                 isScrollControlled: true,
                 context: context,
-                child: AddNewTaskSheet(),
+                child: BlocProvider.value(
+                  value: context.read<TaskBloc>(),
+                  child: AddNewTaskSheet(),
+                ),
               );
             } else {
               context.read<MainBloc>().changePage(index);
