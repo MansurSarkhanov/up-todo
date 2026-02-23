@@ -13,6 +13,8 @@ abstract class ITaskRemoteSource {
     String? description,
     required DateTime dueDate,
     required int priority,
+    required String categoryName,
+    required String categoryIcon,
   });
 
   ApiResult<Stream<List<Task>>> getTasks(String userId);
@@ -30,6 +32,8 @@ class TaskRemoteSource implements ITaskRemoteSource {
     String? description,
     required DateTime dueDate,
     required int priority,
+    required String categoryName,
+    required String categoryIcon,
   }) async {
     try {
       AppLogger.i(
@@ -41,6 +45,8 @@ class TaskRemoteSource implements ITaskRemoteSource {
         description: description,
         dueDate: dueDate,
         priority: priority,
+        categoryName: categoryName,
+        categoryIcon: categoryIcon,
       );
       AppLogger.i('Task added successfully with result: $result');
       return ApiResult.success(data: true);

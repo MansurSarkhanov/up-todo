@@ -24,8 +24,8 @@ class Dimensions {
   static double xlPadding = 16.dm;
   static double xxlPadding = 18.dm;
 
-  static double appHorizontalPadding = 14.5.w;
-  static double appVerticalPadding = 14.5.h;
+  static double appHorizontalPadding = 22.5.w;
+  static double appVerticalPadding = 22.5.h;
 
   // fontsizes
   static double headline1 = 28.sp;

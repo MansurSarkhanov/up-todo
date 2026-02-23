@@ -13,6 +13,8 @@ class AddTaskUsecase {
     String? description,
     required DateTime dueDate,
     required int priority,
+    required String categoryName,
+    required String categoryIcon,
   }) async {
     final result = await repository.addTask(
       title: title,
@@ -20,6 +22,8 @@ class AddTaskUsecase {
       description: description,
       dueDate: dueDate,
       priority: priority,
+      categoryName: categoryName,
+      categoryIcon: categoryIcon,
     );
     return result;
   }

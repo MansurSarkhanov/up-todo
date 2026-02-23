@@ -8,11 +8,11 @@ import '../../../../core/services/firebase_auth_service.dart';
 import '../models/user_models.dart';
 
 abstract class IAuthRemoteDataSource {
-  Future<ApiResult<UserModel>> register({
+  Future<ApiResult<UserAuthModel>> register({
     required String email,
     required String password,
   });
-  Future<ApiResult<UserModel>> login({
+  Future<ApiResult<UserAuthModel>> login({
     required String email,
     required String password,
   });
@@ -29,7 +29,7 @@ class AuthRemoteDataSource implements IAuthRemoteDataSource {
   });
 
   @override
-  Future<ApiResult<UserModel>> register({
+  Future<ApiResult<UserAuthModel>> register({
     required String email,
     required String password,
   }) async {
@@ -50,7 +50,7 @@ class AuthRemoteDataSource implements IAuthRemoteDataSource {
         );
       }
       AppLogger.i('Register success: user = $user');
-      return ApiResult.success(data: UserModel.fromFirebaseUser(user!));
+      return ApiResult.success(data: UserAuthModel.fromFirebaseUser(user!));
     } on FirebaseAuthException catch (e) {
       return ApiResult.failure(
         error: ApiErrorResponse(message: e.message ?? 'Authentication error'),
@@ -62,7 +62,7 @@ class AuthRemoteDataSource implements IAuthRemoteDataSource {
   }
 
   @override
-  Future<ApiResult<UserModel>> login({
+  Future<ApiResult<UserAuthModel>> login({
     required String email,
     required String password,
   }) async {
@@ -74,7 +74,7 @@ class AuthRemoteDataSource implements IAuthRemoteDataSource {
       );
       AppLogger.i('Login success: user = ${userCredential.user}');
       return ApiResult.success(
-        data: UserModel.fromFirebaseUser(userCredential.user!),
+        data: UserAuthModel.fromFirebaseUser(userCredential.user!),
       );
     } on FirebaseAuthException catch (e) {
       return ApiResult.failure(

@@ -1,24 +1,26 @@
 import 'package:cupertino_native_better/cupertino_native_better.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:up_todo/core/constants/icons.dart';
 import 'package:up_todo/core/utils/extensions/context_extension.dart';
+import 'package:up_todo/features/tasks/data/models/task_model.dart';
 
+import '../../../../core/models/category_model.dart';
 import '../../../../shared/components/custom_appbar.dart';
-import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../../shared/dialogs/category_dialog.dart';
 import '../../../tasks/presentation/bloc/task_bloc.dart';
-import '../../../tasks/presentation/bloc/task_event.dart';
 import '../../../tasks/presentation/bloc/task_state.dart';
 import '../widgets/empty_task.dart';
+
+part '../widgets/task_tile.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final userId = context.read<AuthBloc>().state.user!.uid;
-
-    // Firestore stream-i başlatmaq
-    context.read<TaskBloc>().add(LoadTasks(userId));
     return Scaffold(
       appBar: _appBar(context),
       backgroundColor: context.colors.backgroundColor,
@@ -34,23 +36,12 @@ class HomeView extends StatelessWidget {
                 return const EmptyTask();
               }
               return ListView.builder(
+                shrinkWrap: true,
                 padding: const EdgeInsets.all(16),
                 itemCount: tasks.length,
                 itemBuilder: (context, index) {
                   final task = tasks[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    child: ListTile(
-                      title: Text(task.title),
-                      subtitle: Text(task.description),
-                      trailing: Checkbox(
-                        value: task.isCompleted,
-                        onChanged: (val) {
-                          // ToggleTaskRequested event-i buradan göndərə bilərsən
-                        },
-                      ),
-                    ),
-                  );
+                  return TaskTile(task: task);
                 },
               );
             case TaskStatus.failure:

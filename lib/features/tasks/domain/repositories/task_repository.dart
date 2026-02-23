@@ -9,6 +9,8 @@ abstract class ITaskRepository {
     String? description,
     required DateTime dueDate,
     required int priority,
+    required String categoryName,
+    required String categoryIcon,
   });
   Either<Stream<List<Task>>, String> getTasks(String userId);
 }

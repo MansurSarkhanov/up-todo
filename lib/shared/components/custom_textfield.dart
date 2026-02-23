@@ -13,14 +13,20 @@ class CustomTextfield extends StatefulWidget {
     this.fillColor,
     this.hintTextColor,
     this.textInputAction,
+    this.validator,
+    this.onChanged,
+    this.textColor,
   });
   final bool? obscureText;
   final String? hintText;
   final Color? hintTextColor;
+  final Color? textColor;
 
   final TextEditingController controller;
   final Color? fillColor;
   final TextInputAction? textInputAction;
+  final String? Function(String?)? validator;
+  final Function(String?)? onChanged;
 
   @override
   State<CustomTextfield> createState() => _CustomTextfieldState();
@@ -33,7 +39,11 @@ class _CustomTextfieldState extends State<CustomTextfield> {
       textInputAction: widget.textInputAction ?? TextInputAction.done,
       controller: widget.controller,
       obscureText: widget.obscureText ?? false,
-      style: context.typography.body2Regular,
+      style: context.typography.body2Regular.copyWith(
+        color: widget.textColor ?? context.colors.textPrimary,
+      ),
+      validator: widget.validator,
+      onChanged: widget.onChanged,
       decoration: InputDecoration(
         hintText: widget.hintText,
         hintStyle: context.typography.body2Regular.copyWith(

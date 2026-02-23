@@ -14,6 +14,7 @@ import '../../../../shared/components/custom_textfield.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../widgets/sosial_button.dart';
+import 'passcode_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,6 +26,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  final GlobalKey<FormState> _emailKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _passwordKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -50,23 +54,46 @@ class _LoginScreenState extends State<LoginScreen> {
                 24.verticalSpace,
                 Text("Email", style: context.typography.body2Regular),
                 8.verticalSpace,
-                CustomTextfield(
-                  controller: _emailController,
-                  hintText: "Enter your email",
+                Form(
+                  key: _emailKey,
+                  child: CustomTextfield(
+                    controller: _emailController,
+                    hintText: "Enter your email",
+                    onChanged: (value) => _emailKey.currentState!.validate(),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-                24.verticalSpace,
+                16.verticalSpace,
                 Text("Password", style: context.typography.body2Regular),
                 8.verticalSpace,
-                CustomTextfield(
-                  controller: _passwordController,
-                  obscureText: true,
-                  hintText: "••••••••••••",
+                Form(
+                  key: _passwordKey,
+                  child: CustomTextfield(
+                    controller: _passwordController,
+                    obscureText: true,
+                    hintText: "••••••••••••",
+                    onChanged: (value) => _passwordKey.currentState!.validate(),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
                 40.verticalSpace,
                 BlocConsumer<AuthBloc, AuthState>(
                   listener: (context, state) {
                     if (state.status == AuthStatus.authenticated) {
-                      context.replace(Routes.main);
+                      context.replace(
+                        Routes.passcode,
+                        extra: PasscodeMode.setup,
+                      );
                     } else if (state.status == AuthStatus.failure &&
                         state.source == AuthScreen.login) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -81,12 +108,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       isLoading: state.status == AuthStatus.loading,
                       text: "Login",
                       onTap: () {
-                        context.read<AuthBloc>().add(
-                          AuthLoginRequested(
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                          ),
-                        );
+                        if (_emailKey.currentState!.validate() &&
+                            _passwordKey.currentState!.validate()) {
+                          context.read<AuthBloc>().add(
+                            AuthLoginRequested(
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            ),
+                          );
+                        }
                       },
                     );
                   },

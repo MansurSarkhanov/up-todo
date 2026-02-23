@@ -55,6 +55,8 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       description: event.description,
       dueDate: event.dueDate,
       priority: event.priority,
+      categoryName: event.categoryName,
+      categoryIcon: event.categoryIcon,
     );
 
     result.fold(

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +14,7 @@ import '../../../../shared/components/custom_textfield.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_state.dart';
 import '../widgets/sosial_button.dart';
+import 'passcode_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -26,6 +28,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+
+  final GlobalKey<FormState> _emailKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _passwordKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _confirmPasswordKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,34 +58,68 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 24.verticalSpace,
                 Text("Email", style: context.typography.body2Regular),
                 8.verticalSpace,
-                CustomTextfield(
-                  controller: _emailController,
-                  hintText: "Enter your email",
+                Form(
+                  key: _emailKey,
+                  child: CustomTextfield(
+                    controller: _emailController,
+                    hintText: "Enter your email",
+                    onChanged: (value) => _emailKey.currentState!.validate(),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-                24.verticalSpace,
+                16.verticalSpace,
                 Text("Password", style: context.typography.body2Regular),
                 8.verticalSpace,
-                CustomTextfield(
-                  controller: _passwordController,
-                  obscureText: true,
-                  hintText: "••••••••••••",
+                Form(
+                  key: _passwordKey,
+                  child: CustomTextfield(
+                    controller: _passwordController,
+                    obscureText: true,
+                    hintText: "••••••••••••",
+                    onChanged: (value) => _passwordKey.currentState!.validate(),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-                24.verticalSpace,
+                16.verticalSpace,
                 Text(
                   "Confirm Password",
                   style: context.typography.body2Regular,
                 ),
                 8.verticalSpace,
-                CustomTextfield(
-                  controller: _confirmPasswordController,
-                  obscureText: true,
-                  hintText: "••••••••••••",
+                Form(
+                  key: _confirmPasswordKey,
+                  child: CustomTextfield(
+                    controller: _confirmPasswordController,
+                    obscureText: true,
+                    hintText: "••••••••••••",
+                    onChanged: (value) =>
+                        _confirmPasswordKey.currentState!.validate(),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
                 40.verticalSpace,
                 BlocConsumer<AuthBloc, AuthState>(
                   listener: (context, state) {
                     if (state.status == AuthStatus.authenticated) {
-                      context.replace(Routes.main);
+                      context.replace(
+                        Routes.passcode,
+                        extra: PasscodeMode.setup,
+                      );
                     } else if (state.status == AuthStatus.failure &&
                         state.source == AuthScreen.register) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -88,13 +136,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       isLoading: state.status == AuthStatus.loading,
                       text: "Register",
                       onTap: () {
-                        context.read<AuthBloc>().add(
-                          AuthRegisterRequested(
-                            confirmPassword: _confirmPasswordController.text,
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                          ),
-                        );
+                        if (_emailKey.currentState!.validate() &&
+                            _passwordKey.currentState!.validate() &&
+                            _confirmPasswordKey.currentState!.validate()) {
+                          context.read<AuthBloc>().add(
+                            AuthRegisterRequested(
+                              confirmPassword: _confirmPasswordController.text,
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            ),
+                          );
+                        }
                       },
                     );
                   },
@@ -141,6 +193,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         TextSpan(
                           text: "Login",
                           style: context.typography.subtitle4Bold,
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              context.push(Routes.login);
+                            },
                         ),
                       ],
                     ),

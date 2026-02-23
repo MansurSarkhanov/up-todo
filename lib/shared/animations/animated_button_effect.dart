@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AnimationButtonEffect extends StatefulWidget {
   final bool disabled;
+  final double? lowerBound;
 
   final Widget child;
 
@@ -9,6 +10,7 @@ class AnimationButtonEffect extends StatefulWidget {
     super.key,
     this.disabled = true,
     required this.child,
+    this.lowerBound,
   });
 
   @override
@@ -25,7 +27,7 @@ class _AnimationButtonEffectState extends State<AnimationButtonEffect>
   void initState() {
     _controllerA = AnimationController(
       vsync: this,
-      lowerBound: 0.98,
+      lowerBound: widget.lowerBound ?? 0.95,
       upperBound: 1.0,
       duration: const Duration(milliseconds: 110),
     );

@@ -37,6 +37,7 @@ class _NavigationButtons extends StatelessWidget {
             onTap: () {
               if (currentIndex == OnboardingModel.contents.length - 1) {
                 context.push(Routes.login);
+                CacheManager.saveData<bool>('isFirst', true);
                 return;
               }
               _controller.nextPage(

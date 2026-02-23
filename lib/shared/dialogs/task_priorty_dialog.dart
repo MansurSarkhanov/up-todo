@@ -92,6 +92,7 @@ class _TaskPriorityDialogState extends State<TaskPriorityDialog> {
                 Expanded(
                   child: CustomButton(
                     color: Colors.transparent,
+                    clickColor: context.colors.primary.withValues(alpha: 0.1),
                     textColor: context.colors.primary,
                     text: 'Cancel',
                     onTap: () {

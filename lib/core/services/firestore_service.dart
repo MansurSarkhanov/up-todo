@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../features/tasks/data/models/task_model.dart';
+import '../../features/user/data/models/user_model.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -23,12 +24,32 @@ class FirestoreService {
     });
   }
 
+  Stream<UserModel> getUser({required String uid}) {
+    return _usersRef.doc(uid).snapshots().map((doc) {
+      return UserModel.fromMap(doc.data()! as Map<String, dynamic>, doc.id);
+    });
+  }
+
+  Future<void> updateUser({
+    required String uid,
+    String? username,
+    String? photoUrl,
+  }) async {
+    await _usersRef.doc(uid).update({
+      'username': username,
+      'photoUrl': photoUrl,
+      'lastSeen': FieldValue.serverTimestamp(),
+    });
+  }
+
   Future<DocumentReference> addTodo({
     required String title,
     required String userId,
     String? description,
     required DateTime dueDate,
     required int priority,
+    required String categoryName,
+    required String categoryIcon,
   }) async {
     final result = await _todoRef.add({
       'title': title,
@@ -38,6 +59,7 @@ class FirestoreService {
       'createdAt': DateTime.now(),
       'dueDate': dueDate,
       'priority': priority,
+      'category': {'name': categoryName, 'icon': categoryIcon},
     });
     return result;
   }

@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Task {
-  final String id; // Firestore document id
+  final String id;
   final String title;
   final String description;
   final String userId;
   final DateTime dueDate;
-  final int priority; // 1-low, 2-medium, 3-high
+  final int priority;
   final bool isCompleted;
+  final DateTime createDate;
+  final Category category;
 
   Task({
     required this.id,
@@ -17,6 +19,8 @@ class Task {
     required this.dueDate,
     required this.priority,
     this.isCompleted = false,
+    required this.category,
+    required this.createDate,
   });
 
   // Firestore document -> Task object
@@ -29,19 +33,9 @@ class Task {
       dueDate: (json['dueDate'] as Timestamp).toDate(),
       priority: json['priority'] ?? 1,
       isCompleted: json['isCompleted'] ?? false,
+      createDate: (json['createdAt'] as Timestamp).toDate(),
+      category: Category.fromJson(json['category'] ?? {}, ''),
     );
-  }
-
-  // Task object -> Firestore document
-  Map<String, dynamic> toJson() {
-    return {
-      'title': title,
-      'description': description,
-      'userId': userId,
-      'dueDate': Timestamp.fromDate(dueDate),
-      'priority': priority,
-      'isCompleted': isCompleted,
-    };
   }
 
   // CopyWith for easy updates
@@ -53,6 +47,8 @@ class Task {
     DateTime? dueDate,
     int? priority,
     bool? isCompleted,
+    DateTime? createDate,
+    Category? category,
   }) {
     return Task(
       id: id ?? this.id,
@@ -62,6 +58,19 @@ class Task {
       dueDate: dueDate ?? this.dueDate,
       priority: priority ?? this.priority,
       isCompleted: isCompleted ?? this.isCompleted,
+      createDate: createDate ?? this.createDate,
+      category: category ?? this.category,
     );
+  }
+}
+
+class Category {
+  final String name;
+  final String icon;
+
+  Category({required this.name, required this.icon});
+
+  factory Category.fromJson(Map<String, dynamic> json, String id) {
+    return Category(name: json['name'] ?? '', icon: json['icon'] ?? '');
   }
 }

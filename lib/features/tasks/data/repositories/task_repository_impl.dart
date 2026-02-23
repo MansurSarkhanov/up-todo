@@ -15,6 +15,8 @@ class TaskRepositoryImpl implements ITaskRepository {
     String? description,
     required DateTime dueDate,
     required int priority,
+    required String categoryName,
+    required String categoryIcon,
   }) async {
     final response = await remoteSource.addTask(
       title: title,
@@ -22,6 +24,8 @@ class TaskRepositoryImpl implements ITaskRepository {
       description: description,
       dueDate: dueDate,
       priority: priority,
+      categoryName: categoryName,
+      categoryIcon: categoryIcon,
     );
     if (response.isSuccess) {
       return Left(true);

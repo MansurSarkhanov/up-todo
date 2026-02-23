@@ -17,6 +17,8 @@ class AddTaskRequested extends TaskEvent {
   final String? description;
   final DateTime dueDate;
   final int priority;
+  final String categoryName;
+  final String categoryIcon;
 
   const AddTaskRequested({
     required this.title,
@@ -24,9 +26,19 @@ class AddTaskRequested extends TaskEvent {
     this.description,
     required this.dueDate,
     required this.priority,
+    required this.categoryName,
+    required this.categoryIcon,
   });
   @override
-  List<Object?> get props => [title, userId, description, dueDate, priority];
+  List<Object?> get props => [
+    title,
+    userId,
+    description,
+    dueDate,
+    priority,
+    categoryName,
+    categoryIcon,
+  ];
 }
 
 class DeleteTaskRequested extends TaskEvent {}

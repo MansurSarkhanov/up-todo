@@ -88,6 +88,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
                 Expanded(
                   child: CustomButton(
                     color: Colors.transparent,
+                    clickColor: context.colors.primary.withValues(alpha: 0.1),
                     textColor: context.colors.primary,
                     text: 'Cancel',
                     onTap: () {
@@ -100,7 +101,14 @@ class _CategoryDialogState extends State<CategoryDialog> {
                   child: CustomButton(
                     text: 'Save',
                     onTap: () {
-                      Navigator.pop(context, selectedCategory);
+                      Navigator.pop(context, {
+                        'category': selectedCategory,
+                        'icon': categories
+                            .firstWhere(
+                              (element) => element.name == selectedCategory,
+                            )
+                            .icon,
+                      });
                     },
                   ),
                 ),

@@ -6,4 +6,5 @@ final class Routes {
   static const String register = '/register';
   static const String main = '/main';
   static const String setting = '/setting';
+  static const String passcode = '/passcode';
 }

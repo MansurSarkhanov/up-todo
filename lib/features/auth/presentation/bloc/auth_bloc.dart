@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:up_todo/features/auth/domain/usecases/register_usecase.dart';
 
 import '../../../../core/services/firebase_auth_service.dart';
@@ -118,6 +119,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     await logoutUseCase();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
     emit(state.copyWith(status: AuthStatus.unauthenticated));
   }
 

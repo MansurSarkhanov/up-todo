@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:up_todo/core/routes/routes.dart';
 import 'package:up_todo/features/auth/presentation/screens/login_screen.dart';
+import 'package:up_todo/features/auth/presentation/screens/passcode_screen.dart';
 import 'package:up_todo/features/auth/presentation/screens/register_screen.dart';
 import 'package:up_todo/features/main/presentation/screens/main_screen.dart';
 import 'package:up_todo/features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -11,9 +12,13 @@ import 'package:up_todo/features/tasks/presentation/bloc/task_bloc.dart';
 
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_state.dart';
+import '../../features/auth/presentation/bloc/passcode_bloc.dart';
 import '../../features/main/presentation/screens/setting_screen.dart';
 import '../../features/onboarding/bloc/onboarding_bloc.dart';
 import '../../features/onboarding/presentation/widgets/onboard_content.dart';
+import '../../features/tasks/presentation/bloc/task_event.dart';
+import '../../features/user/presentation/bloc/user_bloc.dart';
+import '../../features/user/presentation/bloc/user_event.dart';
 import '../../injection.dart';
 import 'route_notifier.dart';
 
@@ -55,9 +60,29 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => RegisterScreen(),
     ),
     GoRoute(
-      path: Routes.main,
+      path: Routes.passcode,
       builder: (context, state) => BlocProvider(
-        create: (context) => getIt<TaskBloc>(),
+        create: (context) =>
+            PasscodeBloc(mode: state.extra as PasscodeMode)..loadPin(),
+        child: PasscodeScreen(mode: state.extra as PasscodeMode),
+      ),
+    ),
+    GoRoute(
+      path: Routes.main,
+      builder: (context, state) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) {
+              final userId = context.read<AuthBloc>().state.user!.uid;
+              return getIt<TaskBloc>()..add(LoadTasks(userId));
+            },
+          ),
+          BlocProvider(
+            create: (context) =>
+                getIt<UserBloc>()
+                  ..add(LoadUser(context.read<AuthBloc>().state.user!.uid)),
+          ),
+        ],
         child: MainScreen(),
       ),
     ),

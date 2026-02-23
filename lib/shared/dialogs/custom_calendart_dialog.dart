@@ -79,6 +79,7 @@ class _CustomCalendarDialogState extends State<CustomCalendarDialog> {
               children: [
                 Expanded(
                   child: CustomButton(
+                    clickColor: context.colors.primary.withValues(alpha: 0.1),
                     color: Colors.transparent,
                     textColor: context.colors.primary,
                     text: 'Cancel',
