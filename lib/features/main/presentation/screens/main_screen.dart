@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:up_todo/core/helpers/app_helper.dart';
 import 'package:up_todo/core/utils/extensions/context_extension.dart';
 import 'package:up_todo/features/main/presentation/views/focus_view.dart';
-import 'package:up_todo/features/main/presentation/views/profile_view.dart';
+import 'package:up_todo/features/user/presentation/screens/profile_view.dart';
 
 import '../../../tasks/presentation/bloc/task_bloc.dart';
+import '../../../tasks/presentation/screens/home_view.dart';
 import '../bloc/main_bloc.dart';
 import '../views/calendar_view.dart';
-import '../views/home_view.dart';
 import '../widgets/add_new_task_sheet.dart';
 
 class MainScreen extends StatelessWidget {

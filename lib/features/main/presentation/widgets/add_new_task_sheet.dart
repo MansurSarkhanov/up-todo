@@ -53,7 +53,7 @@ class _AddNewTaskSheetState extends State<AddNewTaskSheet> {
                     width: 32.w,
                   ),
                 ),
-                13.verticalSpace,
+                16.verticalSpace,
                 Text('Add Task', style: context.typography.h5Bold),
                 12.verticalSpace,
                 CustomTextfield(

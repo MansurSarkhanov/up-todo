@@ -9,16 +9,17 @@ import 'package:up_todo/features/main/presentation/screens/main_screen.dart';
 import 'package:up_todo/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:up_todo/features/onboarding/presentation/screens/splash_screen.dart';
 import 'package:up_todo/features/tasks/presentation/bloc/task_bloc.dart';
+import 'package:up_todo/features/tasks/presentation/screens/task_detail_screen.dart';
 
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_state.dart';
 import '../../features/auth/presentation/bloc/passcode_bloc.dart';
-import '../../features/main/presentation/screens/setting_screen.dart';
 import '../../features/onboarding/bloc/onboarding_bloc.dart';
 import '../../features/onboarding/presentation/widgets/onboard_content.dart';
 import '../../features/tasks/presentation/bloc/task_event.dart';
 import '../../features/user/presentation/bloc/user_bloc.dart';
 import '../../features/user/presentation/bloc/user_event.dart';
+import '../../features/user/presentation/screens/setting_screen.dart';
 import '../../injection.dart';
 import 'route_notifier.dart';
 
@@ -89,6 +90,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: Routes.setting,
       builder: (context, state) => const SettingScreen(),
+    ),
+    GoRoute(
+      path: Routes.taskDetail,
+      builder: (context, state) => const TaskDetailScreen(),
     ),
   ],
 );

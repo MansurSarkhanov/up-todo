@@ -5,18 +5,16 @@ import 'package:go_router/go_router.dart';
 import 'package:up_todo/core/constants/icons.dart';
 import 'package:up_todo/features/auth/presentation/bloc/auth_event.dart';
 import 'package:up_todo/features/main/presentation/widgets/user_update_dialog.dart';
-import 'package:up_todo/features/user/presentation/bloc/user_event.dart';
 
-import '../../../../core/helpers/picker_manager.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/utils/extensions/context_extension.dart';
-import '../../../../injection.dart';
 import '../../../../shared/components/custom_appbar.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
-import '../../../user/presentation/bloc/user_bloc.dart';
-import '../../../user/presentation/bloc/user_state.dart';
+import '../../../main/presentation/widgets/task_overview.dart';
+import '../bloc/user_bloc.dart';
+import '../bloc/user_state.dart';
+import '../widgets/profile_image.dart';
 import '../widgets/profile_tile.dart';
-import '../widgets/task_overview.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -105,11 +103,6 @@ class ProfileView extends StatelessWidget {
                       onTap: () {},
                     ),
                     ProfileTile(
-                      icon: AppIconPath.camera,
-                      title: 'Change account Image',
-                      onTap: () {},
-                    ),
-                    ProfileTile(
                       icon: AppIconPath.logout,
                       title: 'Log out',
                       onTap: () =>
@@ -130,53 +123,6 @@ class ProfileView extends StatelessWidget {
     return CustomAppBar(
       leading: SizedBox.shrink(),
       title: Text('Profile', style: context.typography.h5Medium),
-    );
-  }
-}
-
-class ProfileImage extends StatelessWidget {
-  const ProfileImage({super.key, this.photoUrl});
-  final String? photoUrl;
-
-  @override
-  Widget build(BuildContext context) {
-    final pickerManager = getIt<PickerManager>();
-    return GestureDetector(
-      onTap: () async {
-        final file = await pickerManager.pickImageFromGallery();
-        if (file != null && context.mounted) {
-          context.read<UserBloc>().add(UpdateUserProfile(image: file));
-        }
-      },
-      child: Container(
-        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-        height: 85,
-        width: 85,
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 400),
-          switchInCurve: Curves.easeOut,
-          switchOutCurve: Curves.easeIn,
-          transitionBuilder: (child, animation) {
-            return FadeTransition(
-              opacity: animation,
-              child: ScaleTransition(
-                scale: Tween<double>(begin: 0, end: 1).animate(animation),
-                child: child,
-              ),
-            );
-          },
-          child: photoUrl != null
-              ? ClipOval(
-                  child: Image.network(
-                    photoUrl!,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                  ),
-                )
-              : const Icon(Icons.person_rounded, size: 40),
-        ),
-      ),
     );
   }
 }

@@ -2,16 +2,19 @@ import 'package:cupertino_native_better/cupertino_native_better.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:up_todo/core/constants/icons.dart';
+import 'package:up_todo/core/routes/routes.dart';
 import 'package:up_todo/core/utils/extensions/context_extension.dart';
 import 'package:up_todo/features/tasks/data/models/task_model.dart';
 
 import '../../../../core/models/category_model.dart';
 import '../../../../shared/components/custom_appbar.dart';
 import '../../../../shared/dialogs/category_dialog.dart';
-import '../../../tasks/presentation/bloc/task_bloc.dart';
-import '../../../tasks/presentation/bloc/task_state.dart';
+import '../bloc/task_bloc.dart';
+import '../bloc/task_state.dart';
 import '../widgets/empty_task.dart';
 
 part '../widgets/task_tile.dart';
@@ -36,7 +39,6 @@ class HomeView extends StatelessWidget {
                 return const EmptyTask();
               }
               return ListView.builder(
-                shrinkWrap: true,
                 padding: const EdgeInsets.all(16),
                 itemCount: tasks.length,
                 itemBuilder: (context, index) {
