@@ -18,6 +18,7 @@ abstract class ITaskRemoteSource {
   });
 
   ApiResult<Stream<List<Task>>> getTasks(String userId);
+  ApiResult<Stream<Task>> watchTask(String taskId);
 }
 
 class TaskRemoteSource implements ITaskRemoteSource {
@@ -65,11 +66,28 @@ class TaskRemoteSource implements ITaskRemoteSource {
     try {
       AppLogger.i('Attempt get tasks for userId: $userId');
       final result = firestoreService.getTasksStream(userId);
-      AppLogger.i('Task added successfully with result: $result');
+      AppLogger.i('Task get successfully with result: $result');
       return ApiResult.success(data: result);
     } on FirebaseAuthException catch (e) {
       return ApiResult.failure(
         error: ApiErrorResponse(message: e.message ?? 'Failed to add task'),
+      );
+    } catch (e) {
+      AppLogger.e(e.toString());
+      return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
+    }
+  }
+
+  @override
+  ApiResult<Stream<Task>> watchTask(String taskId) {
+    try {
+      AppLogger.i('Attempt get task for taskId: $taskId');
+      final result = firestoreService.watchTask(taskId);
+      AppLogger.i('Task watch successfully with result: $result');
+      return ApiResult.success(data: result);
+    } on FirebaseAuthException catch (e) {
+      return ApiResult.failure(
+        error: ApiErrorResponse(message: e.message ?? 'Failed watch task'),
       );
     } catch (e) {
       AppLogger.e(e.toString());

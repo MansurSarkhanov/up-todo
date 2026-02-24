@@ -80,6 +80,16 @@ class FirestoreService {
         );
   }
 
+  Stream<Task> watchTask(String taskId) {
+    return _todoRef.doc(taskId).snapshots().map((snapshot) {
+      if (!snapshot.exists) {
+        throw Exception('Task not found');
+      }
+      final data = snapshot.data()!;
+      return Task.fromJson(data as Map<String, dynamic>, snapshot.id);
+    });
+  }
+
   Future<void> updateTodo({
     required String docId,
     required bool isCompleted,

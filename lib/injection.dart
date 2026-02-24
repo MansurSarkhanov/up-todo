@@ -25,6 +25,7 @@ import 'features/auth/domain/usecases/logout_usecase.dart';
 import 'features/auth/domain/usecases/register_usecase.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/tasks/data/repositories/task_repository_impl.dart';
+import 'features/tasks/domain/usecases/watch_task_usecase.dart';
 
 final getIt = GetIt.instance;
 
@@ -41,6 +42,7 @@ Future<void> init() async {
   getIt.registerFactory(() => MainBloc());
   getIt.registerFactory(
     () => TaskBloc(
+      watchTaskUsecase: getIt<WatchTaskUsecase>(),
       addTaskUsecase: getIt<AddTaskUsecase>(),
       getTasksUsecase: getIt<GetTasksUsecase>(),
     ),
@@ -57,6 +59,7 @@ Future<void> init() async {
   getIt.registerLazySingleton(() => LogoutUseCase(getIt<IAuthRepository>()));
   getIt.registerLazySingleton(() => AddTaskUsecase(getIt<ITaskRepository>()));
   getIt.registerLazySingleton(() => GetTasksUsecase(getIt<ITaskRepository>()));
+  getIt.registerLazySingleton(() => WatchTaskUsecase(getIt<ITaskRepository>()));
   getIt.registerLazySingleton(() => UserUsecase(getIt<IUserRepository>()));
   getIt.registerLazySingleton(
     () => UpdateUserUsecase(getIt<IUserRepository>()),

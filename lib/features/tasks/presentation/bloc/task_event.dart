@@ -44,3 +44,9 @@ class AddTaskRequested extends TaskEvent {
 class DeleteTaskRequested extends TaskEvent {}
 
 class ToggleTaskRequested extends TaskEvent {}
+
+class WatchTaskRequested extends TaskEvent {
+  final String taskId;
+
+  const WatchTaskRequested(this.taskId);
+}

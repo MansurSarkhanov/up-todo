@@ -41,7 +41,10 @@ class TaskTile extends StatelessWidget {
           ],
         ),
         child: GestureDetector(
-          onTap: () => context.push(Routes.taskDetail),
+          onTap: () => context.push(
+            Routes.taskDetail,
+            extra: {'id': task.id, 'color': category.color},
+          ),
           child: Container(
             decoration: BoxDecoration(
               color: context.colors.secondary,

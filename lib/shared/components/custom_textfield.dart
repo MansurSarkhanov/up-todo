@@ -16,6 +16,7 @@ class CustomTextfield extends StatefulWidget {
     this.validator,
     this.onChanged,
     this.textColor,
+    this.enabledBorder,
   });
   final bool? obscureText;
   final String? hintText;
@@ -27,6 +28,7 @@ class CustomTextfield extends StatefulWidget {
   final TextInputAction? textInputAction;
   final String? Function(String?)? validator;
   final Function(String?)? onChanged;
+  final InputBorder? enabledBorder;
 
   @override
   State<CustomTextfield> createState() => _CustomTextfieldState();
@@ -55,10 +57,17 @@ class _CustomTextfieldState extends State<CustomTextfield> {
           borderRadius: BorderRadius.circular((Platform.isIOS ? 12.r : 4.r)),
           borderSide: BorderSide(color: context.colors.strokeColor, width: 0.8),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular((Platform.isIOS ? 12.r : 4.r)),
-          borderSide: BorderSide(color: context.colors.strokeColor, width: 0.8),
-        ),
+        enabledBorder:
+            widget.enabledBorder ??
+            OutlineInputBorder(
+              borderRadius: BorderRadius.circular(
+                (Platform.isIOS ? 12.r : 4.r),
+              ),
+              borderSide: BorderSide(
+                color: context.colors.strokeColor,
+                width: 0.8,
+              ),
+            ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular((Platform.isIOS ? 12.r : 4.r)),
           borderSide: BorderSide(color: context.colors.primary),

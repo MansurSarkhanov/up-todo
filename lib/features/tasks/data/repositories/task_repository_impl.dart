@@ -43,4 +43,14 @@ class TaskRepositoryImpl implements ITaskRepository {
       return Right(response.error?.message ?? 'Unknown error');
     }
   }
+
+  @override
+  Either<Stream<Task>, String> watchTask(String taskId) {
+    final response = remoteSource.watchTask(taskId);
+    if (response.isSuccess) {
+      return Left(response.data!);
+    } else {
+      return Right(response.error?.message ?? 'Unknown error');
+    }
+  }
 }

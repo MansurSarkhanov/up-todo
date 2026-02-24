@@ -23,7 +23,6 @@ class Task {
     required this.createDate,
   });
 
-  // Firestore document -> Task object
   factory Task.fromJson(Map<String, dynamic> json, String id) {
     return Task(
       id: id,
@@ -38,7 +37,6 @@ class Task {
     );
   }
 
-  // CopyWith for easy updates
   Task copyWith({
     String? id,
     String? title,

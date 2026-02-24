@@ -93,7 +93,15 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: Routes.taskDetail,
-      builder: (context, state) => const TaskDetailScreen(),
+      builder: (context, state) {
+        final extraData = state.extra as Map<String, dynamic>;
+        final id = extraData['id'] as String;
+        final categoryColor = extraData['color'] as Color;
+        return BlocProvider.value(
+          value: getIt<TaskBloc>()..add(WatchTaskRequested(id)),
+          child: TaskDetailScreen(color: categoryColor),
+        );
+      },
     ),
   ],
 );

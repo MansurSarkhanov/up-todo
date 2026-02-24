@@ -13,4 +13,5 @@ abstract class ITaskRepository {
     required String categoryIcon,
   });
   Either<Stream<List<Task>>, String> getTasks(String userId);
+  Either<Stream<Task>, String> watchTask(String taskId);
 }

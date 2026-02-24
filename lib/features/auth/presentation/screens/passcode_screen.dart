@@ -27,9 +27,15 @@ class PasscodeScreen extends StatelessWidget {
           if (state.isSuccess) {
             context.replace(Routes.main);
           } else if (state.isError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text('Incorrect PIN!')));
+            if (mode == PasscodeMode.setup) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Passcode does not match')),
+              );
+            } else {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Invalid PIN!')));
+            }
           }
         },
         child: SafeArea(
