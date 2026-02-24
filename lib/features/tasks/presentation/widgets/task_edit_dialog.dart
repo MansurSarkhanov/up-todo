@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:up_todo/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:up_todo/features/tasks/presentation/bloc/task_event.dart';
 import 'package:up_todo/shared/components/custom_textfield.dart';
 
 import '../../../../core/utils/extensions/context_extension.dart';
 import '../../../../shared/components/custom_button.dart';
+import '../bloc/task_bloc.dart';
 
 class TaskEditDialog extends StatefulWidget {
   const TaskEditDialog({
     super.key,
     required this.title,
     required this.description,
+    required this.taskId,
   });
   final String title;
   final String description;
+  final String taskId;
 
   @override
   State<TaskEditDialog> createState() => _TaskEditDialogState();
@@ -80,7 +86,21 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
                 ),
                 6.horizontalSpace,
                 Expanded(
-                  child: CustomButton(text: 'Edit', onTap: () {}),
+                  child: CustomButton(
+                    text: 'Edit',
+                    onTap: () {
+                      final userId = context.read<AuthBloc>().state.user?.uid;
+                      context.read<TaskBloc>().add(
+                        EditTaskRequested(
+                          taskId: widget.taskId,
+                          userId: userId!,
+                          title: titleController.text,
+                          description: descriptionController.text,
+                        ),
+                      );
+                      context.pop();
+                    },
+                  ),
                 ),
               ],
             ),

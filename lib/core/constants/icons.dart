@@ -25,4 +25,5 @@ final class AppIconPath {
   static const String music = "$basePath/music.svg";
   static const String sport = "$basePath/sport.svg";
   static const String videoCamera = "$basePath/video-camera.svg";
+  static const String trash = "$basePath/trash.svg";
 }

@@ -53,4 +53,30 @@ class TaskRepositoryImpl implements ITaskRepository {
       return Right(response.error?.message ?? 'Unknown error');
     }
   }
+
+  @override
+  Future<Either<bool, String>> editTask({
+    required String taskId,
+    String? title,
+    String? description,
+    DateTime? dueDate,
+    int? priority,
+    String? categoryName,
+    String? categoryIcon,
+  }) async {
+    final response = await remoteSource.editTask(
+      taskId: taskId,
+      title: title,
+      description: description,
+      dueDate: dueDate,
+      priority: priority,
+      categoryName: categoryName,
+      categoryIcon: categoryIcon,
+    );
+    if (response.isSuccess) {
+      return Left(response.data!);
+    } else {
+      return Right(response.error?.message ?? 'Unknown error');
+    }
+  }
 }

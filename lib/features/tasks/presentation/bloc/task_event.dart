@@ -50,3 +50,25 @@ class WatchTaskRequested extends TaskEvent {
 
   const WatchTaskRequested(this.taskId);
 }
+
+class EditTaskRequested extends TaskEvent {
+  final String taskId;
+  final String? title;
+  final String? description;
+  final DateTime? dueDate;
+  final int? priority;
+  final String? categoryName;
+  final String? categoryIcon;
+  final String userId;
+
+  const EditTaskRequested({
+    required this.taskId,
+    required this.userId,
+    this.title,
+    this.description,
+    this.dueDate,
+    this.priority,
+    this.categoryName,
+    this.categoryIcon,
+  });
+}

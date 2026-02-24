@@ -20,6 +20,7 @@ class TaskTile extends StatelessWidget {
       child: Slidable(
         key: ValueKey(task.id),
         endActionPane: ActionPane(
+          extentRatio: 0.25,
           motion: const DrawerMotion(),
           children: [
             SlidableAction(
@@ -28,14 +29,6 @@ class TaskTile extends StatelessWidget {
               foregroundColor: Colors.white,
               icon: Icons.delete,
               label: 'Delete',
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            SlidableAction(
-              onPressed: (context) {},
-              backgroundColor: Colors.orange,
-              foregroundColor: Colors.white,
-              icon: Icons.edit,
-              label: 'Edit',
               borderRadius: BorderRadius.circular(8.r),
             ),
           ],

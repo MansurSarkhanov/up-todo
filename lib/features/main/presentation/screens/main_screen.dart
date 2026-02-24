@@ -26,6 +26,7 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       backgroundColor: context.colors.backgroundColor,
       bottomNavigationBar: _bottomBar(context),
       body: _body(context),

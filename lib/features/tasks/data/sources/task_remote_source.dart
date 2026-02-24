@@ -19,6 +19,15 @@ abstract class ITaskRemoteSource {
 
   ApiResult<Stream<List<Task>>> getTasks(String userId);
   ApiResult<Stream<Task>> watchTask(String taskId);
+  Future<ApiResult<bool>> editTask({
+    required String taskId,
+    String? title,
+    String? description,
+    DateTime? dueDate,
+    int? priority,
+    String? categoryName,
+    String? categoryIcon,
+  });
 }
 
 class TaskRemoteSource implements ITaskRemoteSource {
@@ -88,6 +97,39 @@ class TaskRemoteSource implements ITaskRemoteSource {
     } on FirebaseAuthException catch (e) {
       return ApiResult.failure(
         error: ApiErrorResponse(message: e.message ?? 'Failed watch task'),
+      );
+    } catch (e) {
+      AppLogger.e(e.toString());
+      return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<ApiResult<bool>> editTask({
+    required String taskId,
+    String? title,
+    String? description,
+    DateTime? dueDate,
+    int? priority,
+    String? categoryName,
+    String? categoryIcon,
+  }) async {
+    try {
+      AppLogger.i('Attempt update task for taskId: $taskId');
+      await firestoreService.editTask(
+        taskId: taskId,
+        title: title,
+        description: description,
+        dueDate: dueDate,
+        priority: priority,
+        categoryName: categoryName,
+        categoryIcon: categoryIcon,
+      );
+      AppLogger.i('Task update successfully ');
+      return ApiResult.success(data: true);
+    } on FirebaseAuthException catch (e) {
+      return ApiResult.failure(
+        error: ApiErrorResponse(message: e.message ?? 'Failed update task'),
       );
     } catch (e) {
       AppLogger.e(e.toString());

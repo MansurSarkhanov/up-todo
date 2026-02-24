@@ -90,6 +90,38 @@ class FirestoreService {
     });
   }
 
+  Future<void> editTask({
+    required String taskId,
+    String? title,
+    String? description,
+    DateTime? dueDate,
+    int? priority,
+    String? categoryName,
+    String? categoryIcon,
+  }) async {
+    final Map<String, dynamic> updateData = {};
+
+    if (title != null) updateData['title'] = title;
+    if (description != null) updateData['description'] = description;
+    if (dueDate != null) updateData['dueDate'] = dueDate;
+    if (priority != null) updateData['priority'] = priority;
+    if (categoryName != null || categoryIcon != null) {
+      updateData['category'] = {};
+      if (categoryName != null) updateData['category']['name'] = categoryName;
+      if (categoryIcon != null) updateData['category']['icon'] = categoryIcon;
+    }
+    print('update title: $title');
+    print('update description: $description');
+    print('update dueDate: $dueDate');
+    print('update priority: $priority');
+    print('update categoryName: $categoryName');
+    print('update categoryIcon: $categoryIcon');
+
+    if (updateData.isNotEmpty) {
+      await _todoRef.doc(taskId).update(updateData);
+    }
+  }
+
   Future<void> updateTodo({
     required String docId,
     required bool isCompleted,

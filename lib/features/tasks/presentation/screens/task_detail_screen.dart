@@ -61,9 +61,13 @@ class TaskDetailScreen extends StatelessWidget {
                       onPressed: () {
                         showDialog(
                           context: context,
-                          builder: (context) => TaskEditDialog(
-                            title: task.title,
-                            description: task.description,
+                          builder: (_) => BlocProvider.value(
+                            value: context.read<TaskBloc>(),
+                            child: TaskEditDialog(
+                              taskId: task.id,
+                              title: task.title,
+                              description: task.description,
+                            ),
                           ),
                         );
                       },
@@ -80,25 +84,32 @@ class TaskDetailScreen extends StatelessWidget {
                 32.verticalSpace,
                 TaskDetailCard(
                   icon: AppIconPath.timer,
-                  title: 'Task Create Date',
+                  title: 'Task Create Date :',
                   value: formattedCreate,
                 ),
                 TaskDetailCard(
                   icon: AppIconPath.timer,
-                  title: 'Task Due Time',
+                  title: 'Task Due Time :',
                   value: formattedDue,
                 ),
                 TaskDetailCard(
                   icon: AppIconPath.tag,
-                  title: 'Task Category',
+                  title: 'Task Category :',
                   value: task.category.name,
                   color: color,
                   categoryIcon: task.category.icon,
                 ),
                 TaskDetailCard(
                   icon: AppIconPath.flag,
-                  title: 'Task Priority',
+                  title: 'Task Priority :',
                   value: task.priority.toString(),
+                ),
+                TaskDetailCard(
+                  icon: AppIconPath.trash,
+                  title: 'Delete Task',
+                  onPressed: () {
+                    context.pop();
+                  },
                 ),
               ],
             ),
@@ -114,54 +125,64 @@ class TaskDetailCard extends StatelessWidget {
     super.key,
     required this.icon,
     required this.title,
-    required this.value,
+    this.value,
     this.color,
     this.categoryIcon,
+    this.onPressed,
   });
   final String icon;
   final String title;
-  final String value;
+  final String? value;
   final Color? color;
   final String? categoryIcon;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SvgPicture.asset(icon),
-          8.horizontalSpace,
-          Text('$title :', style: context.typography.body1Regular),
-          Spacer(),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4.r),
-              color: color ?? context.colors.secondary,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8,
-              ),
-              child: Row(
-                children: [
-                  if (categoryIcon != null)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: SvgPicture.asset(
-                        categoryIcon!,
-                        width: 22,
-                        height: 22,
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(icon),
+            8.horizontalSpace,
+            Text(title, style: context.typography.body1Regular),
+            if (value != null) ...[
+              Spacer(),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4.r),
+                  color: color ?? context.colors.secondary,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8,
+                  ),
+                  child: Row(
+                    children: [
+                      if (categoryIcon != null)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: SvgPicture.asset(
+                            categoryIcon!,
+                            width: 22,
+                            height: 22,
+                          ),
+                        ),
+                      Text(
+                        value.toString(),
+                        style: context.typography.body1Regular,
                       ),
-                    ),
-                  Text(value, style: context.typography.body1Regular),
-                ],
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
-        ],
+            ],
+          ],
+        ),
       ),
     );
   }
