@@ -46,6 +46,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: elevation,
       systemOverlayStyle: overlayStyle,
       leadingWidth: leadingWidth ?? 74,
+      centerTitle: true,
       flexibleSpace: flexibleSpace,
       leading: Padding(
         padding: EdgeInsets.only(left: 16.w),

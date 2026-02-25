@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cupertino_native_better/cupertino_native_better.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,10 +59,15 @@ class HomeView extends StatelessWidget {
 
   CustomAppBar _appBar(BuildContext context) {
     return CustomAppBar(
-      leading: CNButton.icon(
-        icon: CNSymbol('line.3.horizontal.decrease', size: 16),
-        onPressed: () => {},
-      ),
+      leading: Platform.isIOS
+          ? CNButton.icon(
+              icon: CNSymbol('line.3.horizontal.decrease', size: 16),
+              onPressed: () => {},
+            )
+          : IconButton(
+              onPressed: () {},
+              icon: SvgPicture.asset('assets/icons/sort.svg'),
+            ),
       title: Text('Index', style: context.typography.h5Medium),
     );
   }
