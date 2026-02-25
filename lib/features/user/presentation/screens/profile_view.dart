@@ -44,12 +44,13 @@ class ProfileView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ProfileImage(photoUrl: state.user.photoUrl),
-                8.verticalSpace,
-                if (state.user.username != null)
+                12.verticalSpace,
+                if (!state.user.username.isNullOrEmpty) ...[
                   Text(
                     state.user.username!,
                     style: context.typography.h6Regular,
                   ),
+                ],
                 ShaderMask(
                   shaderCallback: (bounds) {
                     return const LinearGradient(

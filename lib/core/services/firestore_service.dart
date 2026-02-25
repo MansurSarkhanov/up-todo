@@ -9,6 +9,10 @@ class FirestoreService {
   CollectionReference<Map<String, dynamic>> get _todoRef =>
       _firestore.collection('todos');
   CollectionReference get _usersRef => _firestore.collection('users');
+
+  CollectionReference get _focusSessions =>
+      _firestore.collection('focus_sessions');
+
   Future<void> createUser({
     required String uid,
     required String email,
@@ -24,6 +28,7 @@ class FirestoreService {
       'lastSeen': FieldValue.serverTimestamp(),
       'activeCount': 0,
       'completedCount': 0,
+      'totalFocusSeconds': 0,
     });
   }
 
@@ -148,5 +153,27 @@ class FirestoreService {
         'activeCount': FieldValue.increment(-1),
       });
     }
+  }
+
+  Future<void> saveFocusSession({
+    required String userId,
+    required int durationSeconds,
+    required int targetSeconds,
+  }) async {
+    final now = DateTime.now();
+    final dateKey =
+        "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+
+    await _focusSessions.add({
+      'userId': userId,
+      'durationSeconds': durationSeconds,
+      'targetSeconds': targetSeconds,
+      'dateKey': dateKey,
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+
+    await _usersRef.doc(userId).update({
+      'totalFocusSeconds': FieldValue.increment(durationSeconds),
+    });
   }
 }
