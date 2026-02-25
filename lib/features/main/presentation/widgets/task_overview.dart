@@ -25,7 +25,7 @@ class TaskOverview extends StatelessWidget {
               padding: EdgeInsetsGeometry.symmetric(vertical: 16),
               child: Center(
                 child: Text(
-                  '$doneTaskCount Task left',
+                  '$leftTaskCount Task left',
                   style: context.typography.body1Regular,
                 ),
               ),
@@ -43,7 +43,7 @@ class TaskOverview extends StatelessWidget {
               padding: EdgeInsetsGeometry.symmetric(vertical: 16),
               child: Center(
                 child: Text(
-                  '$leftTaskCount Task done',
+                  '$doneTaskCount Task done',
                   style: context.typography.body1Regular,
                 ),
               ),

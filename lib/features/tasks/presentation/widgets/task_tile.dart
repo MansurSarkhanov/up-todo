@@ -19,12 +19,38 @@ class TaskTile extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Slidable(
         key: ValueKey(task.id),
+        startActionPane: ActionPane(
+          extentRatio: 0.25,
+          dismissible: DismissiblePane(
+            onDismissed: () => context.read<TaskBloc>().add(
+              ComplateTaskRequested(
+                taskId: task.id,
+                userId: task.userId,
+                isDone: true,
+              ),
+            ),
+          ),
+          motion: const DrawerMotion(),
+          children: [
+            CustomSlidableAction(
+              autoClose: true,
+              onPressed: (context) {},
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+
+              borderRadius: BorderRadius.circular(8.r),
+              child: const Icon(Icons.done, color: Colors.white),
+            ),
+          ],
+        ),
         endActionPane: ActionPane(
           extentRatio: 0.25,
           motion: const DrawerMotion(),
           children: [
             SlidableAction(
-              onPressed: (context) {},
+              onPressed: (context) => context.read<TaskBloc>().add(
+                DeleteTaskRequested(taskId: task.id, userId: task.userId),
+              ),
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
               icon: Icons.delete,

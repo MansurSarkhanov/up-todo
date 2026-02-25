@@ -35,8 +35,14 @@ class TaskRepositoryImpl implements ITaskRepository {
   }
 
   @override
-  Either<Stream<List<Task>>, String> getTasks(String userId) {
-    final response = remoteSource.getTasks(userId);
+  Either<Stream<List<Task>>, String> getTasks({
+    required String userId,
+    bool? isCompleted,
+  }) {
+    final response = remoteSource.getTasks(
+      userId: userId,
+      isCompleted: isCompleted,
+    );
     if (response.isSuccess) {
       return Left(response.data!);
     } else {
@@ -72,6 +78,38 @@ class TaskRepositoryImpl implements ITaskRepository {
       priority: priority,
       categoryName: categoryName,
       categoryIcon: categoryIcon,
+    );
+    if (response.isSuccess) {
+      return Left(response.data!);
+    } else {
+      return Right(response.error?.message ?? 'Unknown error');
+    }
+  }
+
+  @override
+  Future<Either<bool, String>> deleteTask({
+    required String taskId,
+    required String userId,
+  }) async {
+    final response = await remoteSource.deleteTask(
+      taskId: taskId,
+      userId: userId,
+    );
+    if (response.isSuccess) {
+      return Left(response.data!);
+    } else {
+      return Right(response.error?.message ?? 'Unknown error');
+    }
+  }
+
+  @override
+  Future<Either<bool, String>> complatedTask({
+    required String taskId,
+    required bool isDone,
+  }) async {
+    final response = await remoteSource.complatedTask(
+      taskId: taskId,
+      isDone: isDone,
     );
     if (response.isSuccess) {
       return Left(response.data!);

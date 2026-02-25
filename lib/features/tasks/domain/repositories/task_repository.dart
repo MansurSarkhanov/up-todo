@@ -12,7 +12,10 @@ abstract class ITaskRepository {
     required String categoryName,
     required String categoryIcon,
   });
-  Either<Stream<List<Task>>, String> getTasks(String userId);
+  Either<Stream<List<Task>>, String> getTasks({
+    required String userId,
+    bool? isCompleted,
+  });
   Either<Stream<Task>, String> watchTask(String taskId);
   Future<Either<bool, String>> editTask({
     required String taskId,
@@ -22,5 +25,14 @@ abstract class ITaskRepository {
     int? priority,
     String? categoryName,
     String? categoryIcon,
+  });
+
+  Future<Either<bool, String>> deleteTask({
+    required String taskId,
+    required String userId,
+  });
+  Future<Either<bool, String>> complatedTask({
+    required String taskId,
+    required bool isDone,
   });
 }

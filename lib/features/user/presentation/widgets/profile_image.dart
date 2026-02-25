@@ -37,18 +37,22 @@ class ProfileImage extends StatelessWidget {
               ),
             );
           },
-          child: photoUrl != null
-              ? ClipOval(
+          child: photoUrl.isNullOrEmpty
+              ? const Icon(Icons.person_rounded, size: 40)
+              : ClipOval(
                   child: Image.network(
                     photoUrl!,
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: double.infinity,
                   ),
-                )
-              : const Icon(Icons.person_rounded, size: 40),
+                ),
         ),
       ),
     );
   }
+}
+
+extension NullOrEmptyExtension on String? {
+  bool get isNullOrEmpty => this == null || (this?.isEmpty ?? false);
 }

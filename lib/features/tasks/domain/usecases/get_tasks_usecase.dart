@@ -8,8 +8,14 @@ class GetTasksUsecase {
 
   GetTasksUsecase(this.repository);
 
-  Either<Stream<List<Task>>, String> call({required String userId}) {
-    final result = repository.getTasks(userId);
+  Either<Stream<List<Task>>, String> call({
+    required String userId,
+    bool? isCompleted,
+  }) {
+    final result = repository.getTasks(
+      userId: userId,
+      isCompleted: isCompleted,
+    );
     return result;
   }
 }

@@ -67,7 +67,10 @@ class ProfileView extends StatelessWidget {
                   ),
                 ),
                 16.verticalSpace,
-                TaskOverview(leftTaskCount: 10, doneTaskCount: 5),
+                TaskOverview(
+                  leftTaskCount: state.user.activeCount,
+                  doneTaskCount: state.user.completedCount,
+                ),
                 32.verticalSpace,
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

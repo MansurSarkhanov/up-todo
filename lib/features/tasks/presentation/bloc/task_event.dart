@@ -8,7 +8,9 @@ abstract class TaskEvent extends Equatable {
 
 class LoadTasks extends TaskEvent {
   final String userId;
-  const LoadTasks(this.userId);
+  final bool? isCompleted;
+
+  const LoadTasks({required this.userId, this.isCompleted});
 }
 
 class AddTaskRequested extends TaskEvent {
@@ -41,7 +43,22 @@ class AddTaskRequested extends TaskEvent {
   ];
 }
 
-class DeleteTaskRequested extends TaskEvent {}
+class DeleteTaskRequested extends TaskEvent {
+  final String taskId;
+  final String userId;
+  const DeleteTaskRequested({required this.taskId, required this.userId});
+}
+
+class ComplateTaskRequested extends TaskEvent {
+  final String taskId;
+  final bool isDone;
+  final String userId;
+  const ComplateTaskRequested({
+    required this.taskId,
+    required this.isDone,
+    required this.userId,
+  });
+}
 
 class ToggleTaskRequested extends TaskEvent {}
 

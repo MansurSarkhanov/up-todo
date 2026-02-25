@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:up_todo/shared/components/custom_button.dart';
 
 import '../../../../core/utils/extensions/context_extension.dart';
 import '../../../../shared/components/custom_appbar.dart';
@@ -24,7 +26,6 @@ class _FocusViewState extends State<FocusView>
   @override
   void initState() {
     super.initState();
-
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(minutes: 25),
@@ -67,120 +68,98 @@ class _FocusViewState extends State<FocusView>
     return Scaffold(
       appBar: _appBar(context),
       backgroundColor: context.colors.backgroundColor,
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Center(
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    SizedBox(
-                      height: 220,
-                      width: 220,
-                      child: AnimatedBuilder(
-                        animation: _controller,
-                        builder: (_, _) {
-                          return CircularProgressIndicator(
-                            value: _controller.value,
-                            strokeWidth: 6,
-                            backgroundColor: Colors.grey.shade800,
-                            valueColor: const AlwaysStoppedAnimation(
-                              Colors.purpleAccent,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    Text(
-                      formattedTime,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 40,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
+        child: Column(
+          children: [
+            20.verticalSpace,
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  height: 220,
+                  width: 220,
+                  child: AnimatedBuilder(
+                    animation: _controller,
+                    builder: (_, _) {
+                      return CircularProgressIndicator(
+                        value: _controller.value,
+                        strokeWidth: 12,
+                        backgroundColor: Colors.grey.shade800,
+                        valueColor: const AlwaysStoppedAnimation(
+                          Colors.purpleAccent,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Text(
+                  formattedTime,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 40,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+              ],
+            ),
+
+            30.verticalSpace,
+            Center(
+              child: Text(
+                "While your focus mode is on, all of your notifications will be off",
+                textAlign: TextAlign.center,
+                style: context.typography.body2Regular,
+              ),
+            ),
+            20.verticalSpace,
+            Center(child: CustomButton(text: 'Start Focus')),
+            40.verticalSpace,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Overview", style: context.typography.body1Regular),
+                Text("This Week", style: context.typography.body2Regular),
+              ],
+            ),
+            20.verticalSpace,
+            SizedBox(
+              height: 200,
+              child: BarChart(
+                BarChartData(
+                  backgroundColor: Colors.transparent,
+                  gridData: FlGridData(show: false),
+                  borderData: FlBorderData(show: false),
+                  titlesData: FlTitlesData(show: false),
+                  barGroups: [
+                    _bar(3),
+                    _bar(4),
+                    _bar(5),
+                    _bar(3),
+                    _bar(4.5),
+                    _bar(4),
+                    _bar(2),
                   ],
                 ),
               ),
+            ),
 
-              const SizedBox(height: 30),
+            const SizedBox(height: 30),
 
-              const Center(
-                child: Text(
-                  "While your focus mode is on, all of your notifications will be off",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ),
+            const Text(
+              "Applications",
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
 
-              const SizedBox(height: 20),
+            const SizedBox(height: 20),
 
-              Center(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purpleAccent,
-                    minimumSize: const Size(180, 45),
-                  ),
-                  onPressed: _isRunning ? _stopFocus : _startFocus,
-                  child: Text(_isRunning ? "Stop Focusing" : "Start Focusing"),
-                ),
-              ),
-
-              const SizedBox(height: 40),
-
-              /// OVERVIEW
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    "Overview",
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                  Text("This Week", style: TextStyle(color: Colors.grey)),
-                ],
-              ),
-
-              const SizedBox(height: 20),
-
-              SizedBox(
-                height: 200,
-                child: BarChart(
-                  BarChartData(
-                    backgroundColor: Colors.transparent,
-                    gridData: FlGridData(show: false),
-                    borderData: FlBorderData(show: false),
-                    titlesData: FlTitlesData(show: false),
-                    barGroups: [
-                      _bar(3),
-                      _bar(4),
-                      _bar(5),
-                      _bar(3),
-                      _bar(4.5),
-                      _bar(4),
-                      _bar(2),
-                    ],
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 30),
-
-              const Text(
-                "Applications",
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              ),
-
-              const SizedBox(height: 20),
-
-              _appTile("Instagram", "1h spent today"),
-              _appTile("Twitter", "3h spent today"),
-              _appTile("Facebook", "2h spent today"),
-              _appTile("Telegram", "30m spent today"),
-              _appTile("Gmail", "45m spent today"),
-            ],
-          ),
+            _appTile("Instagram", "1h spent today"),
+            _appTile("Twitter", "3h spent today"),
+            _appTile("Facebook", "2h spent today"),
+            _appTile("Telegram", "30m spent today"),
+            _appTile("Gmail", "45m spent today"),
+            80.verticalSpace,
+          ],
         ),
       ),
     );
@@ -201,7 +180,7 @@ class _FocusViewState extends State<FocusView>
           toY: value,
           width: 18,
           borderRadius: BorderRadius.circular(4),
-          color: Colors.purpleAccent,
+          color: context.colors.primary,
         ),
       ],
     );
@@ -217,8 +196,8 @@ class _FocusViewState extends State<FocusView>
       ),
       child: Row(
         children: [
-          const CircleAvatar(
-            backgroundColor: Colors.purpleAccent,
+          CircleAvatar(
+            backgroundColor: context.colors.primary,
             child: Icon(Icons.apps, color: Colors.white),
           ),
           const SizedBox(width: 12),

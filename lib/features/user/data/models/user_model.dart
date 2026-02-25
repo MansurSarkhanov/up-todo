@@ -9,6 +9,8 @@ class UserModel extends Equatable {
   final bool isOnline;
   final DateTime createdAt;
   final DateTime lastSeen;
+  final int activeCount;
+  final int completedCount;
 
   const UserModel({
     required this.id,
@@ -18,6 +20,8 @@ class UserModel extends Equatable {
     required this.isOnline,
     required this.createdAt,
     required this.lastSeen,
+    required this.activeCount,
+    required this.completedCount,
   });
 
   /// Firestore snapshot-dan model yaratmaq
@@ -34,19 +38,9 @@ class UserModel extends Equatable {
       lastSeen: map['lastSeen'] != null
           ? (map['lastSeen'] as Timestamp).toDate()
           : DateTime.now(),
+      activeCount: map['activeCount'] ?? 0,
+      completedCount: map['completedCount'] ?? 0,
     );
-  }
-
-  /// Firestore-a göndərmək üçün map
-  Map<String, dynamic> toMap() {
-    return {
-      'username': username,
-      'email': email,
-      'photoUrl': photoUrl,
-      'isOnline': isOnline,
-      'createdAt': createdAt,
-      'lastSeen': lastSeen,
-    };
   }
 
   /// copyWith metodu
@@ -57,6 +51,8 @@ class UserModel extends Equatable {
     bool? isOnline,
     DateTime? createdAt,
     DateTime? lastSeen,
+    int? activeCount,
+    int? completedCount,
   }) {
     return UserModel(
       id: id,
@@ -66,6 +62,8 @@ class UserModel extends Equatable {
       isOnline: isOnline ?? this.isOnline,
       createdAt: createdAt ?? this.createdAt,
       lastSeen: lastSeen ?? this.lastSeen,
+      activeCount: activeCount ?? this.activeCount,
+      completedCount: completedCount ?? this.completedCount,
     );
   }
 
@@ -78,5 +76,7 @@ class UserModel extends Equatable {
     isOnline,
     createdAt,
     lastSeen,
+    activeCount,
+    completedCount,
   ];
 }

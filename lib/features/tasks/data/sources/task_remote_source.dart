@@ -17,7 +17,10 @@ abstract class ITaskRemoteSource {
     required String categoryIcon,
   });
 
-  ApiResult<Stream<List<Task>>> getTasks(String userId);
+  ApiResult<Stream<List<Task>>> getTasks({
+    required String userId,
+    bool? isCompleted,
+  });
   ApiResult<Stream<Task>> watchTask(String taskId);
   Future<ApiResult<bool>> editTask({
     required String taskId,
@@ -27,6 +30,14 @@ abstract class ITaskRemoteSource {
     int? priority,
     String? categoryName,
     String? categoryIcon,
+  });
+  Future<ApiResult<bool>> deleteTask({
+    required String taskId,
+    required String userId,
+  });
+  Future<ApiResult<bool>> complatedTask({
+    required String taskId,
+    required bool isDone,
   });
 }
 
@@ -71,10 +82,16 @@ class TaskRemoteSource implements ITaskRemoteSource {
   }
 
   @override
-  ApiResult<Stream<List<Task>>> getTasks(String userId) {
+  ApiResult<Stream<List<Task>>> getTasks({
+    required String userId,
+    bool? isCompleted,
+  }) {
     try {
       AppLogger.i('Attempt get tasks for userId: $userId');
-      final result = firestoreService.getTasksStream(userId);
+      final result = firestoreService.getTasksStream(
+        userId: userId,
+        isCompleted: isCompleted,
+      );
       AppLogger.i('Task get successfully with result: $result');
       return ApiResult.success(data: result);
     } on FirebaseAuthException catch (e) {
@@ -130,6 +147,46 @@ class TaskRemoteSource implements ITaskRemoteSource {
     } on FirebaseAuthException catch (e) {
       return ApiResult.failure(
         error: ApiErrorResponse(message: e.message ?? 'Failed update task'),
+      );
+    } catch (e) {
+      AppLogger.e(e.toString());
+      return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<ApiResult<bool>> deleteTask({
+    required String taskId,
+    required String userId,
+  }) async {
+    try {
+      AppLogger.i('Attempt delete task for taskId: $taskId');
+      await firestoreService.deleteTodo(docId: taskId, userId: userId);
+      AppLogger.i('Task delete successfully ');
+      return ApiResult.success(data: true);
+    } on FirebaseAuthException catch (e) {
+      return ApiResult.failure(
+        error: ApiErrorResponse(message: e.message ?? 'Failed delete task'),
+      );
+    } catch (e) {
+      AppLogger.e(e.toString());
+      return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<ApiResult<bool>> complatedTask({
+    required String taskId,
+    required bool isDone,
+  }) async {
+    try {
+      AppLogger.i('Attempt complate task for taskId: $taskId');
+      await firestoreService.updateTodo(docId: taskId, isCompleted: isDone);
+      AppLogger.i('Task complate successfully ');
+      return ApiResult.success(data: true);
+    } on FirebaseAuthException catch (e) {
+      return ApiResult.failure(
+        error: ApiErrorResponse(message: e.message ?? 'Failed complate task'),
       );
     } catch (e) {
       AppLogger.e(e.toString());

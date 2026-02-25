@@ -6,7 +6,8 @@ import '../../features/user/data/models/user_model.dart';
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  CollectionReference get _todoRef => _firestore.collection('todos');
+  CollectionReference<Map<String, dynamic>> get _todoRef =>
+      _firestore.collection('todos');
   CollectionReference get _usersRef => _firestore.collection('users');
   Future<void> createUser({
     required String uid,
@@ -21,6 +22,8 @@ class FirestoreService {
       'isOnline': true,
       'createdAt': FieldValue.serverTimestamp(),
       'lastSeen': FieldValue.serverTimestamp(),
+      'activeCount': 0,
+      'completedCount': 0,
     });
   }
 
@@ -61,23 +64,30 @@ class FirestoreService {
       'priority': priority,
       'category': {'name': categoryName, 'icon': categoryIcon},
     });
+    await _usersRef.doc(userId).update({
+      'activeCount': FieldValue.increment(1),
+    });
     return result;
   }
 
-  Stream<List<Task>> getTasksStream(String userId) {
-    return _todoRef
-        .where('userId', isEqualTo: userId)
-        .snapshots()
-        .map(
-          (snapshot) => snapshot.docs
-              .map((doc) {
-                final data = doc.data();
-                if (data == null) return null;
-                return Task.fromJson(data as Map<String, dynamic>, doc.id);
-              })
-              .whereType<Task>()
-              .toList(),
-        );
+  Stream<List<Task>> getTasksStream({
+    required String userId,
+    bool? isCompleted,
+  }) {
+    Query query = _todoRef.where('userId', isEqualTo: userId);
+    if (isCompleted != null) {
+      query = query.where('isCompleted', isEqualTo: isCompleted);
+    }
+    return query.snapshots().map(
+      (snapshot) => snapshot.docs
+          .map((doc) {
+            final data = doc.data();
+            if (data == null) return null;
+            return Task.fromJson(data as Map<String, dynamic>, doc.id);
+          })
+          .whereType<Task>()
+          .toList(),
+    );
   }
 
   Stream<Task> watchTask(String taskId) {
@@ -86,7 +96,7 @@ class FirestoreService {
         throw Exception('Task not found');
       }
       final data = snapshot.data()!;
-      return Task.fromJson(data as Map<String, dynamic>, snapshot.id);
+      return Task.fromJson(data, snapshot.id);
     });
   }
 
@@ -110,13 +120,6 @@ class FirestoreService {
       if (categoryName != null) updateData['category']['name'] = categoryName;
       if (categoryIcon != null) updateData['category']['icon'] = categoryIcon;
     }
-    print('update title: $title');
-    print('update description: $description');
-    print('update dueDate: $dueDate');
-    print('update priority: $priority');
-    print('update categoryName: $categoryName');
-    print('update categoryIcon: $categoryIcon');
-
     if (updateData.isNotEmpty) {
       await _todoRef.doc(taskId).update(updateData);
     }
@@ -129,7 +132,21 @@ class FirestoreService {
     await _todoRef.doc(docId).update({'isCompleted': isCompleted});
   }
 
-  Future<void> deleteTodo(String docId) async {
+  Future<void> deleteTodo({
+    required String docId,
+    required String userId,
+  }) async {
+    final doc = await _todoRef.doc(docId).get();
+    final isComplated = doc.data()?['isCompleted'] ?? false;
     await _todoRef.doc(docId).delete();
+    if (isComplated) {
+      await _usersRef.doc(userId).update({
+        'completedCount': FieldValue.increment(-1),
+      });
+    } else {
+      await _usersRef.doc(userId).update({
+        'activeCount': FieldValue.increment(-1),
+      });
+    }
   }
 }

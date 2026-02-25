@@ -3,11 +3,13 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:up_todo/features/tasks/domain/usecases/delete_task_usecase.dart';
 import 'package:up_todo/features/tasks/domain/usecases/get_tasks_usecase.dart';
 import 'package:up_todo/features/tasks/domain/usecases/watch_task_usecase.dart';
 
 import '../../data/models/task_model.dart';
 import '../../domain/usecases/add_task_usecase.dart';
+import '../../domain/usecases/complate_task_usecase.dart';
 import '../../domain/usecases/edit_task_usecase.dart';
 import 'task_event.dart';
 import 'task_state.dart';
@@ -17,22 +19,31 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   final GetTasksUsecase getTasksUsecase;
   final WatchTaskUsecase watchTaskUsecase;
   final EditTaskUsecase editTaskUsecase;
+  final DeleteTaskUsecase deleteTaskUsecase;
+  final ComplateTaskUsecase complateTaskUsecase;
 
   TaskBloc({
     required this.addTaskUsecase,
     required this.getTasksUsecase,
     required this.watchTaskUsecase,
     required this.editTaskUsecase,
+    required this.deleteTaskUsecase,
+    required this.complateTaskUsecase,
   }) : super(const TaskState()) {
     on<LoadTasks>(_onLoadTasks);
     on<AddTaskRequested>(_onAddTask);
     on<WatchTaskRequested>(_onWatchTask);
     on<EditTaskRequested>(_onEditTask);
+    on<DeleteTaskRequested>(_onDeleteTask);
+    on<ComplateTaskRequested>(_onComplateTask);
   }
   void _onLoadTasks(LoadTasks event, Emitter<TaskState> emit) async {
     emit(state.copyWith(status: TaskStatus.loading));
 
-    final response = getTasksUsecase(userId: event.userId);
+    final response = getTasksUsecase(
+      userId: event.userId,
+      isCompleted: event.isCompleted,
+    );
 
     return response.fold(
       (stream) async {
@@ -96,14 +107,9 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       categoryIcon: event.categoryIcon,
     );
 
-    result.fold(
-      (_) {
-        add(LoadTasks(event.userId));
-      },
-      (error) {
-        emit(state.copyWith(status: TaskStatus.failure, error: error));
-      },
-    );
+    result.fold((_) {}, (error) {
+      emit(state.copyWith(status: TaskStatus.failure, error: error));
+    });
   }
 
   Future<void> _onAddTask(
@@ -123,7 +129,40 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     );
 
     result.fold(
-      (_) => add(LoadTasks(event.userId)),
+      (_) {},
+      (error) => emit(state.copyWith(status: TaskStatus.failure)),
+    );
+  }
+
+  Future<void> _onDeleteTask(
+    DeleteTaskRequested event,
+    Emitter<TaskState> emit,
+  ) async {
+    emit(state.copyWith(status: TaskStatus.loading));
+
+    final result = await deleteTaskUsecase(
+      taskId: event.taskId,
+      userId: event.userId,
+    );
+    result.fold(
+      (_) {},
+      (error) => emit(state.copyWith(status: TaskStatus.failure)),
+    );
+  }
+
+  Future<void> _onComplateTask(
+    ComplateTaskRequested event,
+    Emitter<TaskState> emit,
+  ) async {
+    emit(state.copyWith(status: TaskStatus.loading));
+
+    final result = await complateTaskUsecase(
+      taskId: event.taskId,
+      isDone: event.isDone,
+    );
+
+    result.fold(
+      (_) {},
       (error) => emit(state.copyWith(status: TaskStatus.failure)),
     );
   }

@@ -75,7 +75,8 @@ final GoRouter appRouter = GoRouter(
           BlocProvider(
             create: (context) {
               final userId = context.read<AuthBloc>().state.user!.uid;
-              return getIt<TaskBloc>()..add(LoadTasks(userId));
+              return getIt<TaskBloc>()
+                ..add(LoadTasks(userId: userId, isCompleted: false));
             },
           ),
           BlocProvider(

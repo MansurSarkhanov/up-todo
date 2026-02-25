@@ -7,6 +7,8 @@ import 'package:up_todo/features/main/presentation/bloc/main_bloc.dart';
 import 'package:up_todo/features/tasks/data/sources/task_remote_source.dart';
 import 'package:up_todo/features/tasks/domain/repositories/task_repository.dart';
 import 'package:up_todo/features/tasks/domain/usecases/add_task_usecase.dart';
+import 'package:up_todo/features/tasks/domain/usecases/complate_task_usecase.dart';
+import 'package:up_todo/features/tasks/domain/usecases/delete_task_usecase.dart';
 import 'package:up_todo/features/tasks/domain/usecases/edit_task_usecase.dart';
 import 'package:up_todo/features/tasks/domain/usecases/get_tasks_usecase.dart';
 import 'package:up_todo/features/tasks/presentation/bloc/task_bloc.dart';
@@ -43,6 +45,8 @@ Future<void> init() async {
   getIt.registerFactory(() => MainBloc());
   getIt.registerFactory(
     () => TaskBloc(
+      complateTaskUsecase: getIt<ComplateTaskUsecase>(),
+      deleteTaskUsecase: getIt<DeleteTaskUsecase>(),
       editTaskUsecase: getIt<EditTaskUsecase>(),
       watchTaskUsecase: getIt<WatchTaskUsecase>(),
       addTaskUsecase: getIt<AddTaskUsecase>(),
@@ -63,6 +67,13 @@ Future<void> init() async {
   getIt.registerLazySingleton(() => GetTasksUsecase(getIt<ITaskRepository>()));
   getIt.registerLazySingleton(() => WatchTaskUsecase(getIt<ITaskRepository>()));
   getIt.registerLazySingleton(() => EditTaskUsecase(getIt<ITaskRepository>()));
+  getIt.registerLazySingleton(
+    () => ComplateTaskUsecase(getIt<ITaskRepository>()),
+  );
+
+  getIt.registerLazySingleton(
+    () => DeleteTaskUsecase(getIt<ITaskRepository>()),
+  );
 
   getIt.registerLazySingleton(() => UserUsecase(getIt<IUserRepository>()));
   getIt.registerLazySingleton(
