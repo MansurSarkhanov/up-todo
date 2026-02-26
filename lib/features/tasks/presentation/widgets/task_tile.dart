@@ -7,6 +7,9 @@ class TaskTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formattedCreate = DateHelper.instance.formatToDayMonthYear(
+      task.createDate,
+    );
     final category = categories.firstWhere(
       (c) => c.name.toLowerCase() == task.category.name.toLowerCase(),
       orElse: () => CategoryModel(
@@ -81,7 +84,7 @@ class TaskTile extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Today At 16:45',
+                        formattedCreate,
                         style: context.typography.body2Regular.copyWith(
                           color: Color(0xFFAFAFAF),
                         ),

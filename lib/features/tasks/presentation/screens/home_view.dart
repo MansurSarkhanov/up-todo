@@ -13,6 +13,7 @@ import 'package:up_todo/core/utils/extensions/context_extension.dart';
 import 'package:up_todo/features/tasks/data/models/task_model.dart';
 import 'package:up_todo/features/tasks/presentation/bloc/task_event.dart';
 
+import '../../../../core/helpers/date_helper.dart';
 import '../../../../core/models/category_model.dart';
 import '../../../../shared/components/custom_appbar.dart';
 import '../../../../shared/dialogs/category_dialog.dart';
@@ -32,6 +33,7 @@ class HomeView extends StatelessWidget {
       backgroundColor: context.colors.backgroundColor,
       body: BlocBuilder<TaskBloc, TaskState>(
         builder: (context, state) {
+          print(state.status);
           switch (state.status) {
             case TaskStatus.initial:
             case TaskStatus.loading:

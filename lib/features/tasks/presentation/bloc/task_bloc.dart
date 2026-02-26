@@ -39,7 +39,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   }
   void _onLoadTasks(LoadTasks event, Emitter<TaskState> emit) async {
     emit(state.copyWith(status: TaskStatus.loading));
-
     final response = getTasksUsecase(
       userId: event.userId,
       isCompleted: event.isCompleted,
@@ -68,10 +67,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     WatchTaskRequested event,
     Emitter<TaskState> emit,
   ) async {
-    emit(state.copyWith(status: TaskStatus.loading));
-
     final response = watchTaskUsecase(taskId: event.taskId);
-
     return response.fold(
       (stream) async {
         await emit.forEach<Task>(
@@ -95,8 +91,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     EditTaskRequested event,
     Emitter<TaskState> emit,
   ) async {
-    emit(state.copyWith(status: TaskStatus.loading));
-
     final result = await editTaskUsecase(
       taskId: event.taskId,
       title: event.title,
@@ -106,7 +100,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       categoryName: event.categoryName,
       categoryIcon: event.categoryIcon,
     );
-
     result.fold((_) {}, (error) {
       emit(state.copyWith(status: TaskStatus.failure, error: error));
     });
@@ -116,8 +109,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     AddTaskRequested event,
     Emitter<TaskState> emit,
   ) async {
-    emit(state.copyWith(status: TaskStatus.loading));
-
     final result = await addTaskUsecase(
       title: event.title,
       userId: event.userId,
@@ -138,8 +129,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     DeleteTaskRequested event,
     Emitter<TaskState> emit,
   ) async {
-    emit(state.copyWith(status: TaskStatus.loading));
-
     final result = await deleteTaskUsecase(
       taskId: event.taskId,
       userId: event.userId,
@@ -154,13 +143,10 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     ComplateTaskRequested event,
     Emitter<TaskState> emit,
   ) async {
-    emit(state.copyWith(status: TaskStatus.loading));
-
     final result = await complateTaskUsecase(
       taskId: event.taskId,
       isDone: event.isDone,
     );
-
     result.fold(
       (_) {},
       (error) => emit(state.copyWith(status: TaskStatus.failure)),
