@@ -3,6 +3,10 @@ import 'package:up_todo/core/helpers/cache_manager.dart';
 import 'package:up_todo/core/services/cloudinary_service.dart';
 import 'package:up_todo/core/services/firebase_auth_service.dart';
 import 'package:up_todo/features/auth/domain/repositories/auth_repository.dart';
+import 'package:up_todo/features/focus/data/repositories/focus_repository_impl.dart';
+import 'package:up_todo/features/focus/domain/repositories/focus_repository.dart';
+import 'package:up_todo/features/focus/domain/usecases/save_focus_usecase.dart';
+import 'package:up_todo/features/focus/presentation/bloc/focus_bloc.dart';
 import 'package:up_todo/features/main/presentation/bloc/main_bloc.dart';
 import 'package:up_todo/features/tasks/data/sources/task_remote_source.dart';
 import 'package:up_todo/features/tasks/domain/repositories/task_repository.dart';
@@ -27,6 +31,7 @@ import 'features/auth/domain/usecases/login_usecase.dart';
 import 'features/auth/domain/usecases/logout_usecase.dart';
 import 'features/auth/domain/usecases/register_usecase.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/focus/data/sources/focus_remote_source.dart';
 import 'features/tasks/data/repositories/task_repository_impl.dart';
 import 'features/tasks/domain/usecases/watch_task_usecase.dart';
 
@@ -59,6 +64,9 @@ Future<void> init() async {
       updateUserUsecase: getIt<UpdateUserUsecase>(),
     ),
   );
+  getIt.registerFactory(
+    () => FocusBloc(saveFocusUsecase: getIt<SaveFocusUsecase>()),
+  );
   // Usecases
   getIt.registerLazySingleton(() => LoginUseCase(getIt<IAuthRepository>()));
   getIt.registerLazySingleton(() => RegisterUsecase(getIt<IAuthRepository>()));
@@ -80,6 +88,10 @@ Future<void> init() async {
     () => UpdateUserUsecase(getIt<IUserRepository>()),
   );
 
+  getIt.registerLazySingleton(
+    () => SaveFocusUsecase(getIt<IFocusRepository>()),
+  );
+
   // Repositories
   getIt.registerLazySingleton<IAuthRepository>(
     () => AuthRepositoryImpl(remoteDataSource: getIt<IAuthRemoteDataSource>()),
@@ -90,6 +102,10 @@ Future<void> init() async {
   getIt.registerLazySingleton<IUserRepository>(
     () => UserRepositoryImpl(getIt<IUserRemoteSource>()),
   );
+  getIt.registerLazySingleton<IFocusRepository>(
+    () => FocusRepositoryImpl(getIt<IFocusRemoteSource>()),
+  );
+
   // Data sources
   getIt.registerLazySingleton<IAuthRemoteDataSource>(
     () => AuthRemoteDataSource(
@@ -105,6 +121,9 @@ Future<void> init() async {
       firestoreService: getIt<FirestoreService>(),
       cloudinaryService: getIt<CloudinaryService>(),
     ),
+  );
+  getIt.registerLazySingleton<IFocusRemoteSource>(
+    () => FocusRemoteSource(firestoreService: getIt<FirestoreService>()),
   );
   //! External
   getIt.registerLazySingleton<FirebaseAuthService>(() => FirebaseAuthService());

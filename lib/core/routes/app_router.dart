@@ -5,6 +5,7 @@ import 'package:up_todo/core/routes/routes.dart';
 import 'package:up_todo/features/auth/presentation/screens/login_screen.dart';
 import 'package:up_todo/features/auth/presentation/screens/passcode_screen.dart';
 import 'package:up_todo/features/auth/presentation/screens/register_screen.dart';
+import 'package:up_todo/features/focus/presentation/bloc/focus_bloc.dart';
 import 'package:up_todo/features/main/presentation/screens/main_screen.dart';
 import 'package:up_todo/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:up_todo/features/onboarding/presentation/screens/splash_screen.dart';
@@ -84,6 +85,7 @@ final GoRouter appRouter = GoRouter(
                 getIt<UserBloc>()
                   ..add(LoadUser(context.read<AuthBloc>().state.user!.uid)),
           ),
+          BlocProvider(create: (context) => getIt<FocusBloc>()),
         ],
         child: MainScreen(),
       ),

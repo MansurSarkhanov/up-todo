@@ -33,7 +33,6 @@ class HomeView extends StatelessWidget {
       backgroundColor: context.colors.backgroundColor,
       body: BlocBuilder<TaskBloc, TaskState>(
         builder: (context, state) {
-          print(state.status);
           switch (state.status) {
             case TaskStatus.initial:
             case TaskStatus.loading:

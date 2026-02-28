@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:up_todo/core/helpers/app_helper.dart';
 import 'package:up_todo/core/utils/extensions/context_extension.dart';
-import 'package:up_todo/features/main/presentation/views/focus_view.dart';
+import 'package:up_todo/features/focus/presentation/screens/focus_view.dart';
 import 'package:up_todo/features/user/presentation/screens/profile_view.dart';
 
 import '../../../tasks/presentation/bloc/task_bloc.dart';
