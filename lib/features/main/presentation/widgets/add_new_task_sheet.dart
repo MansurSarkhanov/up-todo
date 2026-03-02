@@ -74,10 +74,12 @@ class _AddNewTaskSheetState extends State<AddNewTaskSheet> {
                 8.verticalSpace,
                 CustomTextfield(
                   textColor: Colors.white,
+                  minLines: 3,
                   hintTextColor: Color(0xFFAFAFAF),
                   fillColor: Colors.transparent,
                   controller: _descriptionController,
                   hintText: 'Task Description',
+                  maxLines: 8,
                   onChanged: (value) => _formKey.currentState!.validate(),
                   validator: (value) {
                     if (value == null || value.isEmpty) {

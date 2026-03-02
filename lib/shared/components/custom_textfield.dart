@@ -17,12 +17,15 @@ class CustomTextfield extends StatefulWidget {
     this.onChanged,
     this.textColor,
     this.enabledBorder,
+    this.maxLines,
+    this.minLines,
   });
   final bool? obscureText;
   final String? hintText;
   final Color? hintTextColor;
   final Color? textColor;
-
+  final int? maxLines;
+  final int? minLines;
   final TextEditingController controller;
   final Color? fillColor;
   final TextInputAction? textInputAction;
@@ -38,6 +41,8 @@ class _CustomTextfieldState extends State<CustomTextfield> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: widget.maxLines,
+      minLines: widget.minLines,
       textInputAction: widget.textInputAction ?? TextInputAction.done,
       controller: widget.controller,
       obscureText: widget.obscureText ?? false,
