@@ -4,8 +4,8 @@ import 'package:either_dart/either.dart';
 import 'package:up_todo/features/user/domain/repositories/user_repository.dart';
 
 class UpdateUserUsecase {
-  final IUserRepository repository;
   UpdateUserUsecase(this.repository);
+  final IUserRepository repository;
   Future<Either<bool, String>> call({
     required String uid,
     String? username,

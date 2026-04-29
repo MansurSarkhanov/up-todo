@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:up_todo/core/constants/icons.dart';
+import 'package:up_todo/core/utils/extensions/context_extension.dart';
 import 'package:up_todo/shared/animations/animated_button_effect.dart';
 import 'package:up_todo/shared/components/custom_button.dart';
 
-import '../../core/utils/extensions/context_extension.dart';
-
 class TaskPriorityDialog extends StatefulWidget {
-  final int? initialPriority;
-
   const TaskPriorityDialog({super.key, this.initialPriority});
+  final int? initialPriority;
 
   @override
   State<TaskPriorityDialog> createState() => _TaskPriorityDialogState();
@@ -35,7 +33,7 @@ class _TaskPriorityDialogState extends State<TaskPriorityDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Task Priority", style: context.typography.body1SemiBold),
+            Text('Task Priority', style: context.typography.body1SemiBold),
             12.verticalSpace,
             Divider(color: context.colors.strokeColor, height: 0),
             16.verticalSpace,
@@ -47,7 +45,6 @@ class _TaskPriorityDialogState extends State<TaskPriorityDialog> {
                 crossAxisCount: 4,
                 mainAxisSpacing: 16,
                 crossAxisSpacing: 16,
-                childAspectRatio: 1,
               ),
               itemBuilder: (context, index) {
                 final priority = index + 1;

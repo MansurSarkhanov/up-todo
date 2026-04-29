@@ -4,23 +4,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:up_todo/core/routes/routes.dart';
 import 'package:up_todo/core/utils/extensions/context_extension.dart';
+import 'package:up_todo/features/auth/presentation/bloc/passcode_bloc.dart';
+import 'package:up_todo/features/auth/presentation/bloc/passcode_event.dart';
+import 'package:up_todo/features/auth/presentation/bloc/passcode_state.dart';
 import 'package:up_todo/shared/animations/animated_button_effect.dart';
 import 'package:up_todo/shared/components/custom_appbar.dart';
-
-import '../bloc/passcode_bloc.dart';
-import '../bloc/passcode_event.dart';
-import '../bloc/passcode_state.dart';
 
 part '../widgets/passcode_keypad.dart';
 
 class PasscodeScreen extends StatelessWidget {
-  const PasscodeScreen({super.key, required this.mode});
+  const PasscodeScreen({required this.mode, super.key});
   final PasscodeMode mode;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(toolbarHeight: 0),
+      appBar: const CustomAppBar(toolbarHeight: 0),
       backgroundColor: context.colors.backgroundColor,
       body: BlocListener<PasscodeBloc, PasscodeState>(
         listener: (context, state) {
@@ -41,14 +40,14 @@ class PasscodeScreen extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              Spacer(),
+              const Spacer(),
               Container(
                 height: 70,
                 width: 70,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
-                    colors: [context.colors.primary, Color(0xFF6C63FF)],
+                    colors: [context.colors.primary, const Color(0xFF6C63FF)],
                   ),
                   boxShadow: [
                     BoxShadow(
@@ -62,15 +61,15 @@ class PasscodeScreen extends StatelessWidget {
               16.verticalSpace,
               Text(
                 mode == PasscodeMode.login
-                    ? "Enter Passcode"
-                    : "Set Your Passcode",
+                    ? 'Enter Passcode'
+                    : 'Set Your Passcode',
                 style: context.typography.h3SemiBold,
               ),
               8.verticalSpace,
               Text(
                 mode == PasscodeMode.login
-                    ? "Enter your 4-digit security code"
-                    : "Create a 4-digit code and confirm",
+                    ? 'Enter your 4-digit security code'
+                    : 'Create a 4-digit code and confirm',
                 style: context.typography.subtitle4Regular.copyWith(
                   color: Colors.white54,
                 ),
@@ -84,17 +83,17 @@ class PasscodeScreen extends StatelessWidget {
                       children: [
                         buildPinRow(state.enteredPin, context),
                         AnimatedSize(
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOutCubic,
                           child: state.enteredPin.length == 4
                               ? Padding(
-                                  padding: const EdgeInsets.only(top: 16.0),
+                                  padding: const EdgeInsets.only(top: 16),
                                   child: buildPinRow(
                                     state.confirmEnteredPin,
                                     context,
                                   ),
                                 )
-                              : SizedBox.shrink(),
+                              : const SizedBox.shrink(),
                         ),
                       ],
                     );
@@ -104,11 +103,11 @@ class PasscodeScreen extends StatelessWidget {
                   }
                 },
               ),
-              Spacer(),
-              PasscodeKeypad(),
+              const Spacer(),
+              const PasscodeKeypad(),
               24.verticalSpace,
               Text(
-                "Forgot PIN?",
+                'Forgot PIN?',
                 style: context.typography.body2SemiBold.copyWith(
                   color: Colors.white54,
                 ),
@@ -132,13 +131,14 @@ class PasscodeScreen extends StatelessWidget {
           width: 14.w,
           decoration: BoxDecoration(
             boxShadow: [
-              isFilled
-                  ? BoxShadow(
-                      color: context.colors.primary.withValues(alpha: .5),
-                      blurRadius: 5,
-                      spreadRadius: 2,
-                    )
-                  : const BoxShadow(),
+              if (isFilled)
+                BoxShadow(
+                  color: context.colors.primary.withValues(alpha: .5),
+                  blurRadius: 5,
+                  spreadRadius: 2,
+                )
+              else
+                const BoxShadow(),
             ],
             shape: BoxShape.circle,
             color: isFilled ? context.colors.primary : const Color(0xFF2A2A35),

@@ -1,13 +1,11 @@
 import 'package:either_dart/either.dart';
-
-import '../../domain/entities/user_entity.dart';
-import '../../domain/repositories/auth_repository.dart';
-import '../sources/auth_remote_source.dart';
+import 'package:up_todo/features/auth/data/sources/auth_remote_source.dart';
+import 'package:up_todo/features/auth/domain/entities/user_entity.dart';
+import 'package:up_todo/features/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements IAuthRepository {
-  final IAuthRemoteDataSource remoteDataSource;
-
   AuthRepositoryImpl({required this.remoteDataSource});
+  final IAuthRemoteDataSource remoteDataSource;
 
   @override
   Future<Either<UserEntity, String>> register({

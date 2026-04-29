@@ -1,12 +1,10 @@
 import 'package:either_dart/either.dart';
 import 'package:up_todo/features/focus/data/sources/focus_remote_source.dart';
-
-import '../../domain/repositories/focus_repository.dart';
+import 'package:up_todo/features/focus/domain/repositories/focus_repository.dart';
 
 class FocusRepositoryImpl implements IFocusRepository {
-  final IFocusRemoteSource remoteSource;
-
   FocusRepositoryImpl(this.remoteSource);
+  final IFocusRemoteSource remoteSource;
   @override
   Future<Either<bool, String>> saveFocusTime({
     required String userId,

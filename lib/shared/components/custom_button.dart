@@ -3,9 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../core/utils/extensions/context_extension.dart';
-import '../animations/animated_button_effect.dart';
+import 'package:up_todo/core/utils/extensions/context_extension.dart';
+import 'package:up_todo/shared/animations/animated_button_effect.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -36,7 +35,8 @@ class CustomButton extends StatelessWidget {
   final String? text;
   final double? borderRadius;
   final EdgeInsets? padding;
-  final Color? color, textColor;
+  final Color? color;
+  final Color? textColor;
   final Color? borderColor;
   final void Function()? onTap;
   final bool? isLoading;
@@ -49,7 +49,7 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         style: ButtonStyle(
           padding: WidgetStateProperty.all(padding),
-          shadowColor: WidgetStatePropertyAll(Colors.transparent),
+          shadowColor: const WidgetStatePropertyAll(Colors.transparent),
           maximumSize: WidgetStatePropertyAll(
             Size(width ?? MediaQuery.sizeOf(context).width, height ?? 48.h),
           ),

@@ -3,18 +3,17 @@
 import 'package:equatable/equatable.dart';
 
 class PasscodeState extends Equatable {
-  final List<int> enteredPin;
-  final List<int> confirmEnteredPin;
-
-  final bool isSuccess;
-  final bool isError;
-
   const PasscodeState({
     this.enteredPin = const [],
     this.confirmEnteredPin = const [],
     this.isSuccess = false,
     this.isError = false,
   });
+  final List<int> enteredPin;
+  final List<int> confirmEnteredPin;
+
+  final bool isSuccess;
+  final bool isError;
 
   PasscodeState copyWith({
     List<int>? enteredPin,

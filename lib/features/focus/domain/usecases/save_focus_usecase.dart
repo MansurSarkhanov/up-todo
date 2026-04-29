@@ -1,11 +1,9 @@
 import 'package:either_dart/either.dart';
-
-import '../repositories/focus_repository.dart';
+import 'package:up_todo/features/focus/domain/repositories/focus_repository.dart';
 
 class SaveFocusUsecase {
-  final IFocusRepository repository;
-
   SaveFocusUsecase(this.repository);
+  final IFocusRepository repository;
 
   Future<Either<bool, String>> call({
     required String userId,

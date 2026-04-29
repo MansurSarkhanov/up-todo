@@ -4,9 +4,9 @@ import 'package:up_todo/core/utils/extensions/context_extension.dart';
 
 class TaskOverview extends StatelessWidget {
   const TaskOverview({
-    super.key,
     required this.doneTaskCount,
     required this.leftTaskCount,
+    super.key,
   });
   final int doneTaskCount;
   final int leftTaskCount;
@@ -22,7 +22,7 @@ class TaskOverview extends StatelessWidget {
               color: context.colors.secondary,
             ),
             child: Padding(
-              padding: EdgeInsetsGeometry.symmetric(vertical: 16),
+              padding: const EdgeInsetsGeometry.symmetric(vertical: 16),
               child: Center(
                 child: Text(
                   '$leftTaskCount Task left',
@@ -40,7 +40,7 @@ class TaskOverview extends StatelessWidget {
               color: context.colors.secondary,
             ),
             child: Padding(
-              padding: EdgeInsetsGeometry.symmetric(vertical: 16),
+              padding: const EdgeInsetsGeometry.symmetric(vertical: 16),
               child: Center(
                 child: Text(
                   '$doneTaskCount Task done',

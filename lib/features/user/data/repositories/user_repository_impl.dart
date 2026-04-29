@@ -6,9 +6,8 @@ import 'package:up_todo/features/user/data/sources/user_remote_source.dart';
 import 'package:up_todo/features/user/domain/repositories/user_repository.dart';
 
 class UserRepositoryImpl implements IUserRepository {
-  final IUserRemoteSource remoteSource;
-
   UserRepositoryImpl(this.remoteSource);
+  final IUserRemoteSource remoteSource;
   @override
   Either<Stream<UserModel>, String> getUser(String uid) {
     final response = remoteSource.getUser(uid);

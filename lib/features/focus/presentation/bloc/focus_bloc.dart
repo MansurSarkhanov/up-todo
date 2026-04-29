@@ -2,14 +2,10 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:up_todo/features/focus/domain/usecases/save_focus_usecase.dart';
-
-import 'focus_event.dart';
-import 'focus_state.dart';
+import 'package:up_todo/features/focus/presentation/bloc/focus_event.dart';
+import 'package:up_todo/features/focus/presentation/bloc/focus_state.dart';
 
 class FocusBloc extends Bloc<FocusEvent, FocusState> {
-  final SaveFocusUsecase saveFocusUsecase;
-  StreamSubscription<int>? _tickerSubscription;
-
   FocusBloc({required this.saveFocusUsecase}) : super(FocusInitial()) {
     on<StartFocusEvent>(_onStarted);
     on<PauseFocusEvent>(_onPaused);
@@ -17,6 +13,8 @@ class FocusBloc extends Bloc<FocusEvent, FocusState> {
     on<TickEvent>(_onTick);
     on<StopAndSaveFocusEvent>(_onStopAndSave);
   }
+  final SaveFocusUsecase saveFocusUsecase;
+  StreamSubscription<int>? _tickerSubscription;
 
   void _onStarted(StartFocusEvent event, Emitter<FocusState> emit) {
     emit(FocusRunning(event.durationSeconds, event.durationSeconds));
@@ -45,9 +43,8 @@ class FocusBloc extends Bloc<FocusEvent, FocusState> {
     StopAndSaveFocusEvent event,
     Emitter<FocusState> emit,
   ) async {
-    _tickerSubscription?.cancel();
-    final int focusedSeconds =
-        state.totalTargetSeconds - state.remainingSeconds;
+    unawaited(_tickerSubscription?.cancel());
+    final focusedSeconds = state.totalTargetSeconds - state.remainingSeconds;
     final result = await saveFocusUsecase.call(
       userId: event.userId,
       durationSeconds: focusedSeconds,
@@ -60,7 +57,7 @@ class FocusBloc extends Bloc<FocusEvent, FocusState> {
   }
 
   void _startTicker(int duration, String? userId) {
-    _tickerSubscription?.cancel();
+    unawaited(_tickerSubscription?.cancel());
     _tickerSubscription =
         Stream.periodic(const Duration(seconds: 1), (x) => duration - x - 1)
             .take(duration)
@@ -72,7 +69,7 @@ class FocusBloc extends Bloc<FocusEvent, FocusState> {
 
   @override
   Future<void> close() {
-    _tickerSubscription?.cancel();
+    unawaited(_tickerSubscription?.cancel());
     return super.close();
   }
 }

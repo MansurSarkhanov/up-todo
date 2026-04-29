@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 
 interface class AppColors extends ThemeExtension<AppColors> {
   AppColors({
@@ -190,6 +191,7 @@ interface class AppColors extends ThemeExtension<AppColors> {
   }
 }
 
+@reopen
 @protected
 class AppLightColors extends AppColors {
   AppLightColors({

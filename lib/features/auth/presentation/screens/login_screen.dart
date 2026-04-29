@@ -6,15 +6,14 @@ import 'package:go_router/go_router.dart';
 import 'package:up_todo/core/constants/icons.dart';
 import 'package:up_todo/core/routes/routes.dart';
 import 'package:up_todo/core/utils/extensions/context_extension.dart';
+import 'package:up_todo/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:up_todo/features/auth/presentation/bloc/auth_event.dart';
 import 'package:up_todo/features/auth/presentation/bloc/auth_state.dart';
+import 'package:up_todo/features/auth/presentation/screens/passcode_screen.dart';
+import 'package:up_todo/features/auth/presentation/widgets/sosial_button.dart';
 import 'package:up_todo/shared/components/custom_appbar.dart';
 import 'package:up_todo/shared/components/custom_button.dart';
-
-import '../../../../shared/components/custom_textfield.dart';
-import '../bloc/auth_bloc.dart';
-import '../bloc/auth_event.dart';
-import '../widgets/sosial_button.dart';
-import 'passcode_screen.dart';
+import 'package:up_todo/shared/components/custom_textfield.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -40,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       backgroundColor: context.colors.backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -50,15 +49,15 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 16.verticalSpace,
-                Text("Login", style: context.typography.h1Bold),
+                Text('Login', style: context.typography.h1Bold),
                 24.verticalSpace,
-                Text("Email", style: context.typography.body2Regular),
+                Text('Email', style: context.typography.body2Regular),
                 8.verticalSpace,
                 Form(
                   key: _emailKey,
                   child: CustomTextfield(
                     controller: _emailController,
-                    hintText: "Enter your email",
+                    hintText: 'Enter your email',
                     onChanged: (value) => _emailKey.currentState!.validate(),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -69,14 +68,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 16.verticalSpace,
-                Text("Password", style: context.typography.body2Regular),
+                Text('Password', style: context.typography.body2Regular),
                 8.verticalSpace,
                 Form(
                   key: _passwordKey,
                   child: CustomTextfield(
                     controller: _passwordController,
                     obscureText: true,
-                    hintText: "••••••••••••",
+                    hintText: '••••••••••••',
                     onChanged: (value) => _passwordKey.currentState!.validate(),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -106,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   builder: (context, state) {
                     return CustomButton(
                       isLoading: state.status == AuthStatus.loading,
-                      text: "Login",
+                      text: 'Login',
                       onTap: () {
                         if (_emailKey.currentState!.validate() &&
                             _passwordKey.currentState!.validate()) {
@@ -124,13 +123,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 24.verticalSpace,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(child: Divider(color: context.colors.strokeColor)),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
                       child: Text(
-                        "or",
+                        'or',
                         style: context.typography.body2Regular.copyWith(
                           color: context.colors.strokeColor,
                         ),
@@ -161,12 +159,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       children: [
                         TextSpan(
-                          text: "Register",
+                          text: 'Register',
                           style: context.typography.subtitle4Bold,
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              context.push(Routes.register);
-                            },
+                            ..onTap = () => context.push(Routes.register),
                         ),
                       ],
                     ),

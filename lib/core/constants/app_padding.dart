@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'dimensions.dart';
+import 'package:up_todo/core/constants/dimensions.dart';
 
 final class AppPadding extends EdgeInsets {
   const AppPadding._() : super.all(0);

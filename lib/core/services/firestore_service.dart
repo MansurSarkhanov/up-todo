@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../../features/tasks/data/models/task_model.dart';
-import '../../features/user/data/models/user_model.dart';
+import 'package:up_todo/features/tasks/data/models/task_model.dart';
+import 'package:up_todo/features/user/data/models/user_model.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -53,11 +52,11 @@ class FirestoreService {
   Future<DocumentReference> addTodo({
     required String title,
     required String userId,
-    String? description,
     required DateTime dueDate,
     required int priority,
     required String categoryName,
     required String categoryIcon,
+    String? description,
   }) async {
     final result = await _todoRef.add({
       'title': title,
@@ -114,16 +113,20 @@ class FirestoreService {
     String? categoryName,
     String? categoryIcon,
   }) async {
-    final Map<String, dynamic> updateData = {};
+    final updateData = <String, dynamic>{};
 
     if (title != null) updateData['title'] = title;
     if (description != null) updateData['description'] = description;
     if (dueDate != null) updateData['dueDate'] = dueDate;
     if (priority != null) updateData['priority'] = priority;
     if (categoryName != null || categoryIcon != null) {
-      updateData['category'] = {};
-      if (categoryName != null) updateData['category']['name'] = categoryName;
-      if (categoryIcon != null) updateData['category']['icon'] = categoryIcon;
+      updateData['category'] = <String, dynamic>{};
+      if (categoryName != null) {
+        (updateData['category'] as Map<String, dynamic>)['name'] = categoryName;
+      }
+      if (categoryIcon != null) {
+        (updateData['category'] as Map<String, dynamic>)['icon'] = categoryIcon;
+      }
     }
     if (updateData.isNotEmpty) {
       await _todoRef.doc(taskId).update(updateData);
@@ -142,9 +145,9 @@ class FirestoreService {
     required String userId,
   }) async {
     final doc = await _todoRef.doc(docId).get();
-    final isComplated = doc.data()?['isCompleted'] ?? false;
+    final isCompleted = doc.data()?['isCompleted'] as bool? ?? false;
     await _todoRef.doc(docId).delete();
-    if (isComplated) {
+    if (isCompleted) {
       await _usersRef.doc(userId).update({
         'completedCount': FieldValue.increment(-1),
       });

@@ -1,11 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:up_todo/core/log/app_logger.dart';
 import 'package:up_todo/core/models/api_result.dart';
+import 'package:up_todo/core/models/error_model.dart';
+import 'package:up_todo/core/services/firebase_auth_service.dart';
 import 'package:up_todo/core/services/firestore_service.dart';
-
-import '../../../../core/log/app_logger.dart';
-import '../../../../core/models/error_model.dart';
-import '../../../../core/services/firebase_auth_service.dart';
-import '../models/user_models.dart';
+import 'package:up_todo/features/auth/data/models/user_models.dart';
 
 abstract class IAuthRemoteDataSource {
   Future<ApiResult<UserAuthModel>> register({
@@ -20,13 +19,12 @@ abstract class IAuthRemoteDataSource {
 }
 
 class AuthRemoteDataSource implements IAuthRemoteDataSource {
-  final FirebaseAuthService firebaseAuth;
-  final FirestoreService firestoreService;
-
   AuthRemoteDataSource({
     required this.firebaseAuth,
     required this.firestoreService,
   });
+  final FirebaseAuthService firebaseAuth;
+  final FirestoreService firestoreService;
 
   @override
   Future<ApiResult<UserAuthModel>> register({
@@ -55,7 +53,7 @@ class AuthRemoteDataSource implements IAuthRemoteDataSource {
       return ApiResult.failure(
         error: ApiErrorResponse(message: e.message ?? 'Authentication error'),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.e(e.toString());
       return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
     }
@@ -80,7 +78,7 @@ class AuthRemoteDataSource implements IAuthRemoteDataSource {
       return ApiResult.failure(
         error: ApiErrorResponse(message: e.message ?? 'Authentication error'),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.e(e.toString());
       return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
     }

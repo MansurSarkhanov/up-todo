@@ -1,12 +1,10 @@
 import 'package:either_dart/either.dart';
-
-import '../../data/models/task_model.dart';
-import '../repositories/task_repository.dart';
+import 'package:up_todo/features/tasks/data/models/task_model.dart';
+import 'package:up_todo/features/tasks/domain/repositories/task_repository.dart';
 
 class GetTasksUsecase {
-  final ITaskRepository repository;
-
   GetTasksUsecase(this.repository);
+  final ITaskRepository repository;
 
   Either<Stream<List<Task>>, String> call({
     required String userId,

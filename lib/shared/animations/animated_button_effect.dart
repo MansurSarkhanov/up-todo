@@ -1,17 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class AnimationButtonEffect extends StatefulWidget {
+  const AnimationButtonEffect({
+    required this.child,
+    super.key,
+    this.disabled = true,
+    this.lowerBound,
+  });
   final bool disabled;
   final double? lowerBound;
 
   final Widget child;
-
-  const AnimationButtonEffect({
-    super.key,
-    this.disabled = true,
-    required this.child,
-    this.lowerBound,
-  });
 
   @override
   State createState() => _AnimationButtonEffectState();
@@ -19,31 +20,29 @@ class AnimationButtonEffect extends StatefulWidget {
 
 class _AnimationButtonEffectState extends State<AnimationButtonEffect>
     with TickerProviderStateMixin {
-  AnimationController? _controllerA;
+  late AnimationController _controllerA;
 
-  var squareScaleA = 0.95;
+  double squareScaleA = 0.95;
 
   @override
   void initState() {
     _controllerA = AnimationController(
       vsync: this,
-      lowerBound: widget.lowerBound ?? 0.95,
-      upperBound: 1.0,
-      duration: const Duration(milliseconds: 110),
+      lowerBound: widget.lowerBound ?? 0.98,
+      duration: const Duration(milliseconds: 80),
     );
-    _controllerA!.addListener(() {
+    _controllerA.addListener(() {
       setState(() {
-        squareScaleA = _controllerA!.value;
+        squareScaleA = _controllerA.value;
       });
     });
-
-    _controllerA!.forward(from: 0.0);
+    unawaited(_controllerA.forward(from: 0));
     super.initState();
   }
 
   @override
   void dispose() {
-    _controllerA!.dispose();
+    _controllerA.dispose();
     super.dispose();
   }
 
@@ -51,12 +50,11 @@ class _AnimationButtonEffectState extends State<AnimationButtonEffect>
   Widget build(BuildContext context) {
     return widget.disabled
         ? Listener(
-            onPointerDown: (_) {
-              _controllerA!.reverse();
+            onPointerDown: (_) async {
+              await _controllerA.reverse();
             },
-            onPointerUp: (_) {
-              _controllerA!.forward(from: 1.0);
-              if (!widget.disabled) {}
+            onPointerUp: (_) async {
+              await _controllerA.forward(from: 1);
             },
             child: Transform.scale(scale: squareScaleA, child: widget.child),
           )

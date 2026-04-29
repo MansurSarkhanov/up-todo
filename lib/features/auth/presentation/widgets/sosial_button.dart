@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import '../../../../core/utils/extensions/context_extension.dart';
-import '../../../../shared/components/custom_button.dart';
+import 'package:up_todo/core/utils/extensions/context_extension.dart';
+import 'package:up_todo/shared/components/custom_button.dart';
 
 class SosialButton extends StatelessWidget {
   const SosialButton({
-    super.key,
     required this.onTap,
     required this.text,
     required this.iconPath,
+    super.key,
   });
   final VoidCallback onTap;
   final String text;
@@ -25,7 +24,6 @@ class SosialButton extends StatelessWidget {
       child: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SvgPicture.asset(iconPath),
             12.horizontalSpace,

@@ -1,20 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:up_todo/core/constants/icons.dart';
+import 'package:up_todo/core/routes/routes.dart';
+import 'package:up_todo/core/utils/extensions/context_extension.dart';
+import 'package:up_todo/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:up_todo/features/auth/presentation/bloc/auth_event.dart';
+import 'package:up_todo/features/main/presentation/widgets/task_overview.dart';
 import 'package:up_todo/features/main/presentation/widgets/user_update_dialog.dart';
-
-import '../../../../core/routes/routes.dart';
-import '../../../../core/utils/extensions/context_extension.dart';
-import '../../../../shared/components/custom_appbar.dart';
-import '../../../auth/presentation/bloc/auth_bloc.dart';
-import '../../../main/presentation/widgets/task_overview.dart';
-import '../bloc/user_bloc.dart';
-import '../bloc/user_state.dart';
-import '../widgets/profile_image.dart';
-import '../widgets/profile_tile.dart';
+import 'package:up_todo/features/user/presentation/bloc/user_bloc.dart';
+import 'package:up_todo/features/user/presentation/bloc/user_state.dart';
+import 'package:up_todo/features/user/presentation/widgets/profile_image.dart';
+import 'package:up_todo/features/user/presentation/widgets/profile_tile.dart';
+import 'package:up_todo/shared/components/custom_appbar.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -30,7 +31,7 @@ class ProfileView extends StatelessWidget {
 
   Padding _body(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       child: BlocBuilder<UserBloc, UserState>(
         builder: (context, state) {
           if (state is UserError) {
@@ -41,7 +42,6 @@ class ProfileView extends StatelessWidget {
           }
           if (state is UserLoaded) {
             return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ProfileImage(photoUrl: state.user.photoUrl),
                 12.verticalSpace,
@@ -55,8 +55,6 @@ class ProfileView extends StatelessWidget {
                   shaderCallback: (bounds) {
                     return const LinearGradient(
                       colors: [Color(0xFF6C63FF), Color(0xFF00D4FF)],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
                     ).createShader(bounds);
                   },
                   blendMode: BlendMode.srcIn,
@@ -90,12 +88,14 @@ class ProfileView extends StatelessWidget {
                       icon: AppIconPath.user,
                       title: 'Change account name',
                       onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (_) => BlocProvider.value(
-                            value: context.read<UserBloc>(),
-                            child: UserUpdateDialog(
-                              title: state.user.username ?? '',
+                        unawaited(
+                          showDialog(
+                            context: context,
+                            builder: (_) => BlocProvider.value(
+                              value: context.read<UserBloc>(),
+                              child: UserUpdateDialog(
+                                title: state.user.username ?? '',
+                              ),
                             ),
                           ),
                         );
@@ -117,7 +117,7 @@ class ProfileView extends StatelessWidget {
               ],
             );
           }
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         },
       ),
     );
@@ -125,7 +125,7 @@ class ProfileView extends StatelessWidget {
 
   CustomAppBar _appBar(BuildContext context) {
     return CustomAppBar(
-      leading: SizedBox.shrink(),
+      leading: const SizedBox.shrink(),
       title: Text('Profile', style: context.typography.h5Medium),
     );
   }

@@ -15,7 +15,7 @@ class CloudinaryService {
 
   Future<String> uploadImage(
     File file, {
-    Function(double progress)? onProgress,
+    required void Function(double)? onProgress,
   }) async {
     try {
       final url = 'https://api.cloudinary.com/v1_1/$cloudName/image/upload';
@@ -28,7 +28,7 @@ class CloudinaryService {
         ),
       });
 
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         url,
         data: formData,
         onSendProgress: (sent, total) {
@@ -39,7 +39,8 @@ class CloudinaryService {
       );
 
       if (response.statusCode == 200) {
-        return response.data['secure_url'];
+        final data = response.data!;
+        return data['secure_url'] as String;
       } else {
         throw Exception('Upload failed');
       }

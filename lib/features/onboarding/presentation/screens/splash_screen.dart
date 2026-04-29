@@ -6,11 +6,10 @@ import 'package:up_todo/core/constants/images.dart';
 import 'package:up_todo/core/helpers/cache_manager.dart';
 import 'package:up_todo/core/routes/routes.dart';
 import 'package:up_todo/core/utils/extensions/context_extension.dart';
+import 'package:up_todo/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:up_todo/features/auth/presentation/bloc/auth_state.dart';
 import 'package:up_todo/features/auth/presentation/screens/passcode_screen.dart';
 import 'package:up_todo/shared/components/custom_appbar.dart';
-
-import '../../../auth/presentation/bloc/auth_bloc.dart';
-import '../../../auth/presentation/bloc/auth_state.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -23,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(toolbarHeight: 0),
+      appBar: const CustomAppBar(toolbarHeight: 0),
       backgroundColor: context.colors.backgroundColor,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {

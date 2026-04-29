@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:up_todo/core/log/app_logger.dart';
 import 'package:up_todo/core/models/api_result.dart';
+import 'package:up_todo/core/models/error_model.dart';
 import 'package:up_todo/core/services/firestore_service.dart';
-
-import '../../../../core/log/app_logger.dart';
-import '../../../../core/models/error_model.dart';
 
 abstract class IFocusRemoteSource {
   Future<ApiResult<bool>> saveFocusSession({
@@ -14,9 +13,8 @@ abstract class IFocusRemoteSource {
 }
 
 class FocusRemoteSource implements IFocusRemoteSource {
-  final FirestoreService firestoreService;
-
   FocusRemoteSource({required this.firestoreService});
+  final FirestoreService firestoreService;
   @override
   Future<ApiResult<bool>> saveFocusSession({
     required String userId,
@@ -38,7 +36,7 @@ class FocusRemoteSource implements IFocusRemoteSource {
       return ApiResult.failure(
         error: ApiErrorResponse(message: e.message ?? 'Failed to add task'),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.e(e.toString());
       return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
     }

@@ -3,24 +3,15 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:up_todo/core/services/firebase_auth_service.dart';
+import 'package:up_todo/features/auth/domain/entities/user_entity.dart';
+import 'package:up_todo/features/auth/domain/usecases/login_usecase.dart';
+import 'package:up_todo/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:up_todo/features/auth/domain/usecases/register_usecase.dart';
-
-import '../../../../core/services/firebase_auth_service.dart';
-import '../../domain/entities/user_entity.dart';
-import '../../domain/usecases/login_usecase.dart';
-import '../../domain/usecases/logout_usecase.dart';
-import 'auth_event.dart';
-import 'auth_state.dart';
+import 'package:up_todo/features/auth/presentation/bloc/auth_event.dart';
+import 'package:up_todo/features/auth/presentation/bloc/auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final LoginUseCase loginUseCase;
-  final RegisterUsecase registerUseCase;
-  final LogoutUseCase logoutUseCase;
-
-  final FirebaseAuthService firebaseAuth;
-
-  StreamSubscription<User?>? _userSubscription;
-
   AuthBloc({
     required this.loginUseCase,
     required this.registerUseCase,
@@ -37,6 +28,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       add(AuthUserChanged(user));
     });
   }
+  final LoginUseCase loginUseCase;
+  final RegisterUsecase registerUseCase;
+  final LogoutUseCase logoutUseCase;
+
+  final FirebaseAuthService firebaseAuth;
+
+  StreamSubscription<User?>? _userSubscription;
 
   void _onAuthCheckRequested(
     AuthCheckRequested event,
@@ -76,7 +74,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (error) => emit(
         state.copyWith(
           status: AuthStatus.failure,
-          errorMessage: error.toString(),
+          errorMessage: error,
           source: AuthScreen.login,
         ),
       ),
@@ -107,7 +105,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (error) => emit(
         state.copyWith(
           status: AuthStatus.failure,
-          errorMessage: error.toString(),
+          errorMessage: error,
           source: AuthScreen.register,
         ),
       ),
@@ -120,7 +118,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     await logoutUseCase();
     final prefs = await SharedPreferences.getInstance();
-    prefs.clear();
+    unawaited(prefs.clear());
     emit(state.copyWith(status: AuthStatus.unauthenticated));
   }
 
@@ -142,7 +140,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   @override
   Future<void> close() {
-    _userSubscription?.cancel();
+    unawaited(_userSubscription?.cancel());
     return super.close();
   }
 }

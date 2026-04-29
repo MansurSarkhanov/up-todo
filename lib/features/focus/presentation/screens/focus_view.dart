@@ -2,22 +2,21 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart'; // Bloc importu
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:up_todo/core/utils/extensions/context_extension.dart';
 import 'package:up_todo/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:up_todo/features/focus/presentation/bloc/focus_bloc.dart'; // Kendi path'ine göre düzenle
+import 'package:up_todo/features/focus/presentation/bloc/focus_event.dart';
+import 'package:up_todo/features/focus/presentation/bloc/focus_state.dart';
+import 'package:up_todo/shared/components/custom_appbar.dart';
 import 'package:up_todo/shared/components/custom_button.dart';
-
-import '../../../../core/utils/extensions/context_extension.dart';
-import '../../../../shared/components/custom_appbar.dart';
-import '../bloc/focus_bloc.dart'; // Kendi path'ine göre düzenle
-import '../bloc/focus_event.dart';
-import '../bloc/focus_state.dart';
 
 class FocusView extends StatelessWidget {
   const FocusView({super.key});
 
   // Saniyeyi MM:SS formatına çeviren yardımcı fonksiyon
   String _formatTime(int seconds) {
-    final int minutes = seconds ~/ 60;
-    final int remainingSeconds = seconds % 60;
+    final minutes = seconds ~/ 60;
+    final remainingSeconds = seconds % 60;
     return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
@@ -31,13 +30,13 @@ class FocusView extends StatelessWidget {
           if (state is FocusCompleted) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text("Focus session saved successfully!"),
+                content: Text('Focus session saved successfully!'),
               ),
             );
           } else if (state is FocusError) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(SnackBar(content: Text("Error: ${state.message}")));
+            ).showSnackBar(SnackBar(content: Text('Error: ${state.message}')));
           }
         },
         builder: (context, state) {
@@ -78,8 +77,8 @@ class FocusView extends StatelessWidget {
                 Center(
                   child: Text(
                     state is FocusRunning
-                        ? "Stay focused! Notifications are muted."
-                        : "While your focus mode is on, all of your notifications will be off",
+                        ? 'Stay focused! Notifications are muted.'
+                        : 'While your focus mode is on, all of your notifications will be off',
                     textAlign: TextAlign.center,
                     style: context.typography.body2Regular,
                   ),
@@ -92,7 +91,6 @@ class FocusView extends StatelessWidget {
                         final userId = context.read<AuthBloc>().state.user!.uid;
                         context.read<FocusBloc>().add(
                           StartFocusEvent(
-                            durationSeconds: 1500,
                             userId: userId,
                           ),
                         );
@@ -114,7 +112,7 @@ class FocusView extends StatelessWidget {
                       );
                     },
                     child: const Text(
-                      "Stop and Save",
+                      'Stop and Save',
                       style: TextStyle(color: Colors.redAccent),
                     ),
                   ),
@@ -123,8 +121,8 @@ class FocusView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Overview", style: context.typography.body1Regular),
-                    Text("This Week", style: context.typography.body2Regular),
+                    Text('Overview', style: context.typography.body1Regular),
+                    Text('This Week', style: context.typography.body2Regular),
                   ],
                 ),
                 20.verticalSpace,
@@ -133,9 +131,9 @@ class FocusView extends StatelessWidget {
                   child: BarChart(
                     BarChartData(
                       backgroundColor: Colors.transparent,
-                      gridData: FlGridData(show: false),
+                      gridData: const FlGridData(show: false),
                       borderData: FlBorderData(show: false),
-                      titlesData: FlTitlesData(show: false),
+                      titlesData: const FlTitlesData(show: false),
                       barGroups: [
                         _bar(context, 3),
                         _bar(context, 4),

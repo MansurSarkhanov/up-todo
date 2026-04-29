@@ -1,20 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:up_todo/core/log/app_logger.dart';
 import 'package:up_todo/core/models/api_result.dart';
-
-import '../../../../core/log/app_logger.dart';
-import '../../../../core/models/error_model.dart';
-import '../../../../core/services/firestore_service.dart';
-import '../models/task_model.dart';
+import 'package:up_todo/core/models/error_model.dart';
+import 'package:up_todo/core/services/firestore_service.dart';
+import 'package:up_todo/features/tasks/data/models/task_model.dart';
 
 abstract class ITaskRemoteSource {
   Future<ApiResult<bool>> addTask({
     required String title,
     required String userId,
-    String? description,
     required DateTime dueDate,
     required int priority,
     required String categoryName,
     required String categoryIcon,
+    String? description,
   });
 
   ApiResult<Stream<List<Task>>> getTasks({
@@ -42,19 +41,18 @@ abstract class ITaskRemoteSource {
 }
 
 class TaskRemoteSource implements ITaskRemoteSource {
-  final FirestoreService firestoreService;
-
   TaskRemoteSource({required this.firestoreService});
+  final FirestoreService firestoreService;
 
   @override
   Future<ApiResult<bool>> addTask({
     required String title,
     required String userId,
-    String? description,
     required DateTime dueDate,
     required int priority,
     required String categoryName,
     required String categoryIcon,
+    String? description,
   }) async {
     try {
       AppLogger.i(
@@ -75,7 +73,7 @@ class TaskRemoteSource implements ITaskRemoteSource {
       return ApiResult.failure(
         error: ApiErrorResponse(message: e.message ?? 'Failed to add task'),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.e(e.toString());
       return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
     }
@@ -98,7 +96,7 @@ class TaskRemoteSource implements ITaskRemoteSource {
       return ApiResult.failure(
         error: ApiErrorResponse(message: e.message ?? 'Failed to add task'),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.e(e.toString());
       return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
     }
@@ -115,7 +113,7 @@ class TaskRemoteSource implements ITaskRemoteSource {
       return ApiResult.failure(
         error: ApiErrorResponse(message: e.message ?? 'Failed watch task'),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.e(e.toString());
       return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
     }
@@ -148,7 +146,7 @@ class TaskRemoteSource implements ITaskRemoteSource {
       return ApiResult.failure(
         error: ApiErrorResponse(message: e.message ?? 'Failed update task'),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.e(e.toString());
       return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
     }
@@ -168,7 +166,7 @@ class TaskRemoteSource implements ITaskRemoteSource {
       return ApiResult.failure(
         error: ApiErrorResponse(message: e.message ?? 'Failed delete task'),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.e(e.toString());
       return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
     }
@@ -188,7 +186,7 @@ class TaskRemoteSource implements ITaskRemoteSource {
       return ApiResult.failure(
         error: ApiErrorResponse(message: e.message ?? 'Failed complate task'),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.e(e.toString());
       return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
     }

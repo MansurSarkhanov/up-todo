@@ -12,7 +12,7 @@ class RouteNotifier extends ChangeNotifier {
 
   @override
   void dispose() {
-    _subscription.cancel();
+    unawaited(_subscription.cancel());
     super.dispose();
   }
 }

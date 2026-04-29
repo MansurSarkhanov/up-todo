@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../../theme/app_colors.dart';
-import '../../theme/app_typography.dart';
+import 'package:up_todo/core/theme/app_colors.dart';
+import 'package:up_todo/core/theme/app_typography.dart';
 
 extension Translations on BuildContext {
   ThemeData get theme => Theme.of(this);

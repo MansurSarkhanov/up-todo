@@ -1,16 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:up_todo/core/helpers/cache_manager.dart';
+import 'package:up_todo/core/routes/routes.dart';
 import 'package:up_todo/core/utils/extensions/context_extension.dart';
+import 'package:up_todo/features/onboarding/bloc/onboarding_bloc.dart';
+import 'package:up_todo/features/onboarding/bloc/onboarding_event.dart';
+import 'package:up_todo/features/onboarding/bloc/onboarding_state.dart';
+import 'package:up_todo/features/onboarding/presentation/widgets/onboard_content.dart';
 import 'package:up_todo/shared/components/custom_appbar.dart';
 import 'package:up_todo/shared/components/custom_button.dart';
-
-import '../../../../core/routes/routes.dart';
-import '../../bloc/onboarding_bloc.dart';
-import '../../bloc/onboarding_event.dart';
-import '../../bloc/onboarding_state.dart';
-import '../widgets/onboard_content.dart';
 
 part '../widgets/navigation_buttons.dart';
 
@@ -26,7 +27,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   void initState() {
-    _controller = PageController(initialPage: 0);
+    _controller = PageController();
     super.initState();
   }
 
@@ -39,7 +40,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(toolbarHeight: 0),
+      appBar: const CustomAppBar(toolbarHeight: 0),
       backgroundColor: context.colors.backgroundColor,
       body: SafeArea(
         child: Padding(
@@ -53,7 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     OnboardingModel.contents.length - 1,
                   ),
                   child: Text(
-                    "SKIP",
+                    'SKIP',
                     style: context.typography.body2Regular.copyWith(
                       color: Colors.white.withValues(alpha: 0.5),
                     ),

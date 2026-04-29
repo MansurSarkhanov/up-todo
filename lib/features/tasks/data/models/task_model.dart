@@ -1,6 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Task {
+  Task({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.userId,
+    required this.dueDate,
+    required this.priority,
+    required this.category,
+    required this.createDate,
+    this.isCompleted = false,
+  });
+
+  factory Task.fromJson(Map<String, dynamic> json, String id) {
+    return Task(
+      id: id,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      userId: json['userId'] as String,
+      dueDate: (json['dueDate'] as Timestamp).toDate(),
+      priority: json['priority'] as int,
+      isCompleted: json['isCompleted'] as bool,
+      createDate: (json['createdAt'] as Timestamp).toDate(),
+      category: Category.fromJson(json['category'] as Map<String, dynamic>),
+    );
+  }
   final String id;
   final String title;
   final String description;
@@ -10,32 +35,6 @@ class Task {
   final bool isCompleted;
   final DateTime createDate;
   final Category category;
-
-  Task({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.userId,
-    required this.dueDate,
-    required this.priority,
-    this.isCompleted = false,
-    required this.category,
-    required this.createDate,
-  });
-
-  factory Task.fromJson(Map<String, dynamic> json, String id) {
-    return Task(
-      id: id,
-      title: json['title'] ?? '',
-      description: json['description'] ?? '',
-      userId: json['userId'] ?? '',
-      dueDate: (json['dueDate'] as Timestamp).toDate(),
-      priority: json['priority'] ?? 1,
-      isCompleted: json['isCompleted'] ?? false,
-      createDate: (json['createdAt'] as Timestamp).toDate(),
-      category: Category.fromJson(json['category'] ?? {}, ''),
-    );
-  }
 
   Task copyWith({
     String? id,
@@ -63,12 +62,11 @@ class Task {
 }
 
 class Category {
-  final String name;
-  final String icon;
-
   Category({required this.name, required this.icon});
 
-  factory Category.fromJson(Map<String, dynamic> json, String id) {
-    return Category(name: json['name'] ?? '', icon: json['icon'] ?? '');
+  factory Category.fromJson(Map<String, dynamic> json) {
+    return Category(name: json['name'] as String, icon: json['icon'] as String);
   }
+  final String name;
+  final String icon;
 }

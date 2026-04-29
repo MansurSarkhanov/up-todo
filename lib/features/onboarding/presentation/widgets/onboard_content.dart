@@ -4,11 +4,11 @@ import 'package:up_todo/core/utils/extensions/context_extension.dart';
 
 class OnboardContent extends StatelessWidget {
   const OnboardContent({
-    super.key,
     required this.currentIndex,
     required this.image,
     required this.title,
     required this.description,
+    super.key,
   });
   final String image;
   final String title;
@@ -32,7 +32,7 @@ class OnboardContent extends StatelessWidget {
               (index) => Container(
                 height: 4,
                 width: 25,
-                margin: EdgeInsets.only(right: 8),
+                margin: const EdgeInsets.only(right: 8),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(2),
                   color: currentIndex == index
@@ -64,15 +64,14 @@ class OnboardContent extends StatelessWidget {
 }
 
 class OnboardingModel {
-  final String image;
-  final String title;
-  final String description;
-
   OnboardingModel({
     required this.image,
     required this.title,
     required this.description,
   });
+  final String image;
+  final String title;
+  final String description;
   static List<OnboardingModel> get contents => [
     OnboardingModel(
       image: 'assets/images/board1.png',

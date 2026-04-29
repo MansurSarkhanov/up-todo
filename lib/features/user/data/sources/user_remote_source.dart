@@ -1,13 +1,12 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:up_todo/core/log/app_logger.dart';
+import 'package:up_todo/core/models/api_result.dart';
+import 'package:up_todo/core/models/error_model.dart';
 import 'package:up_todo/core/services/cloudinary_service.dart';
-
-import '../../../../core/log/app_logger.dart';
-import '../../../../core/models/api_result.dart';
-import '../../../../core/models/error_model.dart';
-import '../../../../core/services/firestore_service.dart';
-import '../models/user_model.dart';
+import 'package:up_todo/core/services/firestore_service.dart';
+import 'package:up_todo/features/user/data/models/user_model.dart';
 
 abstract class IUserRemoteSource {
   ApiResult<Stream<UserModel>> getUser(String uid);
@@ -20,13 +19,12 @@ abstract class IUserRemoteSource {
 }
 
 class UserRemoteSource extends IUserRemoteSource {
-  final FirestoreService firestoreService;
-  final CloudinaryService cloudinaryService;
-
   UserRemoteSource({
     required this.firestoreService,
     required this.cloudinaryService,
   });
+  final FirestoreService firestoreService;
+  final CloudinaryService cloudinaryService;
 
   @override
   ApiResult<Stream<UserModel>> getUser(String uid) {
@@ -39,7 +37,7 @@ class UserRemoteSource extends IUserRemoteSource {
       return ApiResult.failure(
         error: ApiErrorResponse(message: e.message ?? 'Failed to add task'),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.e(e.toString());
       return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
     }
@@ -55,7 +53,12 @@ class UserRemoteSource extends IUserRemoteSource {
     try {
       String? photoUrl;
       if (image != null) {
-        photoUrl = await cloudinaryService.uploadImage(image);
+        photoUrl = await cloudinaryService.uploadImage(
+          image,
+          onProgress: (progress) {
+            AppLogger.i('Upload progress: $progress');
+          },
+        );
       }
       AppLogger.i('Attempt get user for userId: $uid');
       await firestoreService.updateUser(
@@ -68,7 +71,7 @@ class UserRemoteSource extends IUserRemoteSource {
       return ApiResult.failure(
         error: ApiErrorResponse(message: e.message ?? 'Failed to add task'),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.e(e.toString());
       return ApiResult.failure(error: ApiErrorResponse(message: e.toString()));
     }

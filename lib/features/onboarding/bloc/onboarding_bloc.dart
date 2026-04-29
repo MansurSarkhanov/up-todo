@@ -1,11 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'onboarding_event.dart';
-import 'onboarding_state.dart';
+import 'package:up_todo/features/onboarding/bloc/onboarding_event.dart';
+import 'package:up_todo/features/onboarding/bloc/onboarding_state.dart';
 
 class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
-  final int pageCount;
-
   OnboardingBloc({required this.pageCount})
     : super(OnboardingState(currentIndex: 0)) {
     on<PageChanged>((event, emit) {
@@ -24,4 +21,5 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
       }
     });
   }
+  final int pageCount;
 }

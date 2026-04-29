@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../../../../core/utils/extensions/context_extension.dart';
-import '../../../../shared/components/custom_appbar.dart';
+import 'package:up_todo/core/utils/extensions/context_extension.dart';
+import 'package:up_todo/shared/components/custom_appbar.dart';
 
 class CalendarView extends StatelessWidget {
   const CalendarView({super.key});
@@ -11,13 +10,13 @@ class CalendarView extends StatelessWidget {
     return Scaffold(
       appBar: _appBar(context),
       backgroundColor: context.colors.backgroundColor,
-      body: Center(child: Text("Calendar")),
+      body: const Center(child: Text('Calendar')),
     );
   }
 
   CustomAppBar _appBar(BuildContext context) {
     return CustomAppBar(
-      leading: SizedBox.shrink(),
+      leading: const SizedBox.shrink(),
       title: Text('Calendar', style: context.typography.h5Medium),
     );
   }

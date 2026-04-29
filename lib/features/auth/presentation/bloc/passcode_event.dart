@@ -10,9 +10,8 @@ abstract class PasscodeEvent extends Equatable {
 }
 
 class NumberEntered extends PasscodeEvent {
-  final int number;
-
   const NumberEntered(this.number);
+  final int number;
 
   @override
   List<Object?> get props => [number];

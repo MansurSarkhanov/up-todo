@@ -1,8 +1,7 @@
 abstract class FocusState {
+  FocusState(this.remainingSeconds, this.totalTargetSeconds);
   final int remainingSeconds;
   final int totalTargetSeconds;
-
-  FocusState(this.remainingSeconds, this.totalTargetSeconds);
 }
 
 class FocusInitial extends FocusState {
@@ -22,6 +21,6 @@ class FocusCompleted extends FocusState {
 }
 
 class FocusError extends FocusState {
-  final String message;
   FocusError(this.message) : super(0, 1500);
+  final String message;
 }

@@ -77,7 +77,7 @@ class PasscodeKeypad extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ButtonStyle(
-          elevation: WidgetStatePropertyAll(10),
+          elevation: const WidgetStatePropertyAll(10),
           shadowColor: WidgetStatePropertyAll(
             Colors.black.withValues(alpha: .6),
           ),
@@ -89,7 +89,7 @@ class PasscodeKeypad extends StatelessWidget {
             if (state.contains(WidgetState.pressed)) {
               return Colors.transparent;
             }
-            return Color(0xFF1A1A24);
+            return const Color(0xFF1A1A24);
           }),
         ),
         child: Ink(

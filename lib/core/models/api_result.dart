@@ -1,16 +1,11 @@
-import 'error_model.dart';
+import 'package:up_todo/core/models/error_model.dart';
 
 class ApiResult<T> {
-  final T? data;
-  final ApiErrorResponse? error;
-  final int? statusCode;
-  final bool isSuccess;
-
   ApiResult._({
+    required this.isSuccess,
     this.data,
     this.error,
     this.statusCode,
-    required this.isSuccess,
   });
 
   factory ApiResult.success({T? data}) {
@@ -23,4 +18,8 @@ class ApiResult<T> {
   }) {
     return ApiResult._(error: error, statusCode: statusCode, isSuccess: false);
   }
+  final T? data;
+  final ApiErrorResponse? error;
+  final int? statusCode;
+  final bool isSuccess;
 }

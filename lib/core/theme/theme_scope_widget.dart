@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../constants/dimensions.dart';
-import 'app_colors.dart';
-import 'app_typography.dart';
-import 'theme_scope.dart';
+import 'package:up_todo/core/constants/dimensions.dart';
+import 'package:up_todo/core/theme/app_colors.dart';
+import 'package:up_todo/core/theme/app_typography.dart';
+import 'package:up_todo/core/theme/theme_scope.dart';
 
 class ThemeScopeWidget extends StatefulWidget {
-  const ThemeScopeWidget({super.key, required this.child});
+  const ThemeScopeWidget({required this.child, super.key});
 
   final Widget child;
   static ThemeScopeWidgetState? of(BuildContext context) {

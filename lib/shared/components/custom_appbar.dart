@@ -6,9 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../core/constants/icons.dart';
-import '../animations/animated_button_effect.dart';
+import 'package:up_todo/core/constants/icons.dart';
+import 'package:up_todo/shared/animations/animated_button_effect.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -53,7 +52,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Platform.isIOS
             ? leading ??
                   CNButton.icon(
-                    icon: CNSymbol('chevron.backward', size: 16),
+                    icon: const CNSymbol('chevron.backward', size: 16),
                     onPressed: () => context.pop(),
                   )
             : Align(

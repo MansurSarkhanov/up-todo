@@ -41,21 +41,23 @@ class _CustomCalendarDialogState extends State<CustomCalendarDialog> {
                   border: Border(
                     bottom: BorderSide(
                       color: context.colors.strokeColor,
-                      width: 1,
                     ),
                   ),
                 ),
                 formatButtonVisible: false,
                 titleCentered: true,
                 titleTextStyle: context.typography.body2SemiBold,
-                leftChevronIcon: Icon(Icons.chevron_left, color: Colors.white),
-                rightChevronIcon: Icon(
+                leftChevronIcon: const Icon(
+                  Icons.chevron_left,
+                  color: Colors.white,
+                ),
+                rightChevronIcon: const Icon(
                   Icons.chevron_right,
                   color: Colors.white,
                 ),
               ),
               calendarStyle: CalendarStyle(
-                tablePadding: EdgeInsets.only(top: 12),
+                tablePadding: const EdgeInsets.only(top: 12),
                 defaultTextStyle: context.typography.subtitle4Bold,
                 selectedDecoration: BoxDecoration(
                   color: context.colors.primary,

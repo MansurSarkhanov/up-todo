@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:up_todo/core/constants/icons.dart';
+import 'package:up_todo/core/utils/extensions/context_extension.dart';
+import 'package:up_todo/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:up_todo/features/tasks/presentation/bloc/task_bloc.dart';
+import 'package:up_todo/features/tasks/presentation/bloc/task_event.dart';
+import 'package:up_todo/shared/components/custom_textfield.dart';
 import 'package:up_todo/shared/dialogs/category_dialog.dart';
+import 'package:up_todo/shared/dialogs/custom_calendart_dialog.dart';
 import 'package:up_todo/shared/dialogs/task_priorty_dialog.dart';
-
-import '../../../../core/constants/icons.dart';
-import '../../../../core/utils/extensions/context_extension.dart';
-import '../../../../shared/components/custom_textfield.dart';
-import '../../../../shared/dialogs/custom_calendart_dialog.dart';
-import '../../../auth/presentation/bloc/auth_bloc.dart';
-import '../../../tasks/presentation/bloc/task_bloc.dart';
-import '../../../tasks/presentation/bloc/task_event.dart';
 
 class AddNewTaskSheet extends StatefulWidget {
   const AddNewTaskSheet({super.key});
@@ -36,7 +35,10 @@ class _AddNewTaskSheetState extends State<AddNewTaskSheet> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsetsGeometry.symmetric(horizontal: 24, vertical: 16),
+          padding: const EdgeInsetsGeometry.symmetric(
+            horizontal: 24,
+            vertical: 16,
+          ),
           child: Form(
             key: _formKey,
             child: Column(
@@ -59,7 +61,7 @@ class _AddNewTaskSheetState extends State<AddNewTaskSheet> {
                 CustomTextfield(
                   textColor: Colors.white,
                   textInputAction: TextInputAction.next,
-                  hintTextColor: Color(0xFFAFAFAF),
+                  hintTextColor: const Color(0xFFAFAFAF),
                   fillColor: Colors.transparent,
                   controller: _titleController,
                   hintText: 'Task Title',
@@ -75,7 +77,7 @@ class _AddNewTaskSheetState extends State<AddNewTaskSheet> {
                 CustomTextfield(
                   textColor: Colors.white,
                   minLines: 3,
-                  hintTextColor: Color(0xFFAFAFAF),
+                  hintTextColor: const Color(0xFFAFAFAF),
                   fillColor: Colors.transparent,
                   controller: _descriptionController,
                   hintText: 'Task Description',
@@ -99,7 +101,7 @@ class _AddNewTaskSheetState extends State<AddNewTaskSheet> {
                             : null,
                       ),
                       onPressed: () async {
-                        final date = await showDialog(
+                        final date = await showDialog<DateTime>(
                           context: context,
                           builder: (_) => const CustomCalendarDialog(),
                         );
@@ -118,14 +120,14 @@ class _AddNewTaskSheetState extends State<AddNewTaskSheet> {
                             : null,
                       ),
                       onPressed: () async {
-                        final result = await showDialog(
+                        final result = await showDialog<Map<String, dynamic>>(
                           context: context,
                           builder: (_) => const CategoryDialog(),
                         );
                         if (result != null) {
                           setState(() {
-                            _selectedCategory = result['category'];
-                            _selectedCategoryIcon = result['icon'];
+                            _selectedCategory = result['category'] as String?;
+                            _selectedCategoryIcon = result['icon'] as String?;
                           });
                         }
                       },
@@ -138,7 +140,7 @@ class _AddNewTaskSheetState extends State<AddNewTaskSheet> {
                             : null,
                       ),
                       onPressed: () async {
-                        final priority = await showDialog(
+                        final priority = await showDialog<int>(
                           context: context,
                           builder: (_) => const TaskPriorityDialog(),
                         );
@@ -149,7 +151,7 @@ class _AddNewTaskSheetState extends State<AddNewTaskSheet> {
                         }
                       },
                     ),
-                    Spacer(),
+                    const Spacer(),
                     IconButton(
                       icon: SvgPicture.asset(AppIconPath.send),
                       onPressed: () {

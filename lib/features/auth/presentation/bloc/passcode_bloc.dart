@@ -2,10 +2,9 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:up_todo/core/helpers/cache_manager.dart';
-
-import '../screens/passcode_screen.dart';
-import 'passcode_event.dart';
-import 'passcode_state.dart';
+import 'package:up_todo/features/auth/presentation/bloc/passcode_event.dart';
+import 'package:up_todo/features/auth/presentation/bloc/passcode_state.dart';
+import 'package:up_todo/features/auth/presentation/screens/passcode_screen.dart';
 
 class PasscodeBloc extends Bloc<PasscodeEvent, PasscodeState> {
   PasscodeBloc({required this.mode}) : super(const PasscodeState()) {
@@ -15,8 +14,8 @@ class PasscodeBloc extends Bloc<PasscodeEvent, PasscodeState> {
   }
   final PasscodeMode mode;
 
-  String _correctPin = "";
-  Future<void> loadPin() async {
+  String _correctPin = '';
+  void loadPin() {
     _correctPin = CacheManager.getData<String>('user_pin') ?? '';
   }
 

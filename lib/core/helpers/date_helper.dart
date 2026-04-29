@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class DateHelper {
@@ -12,17 +13,14 @@ class DateHelper {
 
   /// Format Firestore Timestamp to "12 Feb 2026"
   String formatTimestamp(dynamic timestamp) {
-    // Firestore Timestamp -> DateTime
-    DateTime date;
     if (timestamp is DateTime) {
-      date = timestamp;
-    } else if (timestamp != null && timestamp.toDate != null) {
-      date = timestamp.toDate();
+      return formatToDayMonthYear(timestamp);
+    } else if (timestamp != null) {
+      final date = (timestamp as Timestamp).toDate();
+      return formatToDayMonthYear(date);
     } else {
-      throw Exception("Invalid timestamp format");
+      throw Exception('Invalid timestamp format');
     }
-
-    return formatToDayMonthYear(date);
   }
 
   /// Custom format

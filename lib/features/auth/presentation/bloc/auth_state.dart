@@ -1,23 +1,21 @@
 import 'package:equatable/equatable.dart';
-
-import '../../domain/entities/user_entity.dart';
+import 'package:up_todo/features/auth/domain/entities/user_entity.dart';
 
 enum AuthStatus { initial, loading, authenticated, unauthenticated, failure }
 
 enum AuthScreen { login, register }
 
 class AuthState extends Equatable {
-  final AuthStatus status;
-  final UserEntity? user;
-  final String? errorMessage;
-  final AuthScreen? source;
-
   const AuthState({
     this.status = AuthStatus.initial,
     this.user,
     this.errorMessage,
     this.source,
   });
+  final AuthStatus status;
+  final UserEntity? user;
+  final String? errorMessage;
+  final AuthScreen? source;
 
   AuthState copyWith({
     AuthStatus? status,

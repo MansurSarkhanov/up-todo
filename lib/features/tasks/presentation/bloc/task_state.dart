@@ -1,19 +1,18 @@
-import '../../data/models/task_model.dart';
+import 'package:up_todo/features/tasks/data/models/task_model.dart';
 
 enum TaskStatus { initial, loading, success, failure }
 
 class TaskState {
-  final TaskStatus status;
-  final List<Task> tasks;
-  final String? error;
-  final Task? watchedTask;
-
   const TaskState({
     this.status = TaskStatus.initial,
     this.tasks = const [],
     this.error,
     this.watchedTask,
   });
+  final TaskStatus status;
+  final List<Task> tasks;
+  final String? error;
+  final Task? watchedTask;
 
   TaskState copyWith({
     TaskStatus? status,

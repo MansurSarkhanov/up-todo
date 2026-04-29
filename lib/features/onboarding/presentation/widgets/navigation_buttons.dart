@@ -18,11 +18,11 @@ class _NavigationButtons extends StatelessWidget {
           onPressed: currentIndex == 0
               ? null
               : () => _controller.previousPage(
-                  duration: Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 300),
                   curve: Curves.ease,
                 ),
           child: Text(
-            "BACK",
+            'BACK',
             style: TextStyle(
               color: currentIndex == 0
                   ? Colors.transparent
@@ -30,9 +30,8 @@ class _NavigationButtons extends StatelessWidget {
             ),
           ),
         ),
-        Spacer(),
+        const Spacer(),
         Expanded(
-          flex: 1,
           child: CustomButton(
             onTap: () {
               if (currentIndex == OnboardingModel.contents.length - 1) {
@@ -40,14 +39,16 @@ class _NavigationButtons extends StatelessWidget {
                 CacheManager.saveData<bool>('isFirst', true);
                 return;
               }
-              _controller.nextPage(
-                duration: Duration(milliseconds: 300),
-                curve: Curves.ease,
+              unawaited(
+                _controller.nextPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.ease,
+                ),
               );
             },
             text: currentIndex == OnboardingModel.contents.length - 1
-                ? "GET STARTED"
-                : "NEXT",
+                ? 'GET STARTED'
+                : 'NEXT',
           ),
         ),
       ],

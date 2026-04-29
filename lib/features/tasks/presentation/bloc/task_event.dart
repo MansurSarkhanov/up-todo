@@ -7,13 +7,21 @@ abstract class TaskEvent extends Equatable {
 }
 
 class LoadTasks extends TaskEvent {
+  const LoadTasks({required this.userId, this.isCompleted});
   final String userId;
   final bool? isCompleted;
-
-  const LoadTasks({required this.userId, this.isCompleted});
 }
 
 class AddTaskRequested extends TaskEvent {
+  const AddTaskRequested({
+    required this.title,
+    required this.userId,
+    required this.dueDate,
+    required this.priority,
+    required this.categoryName,
+    required this.categoryIcon,
+    this.description,
+  });
   final String title;
   final String userId;
   final String? description;
@@ -21,16 +29,6 @@ class AddTaskRequested extends TaskEvent {
   final int priority;
   final String categoryName;
   final String categoryIcon;
-
-  const AddTaskRequested({
-    required this.title,
-    required this.userId,
-    this.description,
-    required this.dueDate,
-    required this.priority,
-    required this.categoryName,
-    required this.categoryIcon,
-  });
   @override
   List<Object?> get props => [
     title,
@@ -44,40 +42,30 @@ class AddTaskRequested extends TaskEvent {
 }
 
 class DeleteTaskRequested extends TaskEvent {
+  const DeleteTaskRequested({required this.taskId, required this.userId});
   final String taskId;
   final String userId;
-  const DeleteTaskRequested({required this.taskId, required this.userId});
 }
 
 class ComplateTaskRequested extends TaskEvent {
-  final String taskId;
-  final bool isDone;
-  final String userId;
   const ComplateTaskRequested({
     required this.taskId,
     required this.isDone,
     required this.userId,
   });
+  final String taskId;
+  final bool isDone;
+  final String userId;
 }
 
 class ToggleTaskRequested extends TaskEvent {}
 
 class WatchTaskRequested extends TaskEvent {
-  final String taskId;
-
   const WatchTaskRequested(this.taskId);
+  final String taskId;
 }
 
 class EditTaskRequested extends TaskEvent {
-  final String taskId;
-  final String? title;
-  final String? description;
-  final DateTime? dueDate;
-  final int? priority;
-  final String? categoryName;
-  final String? categoryIcon;
-  final String userId;
-
   const EditTaskRequested({
     required this.taskId,
     required this.userId,
@@ -88,4 +76,12 @@ class EditTaskRequested extends TaskEvent {
     this.categoryName,
     this.categoryIcon,
   });
+  final String taskId;
+  final String? title;
+  final String? description;
+  final DateTime? dueDate;
+  final int? priority;
+  final String? categoryName;
+  final String? categoryIcon;
+  final String userId;
 }

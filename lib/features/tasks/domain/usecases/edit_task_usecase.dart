@@ -1,11 +1,9 @@
 import 'package:either_dart/either.dart';
-
-import '../repositories/task_repository.dart';
+import 'package:up_todo/features/tasks/domain/repositories/task_repository.dart';
 
 class EditTaskUsecase {
-  final ITaskRepository repository;
-
   EditTaskUsecase(this.repository);
+  final ITaskRepository repository;
 
   Future<Either<bool, String>> call({
     required String taskId,

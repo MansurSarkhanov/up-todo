@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cupertino_native_better/cupertino_native_better.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,16 +7,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:up_todo/core/constants/icons.dart';
+import 'package:up_todo/core/helpers/date_helper.dart';
 import 'package:up_todo/core/utils/extensions/context_extension.dart';
+import 'package:up_todo/features/tasks/presentation/bloc/task_bloc.dart';
+import 'package:up_todo/features/tasks/presentation/bloc/task_state.dart';
 import 'package:up_todo/features/tasks/presentation/widgets/task_edit_dialog.dart';
 import 'package:up_todo/shared/components/custom_appbar.dart';
 
-import '../../../../core/helpers/date_helper.dart';
-import '../bloc/task_bloc.dart';
-import '../bloc/task_state.dart';
-
 class TaskDetailScreen extends StatelessWidget {
-  const TaskDetailScreen({super.key, required this.color});
+  const TaskDetailScreen({required this.color, super.key});
   final Color color;
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class TaskDetailScreen extends StatelessWidget {
       appBar: CustomAppBar(
         actions: [
           CNButton.icon(
-            icon: CNSymbol('arrow.left.arrow.right', size: 16),
+            icon: const CNSymbol('arrow.left.arrow.right', size: 16),
             onPressed: () => context.pop(),
           ),
           16.horizontalSpace,
@@ -48,7 +49,7 @@ class TaskDetailScreen extends StatelessWidget {
           );
 
           return Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -57,16 +58,18 @@ class TaskDetailScreen extends StatelessWidget {
                   children: [
                     Text(task.title, style: context.typography.h5Medium),
                     CNButton.icon(
-                      icon: CNSymbol('pencil.line', size: 18),
+                      icon: const CNSymbol('pencil.line', size: 18),
                       onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (_) => BlocProvider.value(
-                            value: context.read<TaskBloc>(),
-                            child: TaskEditDialog(
-                              taskId: task.id,
-                              title: task.title,
-                              description: task.description,
+                        unawaited(
+                          showDialog(
+                            context: context,
+                            builder: (_) => BlocProvider.value(
+                              value: context.read<TaskBloc>(),
+                              child: TaskEditDialog(
+                                taskId: task.id,
+                                title: task.title,
+                                description: task.description,
+                              ),
                             ),
                           ),
                         );
@@ -78,7 +81,7 @@ class TaskDetailScreen extends StatelessWidget {
                 Text(
                   task.description,
                   style: context.typography.body1Regular.copyWith(
-                    color: Color(0xFFAFAFAF),
+                    color: const Color(0xFFAFAFAF),
                   ),
                 ),
                 32.verticalSpace,
@@ -122,9 +125,9 @@ class TaskDetailScreen extends StatelessWidget {
 
 class TaskDetailCard extends StatelessWidget {
   const TaskDetailCard({
-    super.key,
     required this.icon,
     required this.title,
+    super.key,
     this.value,
     this.color,
     this.categoryIcon,
@@ -140,7 +143,7 @@ class TaskDetailCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24.0),
+      padding: const EdgeInsets.only(bottom: 24),
       child: GestureDetector(
         onTap: onPressed,
         child: Row(
@@ -150,7 +153,7 @@ class TaskDetailCard extends StatelessWidget {
             8.horizontalSpace,
             Text(title, style: context.typography.body1Regular),
             if (value != null) ...[
-              Spacer(),
+              const Spacer(),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4.r),
@@ -158,14 +161,14 @@ class TaskDetailCard extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
+                    horizontal: 16,
                     vertical: 8,
                   ),
                   child: Row(
                     children: [
                       if (categoryIcon != null)
                         Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
+                          padding: const EdgeInsets.only(right: 8),
                           child: SvgPicture.asset(
                             categoryIcon!,
                             width: 22,

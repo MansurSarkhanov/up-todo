@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:up_todo/core/utils/extensions/context_extension.dart';
 import 'package:up_todo/features/user/presentation/bloc/user_bloc.dart';
+import 'package:up_todo/features/user/presentation/bloc/user_event.dart';
+import 'package:up_todo/shared/components/custom_button.dart';
 import 'package:up_todo/shared/components/custom_textfield.dart';
 
-import '../../../../core/utils/extensions/context_extension.dart';
-import '../../../../shared/components/custom_button.dart';
-import '../../../user/presentation/bloc/user_event.dart';
-
 class UserUpdateDialog extends StatefulWidget {
-  const UserUpdateDialog({super.key, required this.title});
+  const UserUpdateDialog({required this.title, super.key});
   final String title;
 
   @override
@@ -30,7 +29,7 @@ class _UserUpdateDialogState extends State<UserUpdateDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Change username", style: context.typography.body1SemiBold),
+            Text('Change username', style: context.typography.body1SemiBold),
             12.verticalSpace,
             Divider(color: context.colors.strokeColor, height: 0),
             16.verticalSpace,
@@ -41,7 +40,7 @@ class _UserUpdateDialogState extends State<UserUpdateDialog> {
                 controller: usernameController..text = widget.title,
                 hintText: 'Username',
                 textColor: Colors.white,
-                hintTextColor: Color(0xFFAFAFAF),
+                hintTextColor: const Color(0xFFAFAFAF),
                 textInputAction: TextInputAction.done,
                 validator: (value) {
                   if (value == null || value.isEmpty) {

@@ -3,18 +3,17 @@ import 'dart:io';
 abstract class UserEvent {}
 
 class LoadUser extends UserEvent {
-  final String uid;
   LoadUser(this.uid);
+  final String uid;
 }
 
 class UpdateUserOnlineStatus extends UserEvent {
+  UpdateUserOnlineStatus({required this.isOnline});
   final bool isOnline;
-  UpdateUserOnlineStatus(this.isOnline);
 }
 
 class UpdateUserProfile extends UserEvent {
+  UpdateUserProfile({this.username, this.image});
   final String? username;
   final File? image;
-
-  UpdateUserProfile({this.username, this.image});
 }

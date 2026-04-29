@@ -1,8 +1,8 @@
 abstract class OnboardingEvent {}
 
 class PageChanged extends OnboardingEvent {
-  final int index;
   PageChanged(this.index);
+  final int index;
 }
 
 class NextPressed extends OnboardingEvent {}

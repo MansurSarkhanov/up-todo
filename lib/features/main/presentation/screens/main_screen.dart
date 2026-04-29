@@ -7,23 +7,22 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:up_todo/core/helpers/app_helper.dart';
 import 'package:up_todo/core/utils/extensions/context_extension.dart';
 import 'package:up_todo/features/focus/presentation/screens/focus_view.dart';
+import 'package:up_todo/features/main/presentation/bloc/main_bloc.dart';
+import 'package:up_todo/features/main/presentation/views/calendar_view.dart';
+import 'package:up_todo/features/main/presentation/widgets/add_new_task_sheet.dart';
+import 'package:up_todo/features/tasks/presentation/bloc/task_bloc.dart';
+import 'package:up_todo/features/tasks/presentation/screens/home_view.dart';
 import 'package:up_todo/features/user/presentation/screens/profile_view.dart';
-
-import '../../../tasks/presentation/bloc/task_bloc.dart';
-import '../../../tasks/presentation/screens/home_view.dart';
-import '../bloc/main_bloc.dart';
-import '../views/calendar_view.dart';
-import '../widgets/add_new_task_sheet.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
   List<Widget> get pages => [
-    HomeView(),
-    CalendarView(),
-    SizedBox.shrink(),
-    FocusView(),
-    ProfileView(),
+    const HomeView(),
+    const CalendarView(),
+    const SizedBox.shrink(),
+    const FocusView(),
+    const ProfileView(),
   ];
 
   @override
@@ -49,16 +48,17 @@ class MainScreen extends StatelessWidget {
       builder: (context, state) {
         if (Platform.isIOS) {
           return CNTabBar(
+            autoHideOnPageTransition: false,
             iconSize: 18,
             tint: context.colors.primary,
-            items: [
-              CNTabBarItem(label: 'Home', icon: CNSymbol("house")),
-              CNTabBarItem(label: 'Calendar', icon: CNSymbol("calendar")),
-              CNTabBarItem(label: 'Add', icon: CNSymbol("plus.circle")),
-              CNTabBarItem(label: 'Focus', icon: CNSymbol("clock")),
+            items: const [
+              CNTabBarItem(label: 'Home', icon: CNSymbol('house')),
+              CNTabBarItem(label: 'Calendar', icon: CNSymbol('calendar')),
+              CNTabBarItem(label: 'Add', icon: CNSymbol('plus.circle')),
+              CNTabBarItem(label: 'Focus', icon: CNSymbol('clock')),
               CNTabBarItem(
                 label: 'Profile',
-                icon: CNSymbol("person.crop.circle"),
+                icon: CNSymbol('person.crop.circle'),
               ),
             ],
             currentIndex: state,
@@ -69,7 +69,7 @@ class MainScreen extends StatelessWidget {
                   context: context,
                   child: BlocProvider.value(
                     value: context.read<TaskBloc>(),
-                    child: AddNewTaskSheet(),
+                    child: const AddNewTaskSheet(),
                   ),
                 );
               } else {
@@ -87,7 +87,7 @@ class MainScreen extends StatelessWidget {
                   context: context,
                   child: BlocProvider.value(
                     value: context.read<TaskBloc>(),
-                    child: AddNewTaskSheet(),
+                    child: const AddNewTaskSheet(),
                   ),
                 );
               } else {
@@ -103,12 +103,12 @@ class MainScreen extends StatelessWidget {
 
 class AndroidBottomBar extends StatefulWidget {
   const AndroidBottomBar({
-    super.key,
     required this.currentIndex,
     required this.onTap,
+    super.key,
   });
   final int currentIndex;
-  final Function(int) onTap;
+  final void Function(int) onTap;
 
   @override
   State<AndroidBottomBar> createState() => _AndroidBottomBarState();

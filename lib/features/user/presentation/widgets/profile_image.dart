@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../core/helpers/picker_manager.dart';
-import '../../../../injection.dart';
-import '../bloc/user_bloc.dart';
-import '../bloc/user_event.dart';
+import 'package:up_todo/core/helpers/picker_manager.dart';
+import 'package:up_todo/features/user/presentation/bloc/user_bloc.dart';
+import 'package:up_todo/features/user/presentation/bloc/user_event.dart';
+import 'package:up_todo/injection.dart';
 
 class ProfileImage extends StatelessWidget {
   const ProfileImage({super.key, this.photoUrl});
@@ -21,7 +20,10 @@ class ProfileImage extends StatelessWidget {
         }
       },
       child: Container(
-        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
+        ),
         height: 85,
         width: 85,
         child: AnimatedSwitcher(

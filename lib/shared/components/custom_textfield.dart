@@ -6,10 +6,10 @@ import 'package:up_todo/core/utils/extensions/context_extension.dart';
 
 class CustomTextfield extends StatefulWidget {
   const CustomTextfield({
+    required this.controller,
     super.key,
     this.obscureText,
     this.hintText,
-    required this.controller,
     this.fillColor,
     this.hintTextColor,
     this.textInputAction,
@@ -30,7 +30,7 @@ class CustomTextfield extends StatefulWidget {
   final Color? fillColor;
   final TextInputAction? textInputAction;
   final String? Function(String?)? validator;
-  final Function(String?)? onChanged;
+  final ValueChanged<String>? onChanged;
   final InputBorder? enabledBorder;
 
   @override
@@ -41,7 +41,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      maxLines: widget.maxLines,
+      maxLines: widget.maxLines ?? 1,
       minLines: widget.minLines,
       textInputAction: widget.textInputAction ?? TextInputAction.done,
       controller: widget.controller,
@@ -59,14 +59,14 @@ class _CustomTextfieldState extends State<CustomTextfield> {
         filled: true,
         fillColor: widget.fillColor ?? context.colors.textFieldBackColor,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular((Platform.isIOS ? 12.r : 4.r)),
+          borderRadius: BorderRadius.circular(Platform.isIOS ? 12.r : 4.r),
           borderSide: BorderSide(color: context.colors.strokeColor, width: 0.8),
         ),
         enabledBorder:
             widget.enabledBorder ??
             OutlineInputBorder(
               borderRadius: BorderRadius.circular(
-                (Platform.isIOS ? 12.r : 4.r),
+                Platform.isIOS ? 12.r : 4.r,
               ),
               borderSide: BorderSide(
                 color: context.colors.strokeColor,
@@ -74,7 +74,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
               ),
             ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular((Platform.isIOS ? 12.r : 4.r)),
+          borderRadius: BorderRadius.circular(Platform.isIOS ? 12.r : 4.r),
           borderSide: BorderSide(color: context.colors.primary),
         ),
       ),

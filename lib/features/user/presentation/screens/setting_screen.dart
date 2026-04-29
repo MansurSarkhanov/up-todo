@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:up_todo/core/constants/icons.dart';
+import 'package:up_todo/core/utils/extensions/context_extension.dart';
 import 'package:up_todo/features/user/presentation/widgets/profile_tile.dart';
 import 'package:up_todo/shared/components/custom_appbar.dart';
-
-import '../../../../core/utils/extensions/context_extension.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -20,7 +19,7 @@ class SettingScreen extends StatelessWidget {
 
   Widget _body(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

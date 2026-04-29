@@ -1,11 +1,10 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CacheManager {
-  static final CacheManager _instance = CacheManager._internal();
-
   factory CacheManager() => _instance;
 
   CacheManager._internal();
+  static final CacheManager _instance = CacheManager._internal();
 
   static late final SharedPreferences prefs;
   static Future<void> init() async {

@@ -1,7 +1,7 @@
 part of '../screens/home_view.dart';
 
 class TaskTile extends StatelessWidget {
-  const TaskTile({super.key, required this.task});
+  const TaskTile({required this.task, super.key});
 
   final Task task;
 
@@ -19,7 +19,7 @@ class TaskTile extends StatelessWidget {
       ),
     );
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
+      padding: const EdgeInsets.only(bottom: 16),
       child: Slidable(
         key: ValueKey(task.id),
         startActionPane: ActionPane(
@@ -36,7 +36,6 @@ class TaskTile extends StatelessWidget {
           motion: const DrawerMotion(),
           children: [
             CustomSlidableAction(
-              autoClose: true,
               onPressed: (context) {},
               backgroundColor: Colors.green,
               foregroundColor: Colors.white,
@@ -73,7 +72,7 @@ class TaskTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Padding(
-              padding: EdgeInsetsGeometry.all(12),
+              padding: const EdgeInsetsGeometry.all(12),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,15 +85,15 @@ class TaskTile extends StatelessWidget {
                       Text(
                         formattedCreate,
                         style: context.typography.body2Regular.copyWith(
-                          color: Color(0xFFAFAFAF),
+                          color: const Color(0xFFAFAFAF),
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: category.color,
-                          border: Border.all(color: category.color, width: 1),
+                          border: Border.all(color: category.color),
                           borderRadius: BorderRadius.circular(4.r),
                         ),
                         child: Row(
@@ -115,12 +114,11 @@ class TaskTile extends StatelessWidget {
                       ),
                       12.horizontalSpace,
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: Colors.transparent,
                           border: Border.all(
                             color: context.colors.primary,
-                            width: 1,
                           ),
                           borderRadius: BorderRadius.circular(4.r),
                         ),

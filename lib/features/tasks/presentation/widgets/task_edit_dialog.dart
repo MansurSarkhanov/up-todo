@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:up_todo/core/utils/extensions/context_extension.dart';
 import 'package:up_todo/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:up_todo/features/tasks/presentation/bloc/task_bloc.dart';
 import 'package:up_todo/features/tasks/presentation/bloc/task_event.dart';
+import 'package:up_todo/shared/components/custom_button.dart';
 import 'package:up_todo/shared/components/custom_textfield.dart';
-
-import '../../../../core/utils/extensions/context_extension.dart';
-import '../../../../shared/components/custom_button.dart';
-import '../bloc/task_bloc.dart';
 
 class TaskEditDialog extends StatefulWidget {
   const TaskEditDialog({
-    super.key,
     required this.title,
     required this.description,
     required this.taskId,
+    super.key,
   });
   final String title;
   final String description;
@@ -38,7 +37,7 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Edit Task title", style: context.typography.body1SemiBold),
+            Text('Edit Task title', style: context.typography.body1SemiBold),
             12.verticalSpace,
             Divider(color: context.colors.strokeColor, height: 0),
             16.verticalSpace,
@@ -53,7 +52,7 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
               controller: titleController..text = widget.title,
               hintText: 'Title',
               textColor: Colors.white,
-              hintTextColor: Color(0xFFAFAFAF),
+              hintTextColor: const Color(0xFFAFAFAF),
               textInputAction: TextInputAction.done,
             ),
             12.verticalSpace,
@@ -68,7 +67,7 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
               controller: descriptionController..text = widget.description,
               hintText: 'Description',
               textColor: Colors.white,
-              hintTextColor: Color(0xFFAFAFAF),
+              hintTextColor: const Color(0xFFAFAFAF),
               textInputAction: TextInputAction.done,
             ),
             20.verticalSpace,

@@ -8,18 +8,17 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:up_todo/core/constants/icons.dart';
+import 'package:up_todo/core/helpers/date_helper.dart';
+import 'package:up_todo/core/models/category_model.dart';
 import 'package:up_todo/core/routes/routes.dart';
 import 'package:up_todo/core/utils/extensions/context_extension.dart';
 import 'package:up_todo/features/tasks/data/models/task_model.dart';
+import 'package:up_todo/features/tasks/presentation/bloc/task_bloc.dart';
 import 'package:up_todo/features/tasks/presentation/bloc/task_event.dart';
-
-import '../../../../core/helpers/date_helper.dart';
-import '../../../../core/models/category_model.dart';
-import '../../../../shared/components/custom_appbar.dart';
-import '../../../../shared/dialogs/category_dialog.dart';
-import '../bloc/task_bloc.dart';
-import '../bloc/task_state.dart';
-import '../widgets/empty_task.dart';
+import 'package:up_todo/features/tasks/presentation/bloc/task_state.dart';
+import 'package:up_todo/features/tasks/presentation/widgets/empty_task.dart';
+import 'package:up_todo/shared/components/custom_appbar.dart';
+import 'package:up_todo/shared/dialogs/category_dialog.dart';
 
 part '../widgets/task_tile.dart';
 
@@ -62,7 +61,7 @@ class HomeView extends StatelessWidget {
     return CustomAppBar(
       leading: Platform.isIOS
           ? CNButton.icon(
-              icon: CNSymbol('line.3.horizontal.decrease', size: 16),
+              icon: const CNSymbol('line.3.horizontal.decrease', size: 16),
               onPressed: () => {},
             )
           : IconButton(
